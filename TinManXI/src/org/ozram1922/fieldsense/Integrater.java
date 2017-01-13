@@ -16,6 +16,7 @@ public class Integrater<TargetType extends IntegrationTarget> implements Integra
 		long now = System.nanoTime();
 		long dt = now - _prevTime;
 		_integrationTarget.Cycle(dxdt * (double)dt);
+		_prevTime = now;
 	}
 
 	@Override
