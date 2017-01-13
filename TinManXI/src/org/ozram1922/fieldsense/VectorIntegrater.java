@@ -11,13 +11,13 @@ public class VectorIntegrater<IntegraterType extends IntegrationTarget> {
 		_count = integraters.length;
 	}
 	
-	public void CycleEuclid(double[] dPdt) throws Exception
+	public void CycleEuclid(Vector<double> dPdt) throws Exception
 	{
-		if(dPdt.length != _count)
+		if(dPdt.GetCount() != _count)
 			throw new Exception("Invalid Number of Vector Quantities");
 		for(int i = 0; i < _count; ++i)
 		{
-			_integraters[i].Cycle(dPdt[i]);
+			_integraters[i].Cycle(dPdt.ValueAt(i));
 		}
 	}
 	
