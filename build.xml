@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="FRC Deployment" default="deploy">
+	
+	<property name="TinManRepo.dir" value="PATH_TO_REPO" />
+	
+    <import file="${TinManRepo.dir}/TinManXI/build_backend.xml" />
+	
+
+</project> 
