@@ -11,7 +11,7 @@ public class VectorIntegrater<IntegraterType extends IntegrationTarget> {
 		_count = integraters.length;
 	}
 	
-	public void CycleEuclid(Vector<double> dPdt) throws Exception
+	public void CycleEuclid(Vector<Double> dPdt) throws Exception
 	{
 		if(dPdt.GetCount() != _count)
 			throw new Exception("Invalid Number of Vector Quantities");
@@ -20,6 +20,4 @@ public class VectorIntegrater<IntegraterType extends IntegrationTarget> {
 			_integraters[i].Cycle(dPdt.ValueAt(i));
 		}
 	}
-	
-	//TODO add vector class
 }
