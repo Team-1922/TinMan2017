@@ -2,19 +2,19 @@ package org.ozram1922.fieldsense;
 
 public class Vector3d implements Vector<double> {
 	
-	private double _x = 0;
-	private double _y = 0;
-	private double _z = 0;
+	public double x = 0;
+	public double y = 0;
+	public double z = 0;
 	
 	@Override
 	public double ValueAt(int index) throws Exception
 	{
 		if(index == 0)
-			return _x;
+			return x;
 		else if(index == 1)
-			return _y;
+			return y;
 		else if(index == 2)
-			return _z;
+			return z;
 		else
 			throw new Exception("Index Out of Range");
 	}
