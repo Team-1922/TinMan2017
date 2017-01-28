@@ -2,27 +2,23 @@ package org.ozram1922.fieldsense;
 
 public class EncoderIntegrater {
 	
-	private double _distance;
+	private double _wheelSpacing;
 	private double _direction;
 	private Vector2d _position;
 	
-	private double prevL = 0;
-	private double prevR = 0;
+	private double _prevL = 0;
+	private double _prevR = 0;
 	
-	public EncoderIntegrater(double distance, double initialPosition)
+	public EncoderIntegrater(double wheelSpacing, Vector2d initialPosition)
 	{
-		_distance = distance;
-		VelocityIntegrater ints[] = new VelocityIntegrater[2];
-		ints[0] = new VelocityIntegrater(initialPosition);
-		ints[1] = new VelocityIntegrater(initialPosition);
-		
-		_positionIntegrater = new VectorIntegrater<VelocityIntegrater>(ints);
+		_wheelSpacing = wheelSpacing;
+		_position = initialPosition;
 	}
 	
 	public void Cycle(double L, double R)
 	{
-		double dL = L - prevL;
-		double dR = R - prevR;
+		double dL = L - _prevL;
+		double dR = R - _prevR;
 		
 		if(dL == 0 && dR == 0)
 			return;
@@ -44,24 +40,33 @@ public class EncoderIntegrater {
 			smallChange = dL;
 		}
 		
-		double deltaDirection = (bigChange - smallChange) / _distance;
-		double deltaPositionMagnitude = 2.0 * (d / 2.0 + smallChange / deltaDirection) * Math.Sin(deltaDirection / 2.0);
+		double deltaDirection = (bigChange - smallChange) / _wheelSpacing;
+		double deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);
 		
 		_direction += deltaDirection;
-		_position.x += deltaPositionMagnitude * Math.Cos(deltaDirection);
-		_position.y += deltaPositionMagnitude * Math.Sin(deltaDirection);
+		_position.x += deltaPositionMagnitude * Math.cos(deltaDirection);
+		_position.y += deltaPositionMagnitude * Math.sin(deltaDirection);
+		
+		//set the previous to the current
+		_prevR = R;
+		_prevL = L;
 	}
 	
 	/**
 	 * @return The distance between drive train wheels
 	 */
-	public double Distance()
+	public double WheelSpacing()
 	{
-		return _distance;
+		return _wheelSpacing;
 	}
 	
-	public Vector<Double> Position()
+	public Vector2d Position()
 	{
-		return _positionIntegrater.
+		return _position;
+	}
+	
+	public double Direction()
+	{
+		return _direction;
 	}
 }
