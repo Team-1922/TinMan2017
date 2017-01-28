@@ -80,6 +80,17 @@ public class OI implements CfgInterface{
 	/*JoystickButton mNewBtn;
 	Joystick mTestJoy = new Joystick(0);
 	DriveForward cmd = new DriveForward();*/
+	
+	public Joystick GetLeftJoystick()
+	{
+		return mJoysticks.get("Left").y;
+	}
+	
+	public Joystick GetRightJoystick()
+	{
+		return mJoysticks.get("Right").y;
+	}
+	
 	/*
 	 * 
 	 * Member Functions

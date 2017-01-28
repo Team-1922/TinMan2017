@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<root>
+	<DriveTrain 
+		LeftMotor1="7" 
+		LeftMotor2="2" 
+		RightMotor1="-3" 
+		RightMotor2="-4" 
+		Shifter="0"
+		LeftSensitivity="1.0" 
+		RightSensitivity="1.0" 
+		MovementP="2.0" 
+		MovementI="0.0005" 
+		MovementD="100.0" 
+		MovementTolerance="1.0" 
+		AimingTolerance="0.15" 
+		InchesToEncoderUnits="73.34" 
+		TurningRadius="12.125" />
+	<OI>
+		<Joystick Name="OpStick" Id="0" />
+		<Joystick Name="LeftStick" Id="1" />
+		<Joystick Name="RightStick" Id="2" />
+	</OI>
+	<DriverCamera ServoId="9" FullPos="1" FullNeg="0" />
+</root>

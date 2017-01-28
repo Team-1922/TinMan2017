@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.io.IOException;
 
 import org.ozram1922.cfg.CfgLoader;
+import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,6 +30,7 @@ public class Robot extends IterativeRobot {
 	public static String mCfgFileName = "/home/lvuser/TinManXII.cfg.xml";
 	public static String mCsvRangeAngleName = "/home/lvuser/RangeAngleTable.csv";
 	public static DriverCamera mDriverCamera = new DriverCamera();
+	public static DriveTrain mDriveTrain = new DriveTrain();
 	CameraServer server;
 
     Command autonomousCommand;
@@ -47,6 +49,7 @@ public class Robot extends IterativeRobot {
 		
 		//register XML loading classes here
 		mCfgLoader.RegisterCfgClass(mDriverCamera);
+		mCfgLoader.RegisterCfgClass(mDriveTrain);
 		mCfgLoader.RegisterCfgClass(oi);
 		
 		//load the xml file here
