@@ -26,7 +26,7 @@
     <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
 	
 	<!-- This might not be quite correct -->
-  	<property name="cfg.xml" value="${TinManRepo.dir}/TinManXI.cfg.xml" />
+  	<property name="cfg.xml" value="${TinManRepo.dir}/TinManXII.cfg.xml" />
 
 	<property name="TinManSrc.dir" value="${TinManRepo.dir}/TinManXI/src" />
 	

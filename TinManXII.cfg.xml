@@ -19,6 +19,7 @@
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />
 		<Joystick Name="RightStick" Id="2" />
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
 	</OI>
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0" />
 </root>
