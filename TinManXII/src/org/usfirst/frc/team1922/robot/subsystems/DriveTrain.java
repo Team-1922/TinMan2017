@@ -81,8 +81,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mLeftMotor1.set(left * mLeftSensitivity);
 		mLeftMotor2.set(left * mLeftSensitivity);
 		
-		mRightMotor1.set(right * mLeftSensitivity);
-		mRightMotor2.set(right * mLeftSensitivity);
+		mRightMotor1.set(right * mRightSensitivity);
+		mRightMotor2.set(right * mRightSensitivity);
 	}
 	
 	public void SetShifterState(boolean shifterState)
