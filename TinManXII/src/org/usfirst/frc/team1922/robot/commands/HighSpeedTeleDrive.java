@@ -27,9 +27,9 @@ public class HighSpeedTeleDrive extends Command {
     	
     	double twist = Robot.oi.GetRightJoystick().getTwist();
     	if(twist > 0)
-    		right -= twist*0.15;
+    		left -= twist*0.15;
     	else
-    		left += twist*0.15;// plus because twist is negative
+    		right += twist*0.15;// plus because twist is negative
     	Robot.mDriveTrain.TankControl(left, right);
     }
 
