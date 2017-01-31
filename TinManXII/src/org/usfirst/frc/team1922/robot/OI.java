@@ -83,12 +83,12 @@ public class OI implements CfgInterface{
 	
 	public Joystick GetLeftJoystick()
 	{
-		return mJoysticks.get("Left").y;
+		return mJoysticks.get("LeftStick").y;
 	}
 	
 	public Joystick GetRightJoystick()
 	{
-		return mJoysticks.get("Right").y;
+		return mJoysticks.get("RightStick").y;
 	}
 	
 	/*
