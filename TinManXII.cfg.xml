@@ -3,8 +3,8 @@
 	<DriveTrain 
 		LeftMotor1="-1" 
 		LeftMotor2="-2" 
-		RightMotor1="-3" 
-		RightMotor2="-4" 
+		RightMotor1="3" 
+		RightMotor2="4" 
 		Shifter="0"
 		LeftSensitivity="1.0" 
 		RightSensitivity="1.0" 
