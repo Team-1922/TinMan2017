@@ -81,8 +81,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mLeftMotor1.set(left * mLeftSensitivity);
 		mLeftMotor2.set(left * mLeftSensitivity);
 		
-		mRightMotor1.set(right * mLeftSensitivity);
-		mRightMotor2.set(right * mLeftSensitivity);
+		mRightMotor1.set(right * mRightSensitivity);
+		mRightMotor2.set(right * mRightSensitivity);
 	}
 	
 	public void SetShifterState(boolean shifterState)
@@ -99,6 +99,11 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotor1 = new CANTalon(Math.abs(mRightMotorId1));
 		mRightMotor2 = new CANTalon(Math.abs(mRightMotorId2));
 
+		mLeftMotor1.setInverted(mLeftMotorId1 < 0);
+		mLeftMotor2.setInverted(mLeftMotorId2 < 0);
+		mRightMotor1.setInverted(mRightMotorId1 < 0);
+		mRightMotor2.setInverted(mRightMotorId2 < 0);
+		
 		mDTShifter = new Solenoid(Math.abs(mShifterId));
 		
 		//mLeftMotor1.setPID(mMP, mMI, mMD);

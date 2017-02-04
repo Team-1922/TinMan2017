@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <root>
 	<DriveTrain 
-		LeftMotor1="7" 
-		LeftMotor2="2" 
-		RightMotor1="-3" 
-		RightMotor2="-4" 
+		LeftMotor1="-1" 
+		LeftMotor2="-2" 
+		RightMotor1="3" 
+		RightMotor2="4" 
 		Shifter="0"
 		LeftSensitivity="1.0" 
 		RightSensitivity="1.0" 
@@ -19,8 +19,9 @@
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />
 		<Joystick Name="RightStick" Id="2" />
-		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
-		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
+		<Command TriggerType="WhileHeld" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
+		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
 	</OI>
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0" />
+	<GearFlap ActuatorId="1" />
 </root>
