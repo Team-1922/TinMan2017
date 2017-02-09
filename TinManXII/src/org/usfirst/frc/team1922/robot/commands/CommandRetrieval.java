@@ -94,7 +94,7 @@ public class CommandRetrieval {
 
 	private static Object ParseType(Parameter param, String value)
 	{
-		String name = param.getName();
+		String name = param.getType().getTypeName();
 
 		if(name == intName)
 		{
@@ -120,7 +120,7 @@ public class CommandRetrieval {
 
 	private static Object GetDefaultValue(Parameter param)
 	{
-		String name = param.getName();
+		String name = param.getType().getTypeName();
 
 		if(name == intName)
 		{
