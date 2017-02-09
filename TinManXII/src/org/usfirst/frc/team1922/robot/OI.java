@@ -10,12 +10,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.w3c.dom.Node;
+
 import org.ozram1922.Tuple;
 import org.ozram1922.cfg.CfgDocument;
 import org.ozram1922.cfg.CfgElement;
 import org.ozram1922.cfg.CfgInterface;
 import org.usfirst.frc.team1922.robot.commands.CommandRetrieval;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 /**
@@ -186,13 +189,24 @@ public class OI implements CfgInterface{
 					new Tuple<String,Integer>(
 							thisElement.getAttribute("Joystick"), 
 							Integer.parseInt(thisElement.getAttribute("Button"))), 
-					new Tuple<Command, TriggerAction>(CommandRetrieval.GetCommandFromName(thisElement.getAttribute("Name")), 
+					new Tuple<Command, TriggerAction>(CommandRetrieval.GetCommandFromName(thisElement.getAttribute("Name"), ConvertNodeMap(thisElement.getAttributes())), 
 							StringToTriggerAction(thisElement.getAttribute("TriggerType"))));
 		}
 		
 		Reconstruct();
 		
 		return true;
+	}
+	
+	private static HashMap<String, String> ConvertNodeMap(NamedNodeMap map)
+	{
+		HashMap<String, String> ret = new HashMap<String, String>();
+		for(int i = 0; i < map.getLength(); ++i)
+		{
+			Node node = map.item(i);
+			ret.put(node.getNodeName(), node.getNodeValue());
+		}
+		return ret;
 	}
 
 	@Override
