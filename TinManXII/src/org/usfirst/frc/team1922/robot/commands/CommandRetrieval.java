@@ -5,6 +5,7 @@ import java.lang.reflect.Parameter;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CommandRetrieval {
 	
@@ -22,10 +23,15 @@ public class CommandRetrieval {
 		Class<?> clazz;
 		Object instance = null;
 		try {
+			SmartDashboard.putString(name, "");
 			clazz = Class.forName(compName);
-			Constructor<?> constructor = clazz.getConstructor();
+			SmartDashboard.putString(name, "Class Gotten");
+			Constructor<?> constructor = clazz.getConstructors()[0];
+			SmartDashboard.putString(name, "Constructor Gotten");
 			Parameter[] paramNames = constructor.getParameters();
-			
+			SmartDashboard.putString(name, "Parameters Gotten");
+
+			//TODO: something is failing after here with commands with parameters
 			if(paramNames.length > 0)
 			{
 				Object[] paramValues = new Object[paramNames.length];

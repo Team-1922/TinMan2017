@@ -19,8 +19,10 @@
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />
 		<Joystick Name="RightStick" Id="2" />
+		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="5" Name="AbortAll" />
 		<Command TriggerType="WhileHeld" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
 		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="5" Name="TestParamCommand" />
 	</OI>
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0" />
 	<GearFlap ActuatorId="1" />
