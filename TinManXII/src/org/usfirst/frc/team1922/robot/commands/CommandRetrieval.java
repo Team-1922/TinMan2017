@@ -84,31 +84,31 @@ public class CommandRetrieval {
 	private static String floatName;
 	private static void LoadTypes()
 	{
-		intName = Integer.TYPE.getName();
-		doubleName = Double.TYPE.getName();
-		booleanName = Boolean.TYPE.getName();
-		floatName = Float.TYPE.getName();		
+		intName = Integer.class.getName();
+		doubleName = Double.class.getName();
+		booleanName = Boolean.class.getName();
+		floatName = Float.class.getName();		
 		
 		areTypesLoaded = true;
 	}
 
 	private static Object ParseType(Parameter param, String value)
 	{
-		String name = param.getType().getTypeName();
+		String typeName = param.getType().getName();
 
-		if(name == intName)
+		if(typeName == intName)
 		{
 			return Integer.parseInt(value);
 		}
-		else if(name == doubleName)
+		else if(typeName == doubleName)
 		{
 			return Double.parseDouble(value);
 		}
-		else if(name == booleanName)
+		else if(typeName == booleanName)
 		{
 			return Boolean.parseBoolean(value);
 		}
-		else if(name == floatName)
+		else if(typeName == floatName)
 		{
 			return Float.parseFloat(value);
 		}
@@ -120,21 +120,21 @@ public class CommandRetrieval {
 
 	private static Object GetDefaultValue(Parameter param)
 	{
-		String name = param.getType().getTypeName();
+		String typeName = param.getType().getName();
 
-		if(name == intName)
+		if(typeName == intName)
 		{
 			return 0;
 		}
-		else if(name == doubleName)
+		else if(typeName == doubleName)
 		{
 			return 0.0;
 		}
-		else if(name == booleanName)
+		else if(typeName == booleanName)
 		{
 			return false;
 		}
-		else if(name == floatName)
+		else if(typeName == floatName)
 		{
 			return 0.0f;
 		}
