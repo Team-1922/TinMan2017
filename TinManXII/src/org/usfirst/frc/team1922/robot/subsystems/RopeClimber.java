@@ -32,7 +32,21 @@ public class RopeClimber extends Subsystem implements CfgInterface {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void Reconstruct()
+    /*
+     * Note that speed will be normalized for safety reasons
+     */
+    public void SetSpeed(double speed)
+    {
+    	speed = Math.abs(speed);
+    	climbingMotor.set(speed);
+    }
+    
+    public double GetSpeed()
+    {
+    	return climbingMotor.get();
+    }
+    
+    private void Reconstruct()
     {		
 		climbingMotor = new CANTalon(Math.abs(motorId));
 		climbingMotor.setInverted(motorId < 0);
