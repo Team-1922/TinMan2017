@@ -48,7 +48,8 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-		
+
+		SmartDashboard.putNumber("Command With Param",14);
 		//register XML loading classes here
 		mCfgLoader.RegisterCfgClass(mDriverCamera);
 		mCfgLoader.RegisterCfgClass(mDriveTrain);
