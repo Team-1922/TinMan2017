@@ -23,13 +23,9 @@ public class CommandRetrieval {
 		Class<?> clazz;
 		Object instance = null;
 		try {
-			SmartDashboard.putString(name, "");
 			clazz = Class.forName(compName);
-			SmartDashboard.putString(name, "Class Gotten");
 			Constructor<?> constructor = clazz.getConstructors()[0];
-			SmartDashboard.putString(name, "Constructor Gotten");
 			Parameter[] paramNames = constructor.getParameters();
-			SmartDashboard.putString(name, "Parameters Gotten");
 
 			//TODO: something is failing after here with commands with parameters
 			if(paramNames.length > 0)
@@ -84,10 +80,10 @@ public class CommandRetrieval {
 	private static String floatName;
 	private static void LoadTypes()
 	{
-		intName = Integer.class.getName();
-		doubleName = Double.class.getName();
-		booleanName = Boolean.class.getName();
-		floatName = Float.class.getName();		
+		intName = Integer.TYPE.getTypeName();
+		doubleName = Double.TYPE.getTypeName();
+		booleanName = Boolean.TYPE.getTypeName();
+		floatName = Float.TYPE.getTypeName();
 		
 		areTypesLoaded = true;
 	}
