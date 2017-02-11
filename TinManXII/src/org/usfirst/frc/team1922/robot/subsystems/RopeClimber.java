@@ -50,6 +50,7 @@ public class RopeClimber extends Subsystem implements CfgInterface {
     {		
 		climbingMotor = new CANTalon(Math.abs(motorId));
 		climbingMotor.setInverted(motorId < 0);
+		climbingMotor.enableLimitSwitch(true, false);
     }
 
 	@Override
