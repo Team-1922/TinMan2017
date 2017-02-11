@@ -13,6 +13,7 @@ import org.ozram1922.cfg.CfgLoader;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 import org.usfirst.frc.team1922.robot.subsystems.GearFlap;
+import org.usfirst.frc.team1922.robot.subsystems.RopeClimber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +34,7 @@ public class Robot extends IterativeRobot {
 	public static DriverCamera mDriverCamera = new DriverCamera();
 	public static DriveTrain mDriveTrain = new DriveTrain();
 	public static GearFlap mGearFlap = new GearFlap();
+	public static RopeClimber mRopeClimber = new RopeClimber();
 	CameraServer server;
 
     Command autonomousCommand;
@@ -48,11 +50,13 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-		
+
+		SmartDashboard.putNumber("Command With Param",14);
 		//register XML loading classes here
 		mCfgLoader.RegisterCfgClass(mDriverCamera);
 		mCfgLoader.RegisterCfgClass(mDriveTrain);
 		mCfgLoader.RegisterCfgClass(mGearFlap);
+		mCfgLoader.RegisterCfgClass(mRopeClimber);
 		mCfgLoader.RegisterCfgClass(oi);
 		
 		//load the xml file here
