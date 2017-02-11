@@ -24,6 +24,7 @@
     <property file="${user.home}/wpilib/wpilib.properties"/>
     <property file="build.properties"/>
     <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
+	<property name="ExtraArgs" value="-parameters"/>
 	
 	<!-- This might not be quite correct -->
   	<property name="cfg.xml" value="${TinManRepo.dir}/TinManXII.cfg.xml" />
