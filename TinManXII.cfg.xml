@@ -8,13 +8,14 @@
 		Shifter="0"
 		LeftSensitivity="1.0" 
 		RightSensitivity="1.0" 
-		MovementP="2.0" 
-		MovementI="0.0005" 
-		MovementD="100.0" 
-		MovementTolerance="1.0" 
-		AimingTolerance="0.15" 
-		InchesToEncoderUnits="73.34" 
-		TurningRadius="12.125" />
+		LeftP="2.0" 
+		LeftI="0.0005" 
+		LeftD="100.0" 
+		LeftF="0.0"
+		RightP="2.0" 
+		RightI="0.0005" 
+		RightD="100.0" 
+		RightF="0.0" />
 	<OI>
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />

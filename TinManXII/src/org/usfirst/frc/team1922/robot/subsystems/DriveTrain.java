@@ -6,6 +6,7 @@ import org.ozram1922.cfg.CfgInterface;
 import org.usfirst.frc.team1922.robot.commands.BareTeleDrive;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -35,26 +36,23 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	
 	/*
 	 * 
-	 * Regular PID
+	 * Velocity PID
 	 * 
 	 */
-	protected float mMP;
-	protected float mMI;
-	protected float mMD;
-	//this is in inches
-	protected float mMTolerance;
+	protected float mLP;
+	protected float mLI;
+	protected float mLD;
+	protected float mLF;
 	
-	protected float mInchesToEncoderUnits;
-	protected float mTurningRadius;
-
-	/*
-	 * 
-	 * Rotational PID
-	 * 
-	 */
-	//this is in RADIANS
-	protected float mATolerance;
-	protected float mRadiansToEncoderUnits;
+	protected float mRP;
+	protected float mRI;
+	protected float mRD;
+	protected float mRF;
+	//this is in inches
+	//protected float mMTolerance;
+	
+	//protected float mInchesToEncoderUnits;
+	//protected float mTurningRadius;
 	
 	/*
 	 * 
@@ -78,11 +76,9 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	
 	public void TankControl(double left, double right)
 	{
-		mLeftMotor1.set(left * mLeftSensitivity);
-		mLeftMotor2.set(left * mLeftSensitivity);
-		
+		ModeSwap(TalonControlMode.PercentVbus);
+		mLeftMotor1.set(left * mLeftSensitivity);		
 		mRightMotor1.set(right * mRightSensitivity);
-		mRightMotor2.set(right * mRightSensitivity);
 	}
 	
 	public void SetShifterState(boolean shifterState)
@@ -90,6 +86,28 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mDTShifter.set(shifterState);
 	}
 	
+	public double GetLeftVelocity()
+	{
+		return mLeftMotor1.getEncVelocity();
+	}
+	
+	public double GetRightVelocity()
+	{
+		return mRightMotor1.getEncVelocity();		
+	}
+	
+	public void SetVelocity(double leftPIDSetpoint, double rightPIDSetpoint)
+	{
+		ModeSwap(TalonControlMode.Speed);
+		mLeftMotor1.set(leftPIDSetpoint);
+		mRightMotor1.set(rightPIDSetpoint);
+	}
+	
+	protected void ModeSwap(CANTalon.TalonControlMode mode)
+	{
+		mLeftMotor1.changeControlMode(mode);		
+		mRightMotor1.changeControlMode(mode);
+	}
 
 	public void Reconstruct()
 	{		
@@ -105,6 +123,18 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotor2.setInverted(mRightMotorId2 < 0);
 		
 		mDTShifter = new Solenoid(Math.abs(mShifterId));
+
+		mLeftMotor1.setPID(mLP, mLI, mLD);
+		mLeftMotor1.setF(mLF);
+		
+		mRightMotor1.setPID(mRP, mRI, mRD);
+		mRightMotor1.setF(mRF);
+		
+		mRightMotor2.changeControlMode(TalonControlMode.Follower);
+		mRightMotor2.set(mRightMotorId1);
+		
+		mLeftMotor2.changeControlMode(TalonControlMode.Follower);
+		mLeftMotor2.set(mLeftMotorId1);
 		
 		//mLeftMotor1.setPID(mMP, mMI, mMD);
 	}
@@ -129,18 +159,24 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		
 		mShifterId = element.GetAttributeI("Shifter");
 		
-		mMP = element.GetAttributeF("MovementP");
-		mMI = element.GetAttributeF("MovementI");
-		mMD = element.GetAttributeF("MovementD");
-		mMTolerance = element.GetAttributeF("MovementTolerance");
-		mInchesToEncoderUnits = element.GetAttributeF("InchesToEncoderUnits");
-		mTurningRadius = element.GetAttributeF("TurningRadius");
+		mLP = element.GetAttributeF("LeftP");
+		mLI = element.GetAttributeF("LeftI");
+		mLD = element.GetAttributeF("LeftD");
+		mLF = element.GetAttributeF("LeftF");
+
+		mRP = element.GetAttributeF("RightP");
+		mRI = element.GetAttributeF("RightI");
+		mRD = element.GetAttributeF("RightD");
+		mRF = element.GetAttributeF("RightF");
+		//mMTolerance = element.GetAttributeF("MovementTolerance");
+		//mInchesToEncoderUnits = element.GetAttributeF("InchesToEncoderUnits");
+		//mTurningRadius = element.GetAttributeF("TurningRadius");
 		
-		mATolerance = Float.parseFloat(element.GetAttribute("AimingTolerance"));
+		//mATolerance = Float.parseFloat(element.GetAttribute("AimingTolerance"));
 		
 		//This may be OK to do.  because enc per angle = (enc/in) * radius
-		mRadiansToEncoderUnits = mInchesToEncoderUnits * mTurningRadius;
-		//mRadiansToEncoderUnits = Float.parseFloat(mCfgInstance.GetAttribute("RadiansToEncoderUnits"));
+		//mRadiansToEncoderUnits = mInchesToEncoderUnits * mTurningRadius;
+		////mRadiansToEncoderUnits = Float.parseFloat(mCfgInstance.GetAttribute("RadiansToEncoderUnits"));
 		
 		Reconstruct();
 		
@@ -161,15 +197,21 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		
 		element.SetAttribute("Shifter", mShifterId);
 		
-		element.SetAttribute("MovementP", mMP);
-		element.SetAttribute("MovementI", mMI);
-		element.SetAttribute("MovementD", mMD);
-		element.SetAttribute("MovementTolerance", mMTolerance);
-		element.SetAttribute("InchesToEncoderUnits", mInchesToEncoderUnits);
-		element.SetAttribute("TurningRadius", mTurningRadius);
+		element.SetAttribute("LeftP", mLP);
+		element.SetAttribute("LeftI", mLI);
+		element.SetAttribute("LeftD", mLD);
+		element.SetAttribute("LeftF", mLF);
 		
-		element.SetAttribute("AimingTolerance", mATolerance);
-		//mCfgInstance.SetAttribute("RadiansToEncoderUnits", Float.toString(mRadiansToEncoderUnits));
+		element.SetAttribute("RightP", mRP);
+		element.SetAttribute("RightI", mRI);
+		element.SetAttribute("RightD", mRD);
+		element.SetAttribute("RightF", mRF);
+		//element.SetAttribute("MovementTolerance", mMTolerance);
+		//element.SetAttribute("InchesToEncoderUnits", mInchesToEncoderUnits);
+		//element.SetAttribute("TurningRadius", mTurningRadius);
+		
+		//element.SetAttribute("AimingTolerance", mATolerance);
+		////mCfgInstance.SetAttribute("RadiansToEncoderUnits", Float.toString(mRadiansToEncoderUnits));
 		
 		return element;
 	}
