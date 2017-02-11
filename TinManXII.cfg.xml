@@ -25,4 +25,5 @@
 	</OI>
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0" />
 	<GearFlap ActuatorId="1" />
+	<RopeClimber MotorId="5" />
 </root>
