@@ -46,6 +46,13 @@ public class AutoPlayback {
 	
 	public double GetSetpoint()
 	{
+		return GetSetpoint(0);
+	}
+	
+	//lookahead time allows to compensate for the time it takes for the setpoint to be reached
+	//There is probably a better way to do this, but this may be OK
+	public double GetSetpoint(double lookAheadTime)
+	{
 		long timeNow = System.nanoTime();
 		_nearestIndex = GetNearestIndex(timeNow, _nearestIndex);
 		if(_nearestIndex < 0)
@@ -57,7 +64,7 @@ public class AutoPlayback {
 		double prevDistance = _distanceTable.get(_nearestIndex);
 		double nextDistance = _distanceTable.get(_nearestIndex + 1);
 		
-		return LinearInterpolate(timeNow - _nanoTimeOffset, prevTime, nextTime, prevDistance, nextDistance);
+		return LinearInterpolate(timeNow - _nanoTimeOffset + (long)(lookAheadTime * 1000000000.0), prevTime, nextTime, prevDistance, nextDistance);
 	}
 	
 	public void Deserialize(String csv) throws NumberFormatException
