@@ -67,6 +67,10 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	protected Solenoid mDTShifter;
 	
 	protected double mClutchRatio = 1.0;
+	
+
+	private int cachedLeftPosition = 0;
+	private int cachedRightPosition = 0;
     
 	/*
 	 * 
@@ -94,6 +98,22 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	public double GetRightVelocity()
 	{
 		return mRightMotor1.getEncVelocity();		
+	}
+	
+	public double GetLeftPosition()
+	{
+		return mLeftMotor1.getEncPosition() - cachedLeftPosition;
+	}
+	
+	public double GetRightPosition()
+	{
+		return mRightMotor1.getEncPosition() - cachedRightPosition;
+	}
+	
+	public void ResetEncoderPositions()
+	{
+		cachedLeftPosition = mLeftMotor1.getEncPosition();
+		cachedRightPosition = mRightMotor1.getEncPosition();
 	}
 	
 	public void SetVelocity(double leftPIDSetpoint, double rightPIDSetpoint)
@@ -136,6 +156,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mLeftMotor2.changeControlMode(TalonControlMode.Follower);
 		mLeftMotor2.set(mLeftMotorId1);
 		
+		
+		ResetEncoderPositions();
 		//mLeftMotor1.setPID(mMP, mMI, mMD);
 	}
 	
