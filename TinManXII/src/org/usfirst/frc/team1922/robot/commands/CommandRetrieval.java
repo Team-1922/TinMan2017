@@ -19,6 +19,11 @@ public class CommandRetrieval {
 			LoadTypes();
 		}
 		
+		if(_commandGroups.containsKey(name))
+		{
+			return (Command)_commandGroups.get(name);
+		}
+		
 		String compName = Prefix + name;
 		Class<?> clazz;
 		Object instance = null;
@@ -71,6 +76,12 @@ public class CommandRetrieval {
 		default:
 			return null;
 		}*/
+	}
+	
+	private static HashMap<String, CfgCommandGroup> _commandGroups = new HashMap<String, CfgCommandGroup>();
+	public static void RegisterCommandGroup(CfgCommandGroup commandGroup)
+	{
+		_commandGroups.put(commandGroup.GetName(), commandGroup);
 	}
 	
 	private static boolean areTypesLoaded = false;

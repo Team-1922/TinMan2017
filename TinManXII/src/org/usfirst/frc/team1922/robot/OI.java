@@ -3,6 +3,7 @@ package org.usfirst.frc.team1922.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ import org.ozram1922.Tuple;
 import org.ozram1922.cfg.CfgDocument;
 import org.ozram1922.cfg.CfgElement;
 import org.ozram1922.cfg.CfgInterface;
+import org.usfirst.frc.team1922.robot.commands.CfgCommandGroup;
+import org.usfirst.frc.team1922.robot.commands.CommandGroupItem;
 import org.usfirst.frc.team1922.robot.commands.CommandRetrieval;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -80,6 +83,8 @@ public class OI implements CfgInterface{
 	HashMap<String, Tuple<Integer,Joystick>> mJoysticks = new HashMap<String, Tuple<Integer,Joystick>>();
 	
 	ArrayList<JoystickButton> mButtonCommands = new ArrayList<JoystickButton>();
+	
+	ArrayList<CfgCommandGroup> mCommandGroups = new ArrayList<CfgCommandGroup>();
 	/*JoystickButton mNewBtn;
 	Joystick mTestJoy = new Joystick(0);
 	DriveForward cmd = new DriveForward();*/
@@ -176,6 +181,29 @@ public class OI implements CfgInterface{
 		}
 		
 		//make list of joysticks
+		
+		//make a map of command groups
+		mCommandGroups.clear();
+		NodeList commandGroups = element.mInternalElement.getElementsByTagName("CommandGroup");
+		for(int i = 0; i < commandGroups.getLength(); ++i)
+		{
+			Element thisElement = (Element)commandGroups.item(i);
+			ArrayList<CommandGroupItem> commands = new ArrayList<CommandGroupItem>();
+			NodeList commandGroupItems = thisElement.getElementsByTagName("*");
+			for(int j = 0; j < commandGroupItems.getLength(); ++j)
+			{
+				Element commandElement = (Element)commandGroupItems.item(j);
+				
+				commands.add(
+						new CommandGroupItem(
+								CommandRetrieval.GetCommandFromName(
+										commandElement.getAttribute("Command"),
+										ConvertNodeMap(thisElement.getAttributes())), 
+									commandElement.getTagName() == "Sequential"));
+			}
+			CfgCommandGroup cmdGroup = new CfgCommandGroup(thisElement.getAttribute("Name"),commands);
+			mCommandGroups.add(cmdGroup);
+		}
 		
 		//make map of buttons and commands
 		mCommandMap.clear();
