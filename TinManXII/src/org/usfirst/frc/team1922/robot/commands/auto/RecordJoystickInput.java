@@ -17,10 +17,10 @@ public class RecordJoystickInput extends Command {
 	int leftEntryNumber = 0;
 	int rightEntryNumber = 0;
 
-    public RecordJoystickInput(String name) {
+    public RecordJoystickInput(String tableName) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	_entry = NetworkTable.getTable(name);
+    	_entry = NetworkTable.getTable(tableName);
     	while(_entry.containsKey(Integer.toString(leftEntryNumber) + "L")) leftEntryNumber++;
     	while(_entry.containsKey(Integer.toString(rightEntryNumber) + "R")) rightEntryNumber++;
     }
