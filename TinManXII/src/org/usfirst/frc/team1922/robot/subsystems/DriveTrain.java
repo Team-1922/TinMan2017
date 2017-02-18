@@ -151,10 +151,10 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotor1.setF(mRF);
 		
 		mRightMotor2.changeControlMode(TalonControlMode.Follower);
-		mRightMotor2.set(mRightMotorId1);
+		mRightMotor2.set(Math.abs(mRightMotorId1));
 		
 		mLeftMotor2.changeControlMode(TalonControlMode.Follower);
-		mLeftMotor2.set(mLeftMotorId1);
+		mLeftMotor2.set(Math.abs(mLeftMotorId1));
 		
 		
 		ResetEncoderPositions();
