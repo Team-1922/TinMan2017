@@ -22,10 +22,25 @@ public class AutoPlayback {
 	
 	private int GetNearestIndex(long time, int guess)
 	{
-		for(int i = guess; i < _timeTable.size(); ++i)
+		try
 		{
-			if(_timeTable.get(i) < time)
-				return i - 1;
+			for(int i = guess; i < _timeTable.size(); i++)
+			{
+				if(_timeTable.get(i) > time)
+				{
+					if(i == 0)
+					{
+						return 0;
+					}
+					else
+					{
+						return i - 1;
+					}
+				}
+			}
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
 		}
 		return -1;
 	}
@@ -37,8 +52,8 @@ public class AutoPlayback {
 	
 	public boolean IsFinished()
 	{
-		long timeNow = System.nanoTime();
-		_nearestIndex = GetNearestIndex(timeNow, _nearestIndex);
+		long relativeTime = System.nanoTime() - _nanoTimeOffset;
+		_nearestIndex = GetNearestIndex(relativeTime, _nearestIndex);
 		if(_nearestIndex < 0)
 			return true;
 		return false;
@@ -53,8 +68,8 @@ public class AutoPlayback {
 	//There is probably a better way to do this, but this may be OK
 	public double GetSetpoint(double lookAheadTime)
 	{
-		long timeNow = System.nanoTime();
-		_nearestIndex = GetNearestIndex(timeNow, _nearestIndex);
+		long relativeTime = System.nanoTime() - _nanoTimeOffset;
+		_nearestIndex = GetNearestIndex(relativeTime, _nearestIndex);
 		if(_nearestIndex < 0)
 			return Double.NaN;
 		
@@ -64,7 +79,7 @@ public class AutoPlayback {
 		double prevDistance = _distanceTable.get(_nearestIndex);
 		double nextDistance = _distanceTable.get(_nearestIndex + 1);
 		
-		return LinearInterpolate(timeNow - _nanoTimeOffset + (long)(lookAheadTime * 1000000000.0), prevTime, nextTime, prevDistance, nextDistance);
+		return LinearInterpolate(relativeTime + (long)(lookAheadTime * 1000000000.0), prevTime, nextTime, prevDistance, nextDistance);
 	}
 	
 	public void Deserialize(String csv) throws NumberFormatException
