@@ -101,7 +101,7 @@ public class OI implements CfgInterface{
 	
 	public static double NormalizeThrottle(Joystick joystick)
 	{
-		return (joystick.getThrottle() + 1.0) / 2.0;
+		return (-joystick.getThrottle() + 1.0) / 2.0;
 	}
 	
 	/*
