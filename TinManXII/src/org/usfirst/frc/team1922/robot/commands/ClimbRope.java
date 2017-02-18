@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1922.robot.commands;
 
+import org.usfirst.frc.team1922.robot.OI;
 import org.usfirst.frc.team1922.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,11 +18,11 @@ public class ClimbRope extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.mRopeClimber.SetSpeed(1);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.mRopeClimber.SetSpeed(OI.NormalizeThrottle(Robot.oi.GetOpJoystick()));
     }
 
     // Make this return true when this Command no longer needs to run execute()

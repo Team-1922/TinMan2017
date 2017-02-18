@@ -94,6 +94,16 @@ public class OI implements CfgInterface{
 		return mJoysticks.get("RightStick").y;
 	}
 	
+	public Joystick GetOpJoystick()
+	{
+		return  mJoysticks.get("OpStick").y;
+	}
+	
+	public static double NormalizeThrottle(Joystick joystick)
+	{
+		return (joystick.getThrottle() + 1.0) / 2.0;
+	}
+	
 	/*
 	 * 
 	 * Member Functions
