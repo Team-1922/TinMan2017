@@ -29,8 +29,8 @@ public class PlayJoystickRecording extends Command {
         // eg. requires(chassis);
     	requires(Robot.mDriveTrain);
     	try {
-			_leftPlayback.Deserialize(readFile("LeftRecording.csv", Charset.defaultCharset()));
-			_rightPlayback.Deserialize(readFile("RightRecording.csv", Charset.defaultCharset()));
+			_leftPlayback.Deserialize(readFile("/home/lvuser/LeftRecording.csv", Charset.defaultCharset()));
+			_rightPlayback.Deserialize(readFile("/home/lvuser/RightRecording.csv", Charset.defaultCharset()));
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
