@@ -48,6 +48,7 @@ public class AutoPlayback {
 	public void StartPlayback()
 	{
 		_nanoTimeOffset = System.nanoTime();
+		_nearestIndex = 0;
 	}
 	
 	public boolean IsFinished()
