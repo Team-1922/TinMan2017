@@ -24,13 +24,12 @@
 		<Command TriggerType="WhileHeld" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
 		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
 		
-		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="2" Name="SetServoCamForwards" />
-		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="2" Name="SetServoCamBackwards" />
-		
 		<!-- Operator Commanes -->
 		<Command TriggerType="WhileHeld" Joystick="OpStick" Button="1" Name="ClimbRope" />
+		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="5" Name="SetServoCamForwards" />
+		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="3" Name="SetServoCamBackwards" />
 	</OI>
-	<DriverCamera ServoId="9" FullPos="1" FullNeg="0" />
+	<DriverCamera ServoId="9" FullPos="1" FullNeg="0.075" />
 	<GearFlap ActuatorId="1" />
 	<RopeClimber MotorID="5" />
 </root>

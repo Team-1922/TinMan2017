@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class SetServeoCamBackwards extends Command {
+public class SetServoCamBackwards extends Command {
 
-    public SetServeoCamBackwards() {
+    public SetServoCamBackwards() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.mDriverCamera);
