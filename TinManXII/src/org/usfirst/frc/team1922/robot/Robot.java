@@ -66,7 +66,8 @@ public class Robot extends IterativeRobot {
 			System.out.println("Something went REALLY wrong loading the .xml config file");
 		}
 		
-		CameraServer.getInstance().startAutomaticCapture();
+		CameraServer.getInstance().startAutomaticCapture(0);
+		CameraServer.getInstance().startAutomaticCapture(1);
 		//startGRIP();
     }
 
