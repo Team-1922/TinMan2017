@@ -9,48 +9,22 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 /**
  *
  */
-public class RecordJoystickInput extends Command {
+public class RecordJoystickInput extends LeftRightRecorder {
+
+	public RecordJoystickInput(String tableName) {
+		super(tableName);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	protected double GetLeft() {
+		return Robot.oi.GetLeftJoystick().getY();
+	}
+
+	@Override
+	protected double GetRight() {
+		return Robot.oi.GetRightJoystick().getY();
+	}
 	
-	AutoRecorder _leftRecorder = new AutoRecorder();
-	AutoRecorder _rightRecorder = new AutoRecorder();
-	NetworkTable _entry;
-	int leftEntryNumber = 0;
-	int rightEntryNumber = 0;
 
-    public RecordJoystickInput(String tableName) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	_entry = NetworkTable.getTable(tableName);
-    	while(_entry.containsKey(Integer.toString(leftEntryNumber) + "L")) leftEntryNumber++;
-    	while(_entry.containsKey(Integer.toString(rightEntryNumber) + "R")) rightEntryNumber++;
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	_leftRecorder.StartRecording();
-    	_rightRecorder.StartRecording();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	_leftRecorder.Update(Robot.oi.GetLeftJoystick().getY());
-    	_rightRecorder.Update(Robot.oi.GetRightJoystick().getY());
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    	_entry.putString(leftEntryNumber + "L",_leftRecorder.Serialize());
-    	_entry.putString(rightEntryNumber + "R",_rightRecorder.Serialize());
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
 }
