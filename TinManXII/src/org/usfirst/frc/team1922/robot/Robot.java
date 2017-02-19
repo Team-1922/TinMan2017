@@ -75,6 +75,8 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture(0);
 		CameraServer.getInstance().startAutomaticCapture(1);
 		
+		//for non-field use initialization
+		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
 		//startGRIP();
     }
 
