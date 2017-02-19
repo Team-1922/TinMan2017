@@ -3,6 +3,7 @@ package org.usfirst.frc.team1922.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.io.IOException;
 
 import org.ozram1922.cfg.CfgLoader;
+import org.ozram1922.fieldsense.EncoderIntegrater;
+import org.ozram1922.fieldsense.Vector2d;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 import org.usfirst.frc.team1922.robot.subsystems.GearFlap;
@@ -35,7 +38,10 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain mDriveTrain = new DriveTrain();
 	public static GearFlap mGearFlap = new GearFlap();
 	public static RopeClimber mRopeClimber = new RopeClimber();
+	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
 	CameraServer server;
+	
+	public static EncoderIntegrater mFieldState;
 
     Command autonomousCommand;
     
@@ -68,6 +74,7 @@ public class Robot extends IterativeRobot {
 		
 		CameraServer.getInstance().startAutomaticCapture(0);
 		CameraServer.getInstance().startAutomaticCapture(1);
+		
 		//startGRIP();
     }
 
@@ -108,6 +115,12 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+		
+		//tare the value during auto mode
+		mDriveTrain.ResetEncoderPositions();
+		
+		//TODO: get this from the dashboard choser
+		mFieldState = new EncoderIntegrater(20, new Vector2d(0,0));
     }
 
     /**
@@ -118,6 +131,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
+		
+		//cycle the field position integrater
+		mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
     }
 
     public void teleopInit() {
@@ -137,6 +153,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
+		
+		//cycle the field position integrater
+		mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
         
         //TESTING
         UpdateSmartDashboardItems();
@@ -149,6 +168,12 @@ public class Robot extends IterativeRobot {
 
     	SmartDashboard.putNumber("Left Encoder Position", mDriveTrain.GetLeftPosition());
     	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
+
+		Vector2d position = mFieldState.Position();
+    	SmartDashboard.putNumber("Position X", position.x);
+		SmartDashboard.putNumber("Position Y", position.y);
+		SmartDashboard.putNumber("Direction", mFieldState.Direction());
+
     }
     
     /**
