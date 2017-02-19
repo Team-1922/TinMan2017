@@ -120,7 +120,7 @@ public class Robot extends IterativeRobot {
 		mDriveTrain.ResetEncoderPositions();
 		
 		//TODO: get this from the dashboard choser
-		mFieldState = new EncoderIntegrater(20, new Vector2d(0,0));
+		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
     }
 
     /**
@@ -133,7 +133,11 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
 		
 		//cycle the field position integrater
-		mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
+        try
+        {
+        	mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
+        }
+        catch(Exception e){}
     }
 
     public void teleopInit() {
@@ -155,7 +159,11 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
 		
 		//cycle the field position integrater
-		mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
+        try
+        {
+        	mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
+        }
+        catch(Exception e){}
         
         //TESTING
         UpdateSmartDashboardItems();
@@ -170,8 +178,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
 
 		Vector2d position = mFieldState.Position();
-    	SmartDashboard.putNumber("Position X", position.x);
-		SmartDashboard.putNumber("Position Y", position.y);
+    	SmartDashboard.putNumber("Position X", position.x / (360.0 / 4.0));
+		SmartDashboard.putNumber("Position Y", position.y / (360.0 / 4.0));
 		SmartDashboard.putNumber("Direction", mFieldState.Direction());
 
     }
