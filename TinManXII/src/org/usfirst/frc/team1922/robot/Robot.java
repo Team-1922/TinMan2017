@@ -144,7 +144,11 @@ public class Robot extends IterativeRobot {
     
     public void UpdateSmartDashboardItems()
     {
-    	
+    	SmartDashboard.putNumber("Left Encoder Speed", mDriveTrain.GetLeftVelocity());
+    	SmartDashboard.putNumber("Right Encoder Speed", mDriveTrain.GetRightVelocity());
+
+    	SmartDashboard.putNumber("Left Encoder Position", mDriveTrain.GetLeftPosition());
+    	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
     }
     
     /**
