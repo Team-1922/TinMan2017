@@ -37,6 +37,8 @@ public class Robot extends IterativeRobot {
 	public static RopeClimber mRopeClimber = new RopeClimber();
 	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
 	CameraServer server;
+	
+	public static EncoderIntegrater mFieldState;
 
     Command autonomousCommand;
     
@@ -69,6 +71,7 @@ public class Robot extends IterativeRobot {
 		
 		CameraServer.getInstance().startAutomaticCapture(0);
 		CameraServer.getInstance().startAutomaticCapture(1);
+		
 		//startGRIP();
     }
 
@@ -109,6 +112,12 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+		
+		//tare the value during auto mode
+		mDriveTrain.ResetEncoderPositions();
+		
+		//TODO: get this from the dashboard choser
+		mFieldState = new EncoderIntegrater(20, new Vector2d(0,0))
     }
 
     /**
@@ -119,6 +128,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
+		
+		//cycle the field position integrater
+		mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
     }
 
     public void teleopInit() {
@@ -138,6 +150,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
+		
+		//cycle the field position integrater
+		mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
         
         //TESTING
         UpdateSmartDashboardItems();
@@ -145,7 +160,10 @@ public class Robot extends IterativeRobot {
     
     public void UpdateSmartDashboardItems()
     {
-    	
+		Vector2d position = mFieldState.Position();
+    	SmartDashboard.putNumber("Position X", position.x);
+		SmartDashboard.putNumber("Position Y", position.y);
+		SmartDashboard.putNumber("Direction", mFieldState.Direction());
     }
     
     /**
