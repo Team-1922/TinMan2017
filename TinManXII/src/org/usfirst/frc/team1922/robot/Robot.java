@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain mDriveTrain = new DriveTrain();
 	public static GearFlap mGearFlap = new GearFlap();
 	public static RopeClimber mRopeClimber = new RopeClimber();
+	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
 	CameraServer server;
 
     Command autonomousCommand;
