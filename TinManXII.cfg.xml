@@ -30,7 +30,7 @@
 		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="2" Name="auto.PlayDTVoltageRecording" leftPath="/home/lvuser/LeftRecording.csv" rightPath="/home/lvuser/RightRecording.csv" />		
 		
 		<!-- Experimental Path -->
-		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayDTVoltageRecording" leftPath="/home/lvuser/TinManRecordings/DTVoltRec/0L.csv" rightPath="/home/lvuser/TinManRecordings/DTVoltRec/0R.csv" />
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayDTVoltageRecording" leftFilePath="/home/lvuser/TinManRecordings/DTVoltRec/0L.csv" rightFilePath="/home/lvuser/TinManRecordings/DTVoltRec/0R.csv" />
 		
 		<!-- Operator Commanes -->
 		<Command TriggerType="WhileHeld" Joystick="OpStick" Button="1" Name="ClimbRope" />
