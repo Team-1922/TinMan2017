@@ -13,55 +13,20 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PlayJoystickRecording extends Command {
+public class PlayJoystickRecording extends LeftRightPlayback {
 
-	AutoPlayback _leftPlayback = new AutoPlayback();
-	AutoPlayback _rightPlayback = new AutoPlayback();
-	static String readFile(String path, Charset encoding) 
-			  throws IOException 
-	{
-	  byte[] encoded = Files.readAllBytes(Paths.get(path));
-	  return new String(encoded, encoding);
-	}
-	
-    public PlayJoystickRecording() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.mDriveTrain);
-    	try {
-			_leftPlayback.Deserialize(readFile("/home/lvuser/LeftRecording.csv", Charset.defaultCharset()));
-			_rightPlayback.Deserialize(readFile("/home/lvuser/RightRecording.csv", Charset.defaultCharset()));
-		} catch (NumberFormatException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	_leftPlayback.StartPlayback();
-    	_rightPlayback.StartPlayback();
+    public PlayJoystickRecording(String leftFilePath, String rightFilePath) {
+    	super(leftFilePath, rightFilePath);
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.mDriveTrain.TankControl(_leftPlayback.GetSetpoint(), _rightPlayback.GetSetpoint());
+    protected void execute(double left, double right) {
+    	Robot.mDriveTrain.TankControl(left, right);
     	
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return _leftPlayback.IsFinished();
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	Robot.mDriveTrain.TankControl(0, 0);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
     }
 }

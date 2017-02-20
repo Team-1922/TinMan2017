@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class RecordEncoderVelocity extends LeftRightRecorder {
 
-	public RecordEncoderVelocity(String tableName) {
-		super(tableName);
+	public RecordEncoderVelocity(String subDir) {
+		super(subDir);
 		// TODO Auto-generated constructor stub
 	}
 

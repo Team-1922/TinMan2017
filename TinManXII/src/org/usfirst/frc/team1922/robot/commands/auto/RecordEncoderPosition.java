@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class RecordEncoderPosition extends LeftRightRecorder {
 
-	public RecordEncoderPosition(String tableName) {
-		super(tableName);
+	public RecordEncoderPosition(String subDir) {
+		super(subDir);
 		// TODO Auto-generated constructor stub
 	}
 
