@@ -21,7 +21,15 @@ public class BareTeleDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.mDriveTrain.TankControl(Robot.oi.GetLeftJoystick().getY(), Robot.oi.GetRightJoystick().getY());
+		double leftVal = Robot.oi.GetLeftJoystick().getY();
+		double rightVal = Robot.oi.GetRightJoystick().getY();
+    	if(Robot.mDriverCamera.IsReversed())
+    	{
+    		double tmp = rightVal;
+    		rightVal = leftVal;
+    		leftVal = tmp;
+    	}
+    	Robot.mDriveTrain.TankControl(leftVal, rightVal);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -45,6 +45,11 @@ public class DriverCamera extends Subsystem implements CfgInterface {
     {
     	return mRotServo.get();
     }
+    
+    public boolean IsReversed()
+    {
+    	return (mFullNeg - mRotServo.get()) < 0.1;
+    }
 
 	@Override
 	public boolean Deserialize(CfgElement element) {
