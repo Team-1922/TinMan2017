@@ -26,8 +26,8 @@ public class BareTeleDrive extends Command {
     	if(Robot.mDriverCamera.IsReversed())
     	{
     		double tmp = rightVal;
-    		rightVal = leftVal;
-    		leftVal = tmp;
+    		rightVal = -leftVal;
+    		leftVal = -tmp;
     	}
     	Robot.mDriveTrain.TankControl(leftVal, rightVal);
     }
