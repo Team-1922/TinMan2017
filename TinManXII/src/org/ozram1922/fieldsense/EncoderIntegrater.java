@@ -6,8 +6,8 @@ public class EncoderIntegrater {
 	private double _direction;
 	private Vector2d _position;
 	
-	private double _prevL = 0;
-	private double _prevR = 0;
+	private double _prevL = Double.NaN;
+	private double _prevR = Double.NaN;
 	
 	public EncoderIntegrater(double wheelSpacing, Vector2d initialPosition)
 	{
@@ -17,6 +17,13 @@ public class EncoderIntegrater {
 	
 	public void Cycle(double L, double R)
 	{
+		//acount for the first cycle
+		if(_prevL == Double.NaN)
+		{
+			_prevL = L;
+			_prevR = R;
+			return;
+		}
 		double dL = L - _prevL;
 		double dR = R - _prevR;
 		
