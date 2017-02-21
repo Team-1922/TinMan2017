@@ -34,9 +34,9 @@ public class EncoderIntegrater {
 		//	essential continuous
 		
 		//See the math note sheet for proof
-		double bigChange;
-		double smallChange;
-		if(dL > dR)
+		double bigChange = dR;
+		double smallChange = dL;
+		/*if(dL > dR)
 		{
 			bigChange = dL;
 			smallChange = dR;
@@ -45,7 +45,7 @@ public class EncoderIntegrater {
 		{
 			bigChange = dR;
 			smallChange = dL;
-		}
+		}*/
 		
 		double deltaDirection = (bigChange - smallChange) / _wheelSpacing;
 		double deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);

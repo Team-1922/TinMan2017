@@ -91,6 +91,16 @@ public class Robot extends IterativeRobot {
             e.printStackTrace();
         }
     }
+    
+    protected void CycleIntegrater()
+    {		
+		//cycle the field position integrater
+        try
+        {
+        	mFieldState.Cycle(mDriveTrain.GetLeftPosition() / 90.0, mDriveTrain.GetRightPosition() / 90.0);
+        }
+        catch(Exception e){}
+    }
 	
 	/**
      * This function is called once each time the robot enters Disabled mode.
@@ -133,13 +143,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
-		
-		//cycle the field position integrater
-        try
-        {
-        	mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
-        }
-        catch(Exception e){}
+        
+        //cycle the field positioning
+        CycleIntegrater();
     }
 
     public void teleopInit() {
@@ -161,11 +167,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
 		
 		//cycle the field position integrater
-        try
-        {
-        	mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
-        }
-        catch(Exception e){}
+        CycleIntegrater();
         
         //TESTING
         UpdateSmartDashboardItems();
@@ -180,8 +182,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
 
 		Vector2d position = mFieldState.Position();
-    	SmartDashboard.putNumber("Position X", position.x / (360.0 / 4.0));
-		SmartDashboard.putNumber("Position Y", position.y / (360.0 / 4.0));
+    	SmartDashboard.putNumber("Position X", position.x);
+		SmartDashboard.putNumber("Position Y", position.y);
 		SmartDashboard.putNumber("Direction", mFieldState.Direction());
 
     }
