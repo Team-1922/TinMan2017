@@ -8,13 +8,14 @@
 		Shifter="0"
 		LeftSensitivity="1.0" 
 		RightSensitivity="1.0" 
-		MovementP="2.0" 
-		MovementI="0.0005" 
-		MovementD="100.0" 
-		MovementTolerance="1.0" 
-		AimingTolerance="0.15" 
-		InchesToEncoderUnits="73.34" 
-		TurningRadius="12.125" />
+		LeftP="2.0" 
+		LeftI="0.0005" 
+		LeftD="100.0" 
+		LeftF="0.0"
+		RightP="2.0" 
+		RightI="0.0005" 
+		RightD="100.0" 
+		RightF="0.0" />
 	<OI>
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />
@@ -24,10 +25,21 @@
 		<Command TriggerType="WhileHeld" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
 		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
 		
+		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="2" Name="auto.RecordAllData" joySubDir="JoyRec" posSubDir="PosRec" velSubDir="VelRec" dtVoltageSubDir="DTVoltRec" gearFlapSubDir="GFRec" />
+		<!-- Official Path -->
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="2" Name="auto.PlayAutoRecording" 
+		leftFilePath="/home/lvuser/LeftRecording.csv" 
+		rightFilePath="/home/lvuser/RightRecording.csv" 
+		gearFilePath="/home/lvuser/GearRecording.csv" />		
+		
+		<!-- Experimental Path -->
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayMostRecentAutoRecording" />
+		
 		<!-- Operator Commanes -->
 		<Command TriggerType="WhileHeld" Joystick="OpStick" Button="1" Name="ClimbRope" />
 		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="5" Name="SetServoCamForwards" />
 		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="3" Name="SetServoCamBackwards" />
+		
 	</OI>
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0.075" />
 	<GearFlap ActuatorId="1" />

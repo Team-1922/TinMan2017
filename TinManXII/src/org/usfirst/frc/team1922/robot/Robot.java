@@ -3,6 +3,7 @@ package org.usfirst.frc.team1922.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -10,6 +11,9 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import java.io.IOException;
 
 import org.ozram1922.cfg.CfgLoader;
+import org.ozram1922.fieldsense.EncoderIntegrater;
+import org.ozram1922.fieldsense.Vector2d;
+import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 import org.usfirst.frc.team1922.robot.subsystems.GearFlap;
@@ -35,7 +39,27 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain mDriveTrain = new DriveTrain();
 	public static GearFlap mGearFlap = new GearFlap();
 	public static RopeClimber mRopeClimber = new RopeClimber();
+	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
 	CameraServer server;
+
+	SendableChooser<Command> chooser = new SendableChooser<>();
+	
+	public static PlayAutoRecording mAutoC = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingC.csv",
+			"/home/lvuser/RightRecordingC.csv",
+			"/home/lvuser/GearRecordingC.csv");
+	
+	public static PlayAutoRecording mAutoL = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingL.csv",
+			"/home/lvuser/RightRecordingL.csv",
+			"/home/lvuser/GearRecordingL.csv");
+	
+	public static PlayAutoRecording mAutoR = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingR.csv",
+			"/home/lvuser/RightRecordingR.csv",
+			"/home/lvuser/GearRecordingR.csv");
+	
+	public static EncoderIntegrater mFieldState;
 
     Command autonomousCommand;
     
@@ -68,7 +92,14 @@ public class Robot extends IterativeRobot {
 		
 		CameraServer.getInstance().startAutomaticCapture(0);
 		CameraServer.getInstance().startAutomaticCapture(1);
+		
+		//for non-field use initialization
+		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
 		//startGRIP();
+
+		chooser.addDefault("Center Auto", mAutoC);
+		chooser.addObject("Left Auto", mAutoL);
+		chooser.addObject("Right Auto", mAutoR);
     }
 
 	//TODO: Make this Good
@@ -81,6 +112,16 @@ public class Robot extends IterativeRobot {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    protected void CycleIntegrater()
+    {		
+		//cycle the field position integrater
+        try
+        {
+        	mFieldState.Cycle(mDriveTrain.GetLeftPosition() / 90.0, mDriveTrain.GetRightPosition() / 90.0);
+        }
+        catch(Exception e){}
     }
 	
 	/**
@@ -106,8 +147,16 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+
+		autonomousCommand = chooser.getSelected();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+		
+		//tare the value during auto mode
+		mDriveTrain.ResetEncoderPositions();
+		
+		//TODO: get this from the dashboard choser
+		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
     }
 
     /**
@@ -118,6 +167,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
+        
+        //cycle the field positioning
+        CycleIntegrater();
     }
 
     public void teleopInit() {
@@ -137,6 +189,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
+		
+		//cycle the field position integrater
+        CycleIntegrater();
         
         //TESTING
         UpdateSmartDashboardItems();
@@ -144,7 +199,17 @@ public class Robot extends IterativeRobot {
     
     public void UpdateSmartDashboardItems()
     {
-    	
+    	SmartDashboard.putNumber("Left Encoder Speed", mDriveTrain.GetLeftVelocity());
+    	SmartDashboard.putNumber("Right Encoder Speed", mDriveTrain.GetRightVelocity());
+
+    	SmartDashboard.putNumber("Left Encoder Position", mDriveTrain.GetLeftPosition());
+    	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
+
+		Vector2d position = mFieldState.Position();
+    	SmartDashboard.putNumber("Position X", position.x);
+		SmartDashboard.putNumber("Position Y", position.y);
+		SmartDashboard.putNumber("Direction", mFieldState.Direction());
+
     }
     
     /**

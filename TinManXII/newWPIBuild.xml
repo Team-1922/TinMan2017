@@ -121,6 +121,17 @@
   <target name="upload-cfg" depends="get-target-ip" >
 	<scp file="${cfg.xml}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
   </target>
+  <!--<target name="upload-left-recording" depends="get-target-ip" >
+	<scp file="${left_recording.csv}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+  </target>
+  <target name="upload-right-recording" depends="get-target-ip" >
+	<scp file="${right_recording.csv}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+  </target>
+  <target name="upload-gear-recording" depends="get-target-ip" >
+	<scp file="${gear_recording.csv}" todir="${username}@${target}:${deploy.dir}" password="${password}" trust="true"/>
+  </target>-->
+  
+  
 
     <!-- We're running a clean here to get around a known ant issue where it does not detected changed constant variables.
      To get around this, we're recompiling the entire project, which is not an issue for most teams. If this is an issue
