@@ -27,10 +27,13 @@
 		
 		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="2" Name="auto.RecordAllData" joySubDir="JoyRec" posSubDir="PosRec" velSubDir="VelRec" dtVoltageSubDir="DTVoltRec" gearFlapSubDir="GFRec" />
 		<!-- Official Path -->
-		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="2" Name="auto.PlayAutoRecording" leftFilePath="/home/lvuser/LeftRecording.csv" rightFilePath="/home/lvuser/RightRecording.csv" gearFilePath="/home/lvuser/GearRecording.csv" />		
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="2" Name="auto.PlayAutoRecording" 
+		leftFilePath="/home/lvuser/LeftRecording.csv" 
+		rightFilePath="/home/lvuser/RightRecording.csv" 
+		gearFilePath="/home/lvuser/GearRecording.csv" />		
 		
 		<!-- Experimental Path -->
-		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayDTVoltageRecording" leftFilePath="/home/lvuser/TinManRecordings/DTVoltRec/0L.csv" rightFilePath="/home/lvuser/TinManRecordings/DTVoltRec/0R.csv" />
+		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayMostRecentAutoRecording" />
 		
 		<!-- Operator Commanes -->
 		<Command TriggerType="WhileHeld" Joystick="OpStick" Button="1" Name="ClimbRope" />

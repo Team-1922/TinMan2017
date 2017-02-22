@@ -17,7 +17,7 @@ public class PlaybackGearFlap extends Playback {
 
 	@Override
 	protected void execute(double val) {
-		Robot.mGearFlap.SetFlapState(val >= 1 ? true : false);
+		Robot.mGearFlap.SetFlapState(val >= 0.9 ? true : false);
 		
 	}
 
