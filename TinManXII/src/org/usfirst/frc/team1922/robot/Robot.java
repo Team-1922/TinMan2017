@@ -13,6 +13,8 @@ import java.io.IOException;
 import org.ozram1922.cfg.CfgLoader;
 import org.ozram1922.fieldsense.EncoderIntegrater;
 import org.ozram1922.fieldsense.Vector2d;
+import org.usfirst.frc.team1922.robot.commands.ExampleCommand;
+import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 import org.usfirst.frc.team1922.robot.subsystems.GearFlap;
@@ -40,6 +42,23 @@ public class Robot extends IterativeRobot {
 	public static RopeClimber mRopeClimber = new RopeClimber();
 	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
 	CameraServer server;
+
+	SendableChooser<Command> chooser = new SendableChooser<>();
+	
+	public static PlayAutoRecording mAutoC = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingC.csv",
+			"/home/lvuser/RightRecordingC.csv",
+			"/home/lvuser/GearRecordingC.csv");
+	
+	public static PlayAutoRecording mAutoL = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingL.csv",
+			"/home/lvuser/RightRecordingL.csv",
+			"/home/lvuser/GearRecordingL.csv");
+	
+	public static PlayAutoRecording mAutoR = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingR.csv",
+			"/home/lvuser/RightRecordingR.csv",
+			"/home/lvuser/GearRecordingR.csv");
 	
 	public static EncoderIntegrater mFieldState;
 
@@ -78,6 +97,10 @@ public class Robot extends IterativeRobot {
 		//for non-field use initialization
 		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
 		//startGRIP();
+
+		chooser.addDefault("Center Auto", mAutoC);
+		chooser.addObject("Left Auto", mAutoL);
+		chooser.addObject("Right Auto", mAutoR);
     }
 
 	//TODO: Make this Good
@@ -125,6 +148,8 @@ public class Robot extends IterativeRobot {
 	 * or additional comparisons to the switch structure below with additional strings & commands.
 	 */
     public void autonomousInit() {
+
+		autonomousCommand = chooser.getSelected();
     	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
 		
