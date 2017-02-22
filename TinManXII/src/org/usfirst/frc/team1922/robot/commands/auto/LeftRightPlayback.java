@@ -27,7 +27,6 @@ public abstract class LeftRightPlayback extends Command {
     public LeftRightPlayback(String leftFilePath, String rightFilePath) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.mDriveTrain);
     	try {
 			_leftPlayback.Deserialize(readFile(leftFilePath, Charset.defaultCharset()));
 			_rightPlayback.Deserialize(readFile(rightFilePath, Charset.defaultCharset()));

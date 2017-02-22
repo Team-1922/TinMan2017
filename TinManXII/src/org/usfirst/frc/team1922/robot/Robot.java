@@ -13,7 +13,6 @@ import java.io.IOException;
 import org.ozram1922.cfg.CfgLoader;
 import org.ozram1922.fieldsense.EncoderIntegrater;
 import org.ozram1922.fieldsense.Vector2d;
-import org.usfirst.frc.team1922.robot.commands.ExampleCommand;
 import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;

@@ -17,6 +17,7 @@ public class PlayJoystickRecording extends LeftRightPlayback {
 
     public PlayJoystickRecording(String leftFilePath, String rightFilePath) {
     	super(leftFilePath, rightFilePath);
+    	requires(Robot.mDriveTrain);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -26,7 +26,6 @@ public abstract class Playback extends Command {
     public Playback(String filePath) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.mDriveTrain);
     	try {
 			_playback.Deserialize(readFile(filePath, Charset.defaultCharset()));
 		} catch (NumberFormatException | IOException e) {

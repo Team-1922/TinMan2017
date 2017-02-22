@@ -17,6 +17,7 @@ public class PlayDTVoltageRecording extends LeftRightPlayback {
 
     public PlayDTVoltageRecording(String leftFilePath, String rightFilePath) {
     	super(leftFilePath, rightFilePath);
+    	requires(Robot.mDriveTrain);
     }
 
     // Called repeatedly when this Command is scheduled to run

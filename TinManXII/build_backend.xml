@@ -30,7 +30,7 @@
   	<property name="cfg.xml" value="${TinManRepo.dir}/TinManXII.cfg.xml" />
 	<property name="left_recording.csv" value="${TinManRepo.dir}/LeftRecording.csv" />
 	<property name="right_recording.csv" value="${TinManRepo.dir}/RightRecording.csv" />
-	<property name="gear_recording.csv" value="${TinManRepo.dir}/GearRecording.csv />
+	<property name="gear_recording.csv" value="${TinManRepo.dir}/GearRecording.csv" />
 
 	<property name="TinManSrc.dir" value="${TinManRepo.dir}/TinManXII/src" />
 	
