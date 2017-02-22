@@ -11,6 +11,7 @@ public class RecordAllData extends CommandGroup {
     	addParallel(new RecordJoystickInput(joySubDir));
     	addParallel(new RecordEncoderPosition(posSubDir));
 		addParallel(new RecordDTVoltage(dtVoltageSubDir));
+		addParallel(new RecordGearFlap(gearFlapSubDir));
     	addSequential(new RecordEncoderVelocity(velSubDir));
     }
 }

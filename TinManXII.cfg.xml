@@ -25,7 +25,7 @@
 		<Command TriggerType="WhileHeld" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
 		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
 		
-		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="2" Name="auto.RecordAllData" joySubDir="JoyRec" posSubDir="PosRec" velSubDir="VelRec" dtVoltageSubDir="DTVoltRec" />
+		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="2" Name="auto.RecordAllData" joySubDir="JoyRec" posSubDir="PosRec" velSubDir="VelRec" dtVoltageSubDir="DTVoltRec" gearFlapSubDir="GFRec" />
 		<!-- Official Path -->
 		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="2" Name="auto.PlayDTVoltageRecording" leftPath="/home/lvuser/LeftRecording.csv" rightPath="/home/lvuser/RightRecording.csv" />		
 		
