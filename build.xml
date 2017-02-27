@@ -4,7 +4,7 @@
 	
 	<property name="TinManRepo.dir" value="PATH_TO_REPO" />
 	
-    <import file="${TinManRepo.dir}/TinManXI/build_backend.xml" />
+    <import file="${TinManRepo.dir}/TinManXII/build_backend.xml" />
 	
 
 </project> 
