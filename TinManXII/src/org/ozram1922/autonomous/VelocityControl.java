@@ -32,6 +32,8 @@ public class VelocityControl {
 	public void Deserialize(String csv) throws NumberFormatException
 	{
 		String[] rows = csv.split("\n");
+		_cruiseVelocity.clear();
+		_voltage.clear();
 		for(int i = 0; i < rows.length; ++i)
 		{
 			String[] parts = rows[i].split(",");

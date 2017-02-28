@@ -1,31 +1,19 @@
 package org.ozram1922.autonomous;
 
+import java.util.ArrayList;
+
 import org.ozram1922.Vector2d;
 
-public class VectorAutoPlayback {
-
-	private AutoPlayback _xPlayback;
-	private AutoPlayback _yPlayback;
+public class VectorAutoPlayback extends AutoPlayback {
 	
-	public VectorAutoPlayback(AutoPlayback xPlayback, AutoPlayback yPlayback)
+	public VectorAutoPlayback()
 	{
-		_xPlayback = xPlayback;
-		_yPlayback = yPlayback;
+		super(2);
 	}
 	
-	public void StartPlayback()
+	public Vector2d GetVectorSetpoint()
 	{
-		_xPlayback.StartPlayback();
-		_yPlayback.StartPlayback();
-	}
-	
-	public Vector2d GetSetpoint()
-	{
-		return new Vector2d(_xPlayback.GetSetpoint(), _yPlayback.GetSetpoint());
-	}
-	
-	public boolean IsFinished()
-	{
-		return _xPlayback.IsFinished() || _yPlayback.IsFinished();
+		ArrayList<Double> setpoint = GetSetpoint();
+		return new Vector2d(setpoint.get(0), setpoint.get(1));
 	}
 }
