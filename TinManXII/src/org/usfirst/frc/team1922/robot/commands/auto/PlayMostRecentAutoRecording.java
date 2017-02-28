@@ -12,29 +12,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PlayMostRecentAutoRecording extends CommandGroup {
 
     
-    protected static String GetFileName(int number, String modifier, String subDir)
+    protected static String GetFileName(int number, String subDir)
     {
-    	return "/home/lvuser/TinManRecordings/" + subDir + "/" + number + modifier + ".csv";
+    	return "/home/lvuser/TinManRecordings/" + subDir + "/" + number + ".csv";
     }
     public PlayMostRecentAutoRecording() {
     	int leftEntryNumber = -1;
     	int rightEntryNumber = -1;
     	int gearEntryNumber = -1;
 
-    	//get the left file name
     	File f;
-    	do
-    	{
-    		leftEntryNumber++;
-    		f = new File(GetFileName(leftEntryNumber, "L", "DTVoltRec"));
-    	}
-    	while(f.exists() && !f.isDirectory());
     	
-    	//get the right file name
+    	//get the DT file name
     	do
     	{
     		rightEntryNumber++;
-    		f = new File(GetFileName(rightEntryNumber, "R", "DTVoltRec"));
+    		f = new File(GetFileName(rightEntryNumber, "DTVoltRec"));
     	}
     	while(f.exists() && !f.isDirectory());
 
@@ -43,7 +36,7 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	do
     	{
     		gearEntryNumber++;
-    		f = new File(GetFileName(gearEntryNumber, "", "GFRec"));
+    		f = new File(GetFileName(gearEntryNumber, "GFRec"));
     	}
     	while(f.exists() && !f.isDirectory());
     	
@@ -56,8 +49,7 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	SmartDashboard.putNumber("Most Recent Left", leftEntryNumber);
     	SmartDashboard.putNumber("Most Recent Right", rightEntryNumber);
     	addSequential(new PlayAutoRecording(
-    			GetFileName(leftEntryNumber, "L", "DTVoltRec"), 
-    			GetFileName(rightEntryNumber, "R", "DTVoltRec"), 
-    			GetFileName(gearEntryNumber, "", "GFRec")));
+    			GetFileName(leftEntryNumber, "DTVoltRec"), 
+    			GetFileName(gearEntryNumber, "GFRec")));
     }
 }

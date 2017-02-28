@@ -5,7 +5,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.ozram1922.OzUtils;
+import org.ozram1922.Vector2d;
 import org.ozram1922.autonomous.AutoPlayback;
+import org.ozram1922.autonomous.VectorAutoPlayback;
 import org.usfirst.frc.team1922.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -13,21 +16,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class Playback extends Command {
+public abstract class Vector2dPlayback extends Command {
 
-	AutoPlayback _playback = new AutoPlayback();
-	static String readFile(String path, Charset encoding) 
-			  throws IOException 
-	{
-	  byte[] encoded = Files.readAllBytes(Paths.get(path));
-	  return new String(encoded, encoding);
-	}
+	VectorAutoPlayback _autoPlayback = new VectorAutoPlayback();
+
 	
-    public Playback(String filePath) {
+    public Vector2dPlayback(String filePath) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	try {
-			_playback.Deserialize(readFile(filePath, Charset.defaultCharset()));
+    		_autoPlayback.Deserialize(OzUtils.readFile(filePath, Charset.defaultCharset()));
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,19 +34,19 @@ public abstract class Playback extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	_playback.StartPlayback();
+    	_autoPlayback.StartPlayback();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	execute(_playback.GetSetpoint().get(0));
+    	execute(_autoPlayback.GetVectorSetpoint());
     }
-
-    protected abstract void execute(double val);
     
+    protected abstract void execute(Vector2d value);
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return _playback.IsFinished();
+        return _autoPlayback.IsFinished();
     }
 
     // Called once after isFinished returns true

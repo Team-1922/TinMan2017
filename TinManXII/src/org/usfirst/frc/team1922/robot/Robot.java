@@ -45,18 +45,15 @@ public class Robot extends IterativeRobot {
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
 	public static PlayAutoRecording mAutoC = new PlayAutoRecording(
-			"/home/lvuser/LeftRecordingC.csv",
-			"/home/lvuser/RightRecordingC.csv",
+			"/home/lvuser/DTRecordingC.csv",
 			"/home/lvuser/GearRecordingC.csv");
 	
 	public static PlayAutoRecording mAutoL = new PlayAutoRecording(
-			"/home/lvuser/LeftRecordingL.csv",
-			"/home/lvuser/RightRecordingL.csv",
+			"/home/lvuser/DTRecordingL.csv",
 			"/home/lvuser/GearRecordingL.csv");
 	
 	public static PlayAutoRecording mAutoR = new PlayAutoRecording(
-			"/home/lvuser/LeftRecordingR.csv",
-			"/home/lvuser/RightRecordingR.csv",
+			"/home/lvuser/DTRecordingR.csv",
 			"/home/lvuser/GearRecordingR.csv");
 	
 	public static EncoderIntegrater mFieldState;
