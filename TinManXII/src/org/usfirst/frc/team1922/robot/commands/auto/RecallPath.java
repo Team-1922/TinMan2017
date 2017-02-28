@@ -9,7 +9,8 @@ import org.usfirst.frc.team1922.robot.Robot;
  */
 public class RecallPath extends Vector2dPlayback {
 
-	double dThetaMax = Math.PI/100;
+	double dThetaDtMax = Math.PI;
+	double accMax = 12; //inches/second^2 -> What should this be?
 	
     public RecallPath(String filePath) {
     	super(filePath);
@@ -28,7 +29,8 @@ public class RecallPath extends Vector2dPlayback {
     			Robot.mFieldState.Position(), 						//current position 
     			_autoPlayback.GetNextTimeDuration(),				//next cycle time duration
     			20.5, 												//drive train width
-    			dThetaMax); 										//maximum rotation change per cycle
+    			dThetaDtMax,										//maximum rotation change per cycle
+    			accMax); 											//maximum acceleration
     	double leftVoltage = Robot.mDriveTrain.VoltageLookup(sidedVelocity.x);
     	double rightVoltage = Robot.mDriveTrain.VoltageLookup(sidedVelocity.y);
     	
