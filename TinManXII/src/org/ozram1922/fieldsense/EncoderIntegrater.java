@@ -1,12 +1,18 @@
 package org.ozram1922.fieldsense;
 
+import org.ozram1922.OzUtils;
 import org.ozram1922.Vector2d;
 
 public class EncoderIntegrater {
 	
 	private double _wheelSpacing;
 	private double _direction;
+	private double _time;
 	private Vector2d _position;
+	
+
+	private double _prevTime;
+	private Vector2d _prevPosition;
 	
 	private double _prevL = Double.NaN;
 	private double _prevR = Double.NaN;
@@ -52,9 +58,14 @@ public class EncoderIntegrater {
 		double deltaDirection = (bigChange - smallChange) / _wheelSpacing;
 		double deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);
 		
+		//update the previous position
+		_prevPosition = _position;
+		_prevTime = _time;
+		
 		_direction += deltaDirection;
 		_position.x += deltaPositionMagnitude * Math.cos(deltaDirection);
 		_position.y += deltaPositionMagnitude * Math.sin(deltaDirection);
+		_time = OzUtils.GetTime();
 		
 		//set the previous to the current
 		_prevR = R;
@@ -72,6 +83,11 @@ public class EncoderIntegrater {
 	public Vector2d Position()
 	{
 		return _position;
+	}
+	
+	public Vector2d Velocity()
+	{
+		return _position.SubtractFromThis(_prevPosition).ScalarDivide(_time - _prevTime);
 	}
 	
 	public double Direction()
