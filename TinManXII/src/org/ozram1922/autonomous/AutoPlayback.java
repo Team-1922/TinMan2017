@@ -2,23 +2,14 @@ package org.ozram1922.autonomous;
 
 import java.util.ArrayList;
 
+import org.ozram1922.OzMath;
+
 public class AutoPlayback {
 	
 	private ArrayList<Long> _timeTable = new ArrayList<Long>();
 	private ArrayList<Double> _distanceTable = new ArrayList<Double>();
 	private long _nanoTimeOffset = 0;
 	private int _nearestIndex = 0;
-	
-	private double LinearInterpolate(double x, double y, double a)
-	{
-		return x*(1-a) + y*a;
-	}
-	
-	private double LinearInterpolate(double a, double key1, double key2, double val1, double val2)
-	{
-		double normA = (key1 - a) / (key2-key1);
-		return LinearInterpolate(val1, val2, normA);
-	}
 	
 	private int GetNearestIndex(long time, int guess)
 	{
@@ -80,7 +71,7 @@ public class AutoPlayback {
 		double prevDistance = _distanceTable.get(_nearestIndex);
 		double nextDistance = _distanceTable.get(_nearestIndex + 1);
 		
-		return LinearInterpolate(relativeTime + (long)(lookAheadTime * 1000000000.0), prevTime, nextTime, prevDistance, nextDistance);
+		return OzMath.LRP(relativeTime + (long)(lookAheadTime * 1000000000.0), prevTime, nextTime, prevDistance, nextDistance);
 	}
 	
 	public void Deserialize(String csv) throws NumberFormatException
