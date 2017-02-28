@@ -4,6 +4,7 @@ import org.ozram1922.OzMath;
 import org.ozram1922.Vector2d;
 import org.ozram1922.autonomous.VectorAutoPlayback;
 
+//note that this does NOT account for acceleration limitations that may cause sliding
 public class PathFollower {
 	
 	private VectorAutoPlayback _positionPlayback;
@@ -26,12 +27,6 @@ public class PathFollower {
 	{
 		return _positionPlayback.IsFinished();
 	}
-	
-	/*public Vector2d GetVelocityTarget(Vector2d currentVelocity, Vector2d Pc, double dt)
-	{
-		
-		return new Vector2d();
-	}*/
 	
 	//sided Velocity is defined as a Vector2d where "x" = left side and "y" = right side
 	public Vector2d GetSidedVelocityTarget(Vector2d Vc, Vector2d sidedVc, Vector2d Pc, double dt)
