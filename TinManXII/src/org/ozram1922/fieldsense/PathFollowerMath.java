@@ -23,10 +23,14 @@ public class PathFollowerMath {
 		Vector2d dPm = Pd1.SubtractFromThis(Pc);
 		
 		//don't use 'k', because this multiplicative constant will take existing rotation and magnify it.
-		//	using acceleration as an additive constant will not change the rate of rotation
+		//	using acceleration as an additive constant will not change the rate of rotation.  In addition,
+		//	if Vc is very small, k becomes very large and multiplying really big and really small numbers 
+		//	can cause issues.
 		//double k = dPm.Magnitude()/dPc.Magnitude();
 		
-		//acceleration is equal to ((dPm/dt)-Vc)/dt , but we don't care about acceleration, we care about change in velocity
+		//acceleration is equal to ((dPm/dt)-Vc)/dt , but we don't care about acceleration, we care about change in velocity.
+		//	By changing to acceleration, we are no longer multiplying the sidedVc by anything, but rather we are 
+		//	adding to it
 		double dVc = OzMath.Clamp(dPm.ScalarDivide(dt).SubtractFromThis(Vc).Magnitude(), -dVcMax, dVcMax);
 		
 		//angle between two vectors
