@@ -91,7 +91,7 @@ public class Robot extends IterativeRobot {
 		CameraServer.getInstance().startAutomaticCapture(1);
 		
 		//for non-field use initialization
-		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
+		mFieldState = new EncoderIntegrater(mDriveTrain.GetWidth(), new Vector2d(0,0));
 		//startGRIP();
 
 		chooser.addDefault("Center Auto", mAutoC);
@@ -116,7 +116,7 @@ public class Robot extends IterativeRobot {
 		//cycle the field position integrater
         try
         {
-        	mFieldState.Cycle(mDriveTrain.GetLeftPosition() / 90.0, mDriveTrain.GetRightPosition() / 90.0);
+        	mFieldState.Cycle(mDriveTrain.GetLeftPosition(), mDriveTrain.GetRightPosition());
         }
         catch(Exception e){}
     }
@@ -153,7 +153,7 @@ public class Robot extends IterativeRobot {
 		mDriveTrain.ResetEncoderPositions();
 		
 		//TODO: get this from the dashboard choser
-		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
+		mFieldState = new EncoderIntegrater(mDriveTrain.GetWidth(), new Vector2d(0,0));
     }
 
     /**

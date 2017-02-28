@@ -36,6 +36,10 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	protected int mRightMotorId1 = 3;
 	protected int mRightMotorId2 = 4;
 	
+	protected double mDTWidth = 20.5;
+	
+	protected double mEncoderUnitsPerInch = 90.0;
+	
 	protected int mShifterId = 0;
 	
 	protected String mVelocityMapPath = "/home/lvuser/VelocityMap.csv";
@@ -108,22 +112,22 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	
 	public double GetLeftVelocity()
 	{
-		return mLeftMotor1.getEncVelocity();
+		return (double)mLeftMotor1.getEncVelocity() / mEncoderUnitsPerInch;
 	}
 	
 	public double GetRightVelocity()
 	{
-		return mRightMotor1.getEncVelocity();		
+		return (double)mRightMotor1.getEncVelocity() / mEncoderUnitsPerInch;		
 	}
 	
 	public double GetLeftPosition()
 	{
-		return mLeftMotor1.getEncPosition() - cachedLeftPosition;
+		return (double)(mLeftMotor1.getEncPosition() - cachedLeftPosition)  / mEncoderUnitsPerInch;
 	}
 	
 	public double GetRightPosition()
 	{
-		return mRightMotor1.getEncPosition() - cachedRightPosition;
+		return (double)(mRightMotor1.getEncPosition() - cachedRightPosition) / mEncoderUnitsPerInch;
 	}
 	
 	public void ResetEncoderPositions()
@@ -132,12 +136,17 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		cachedRightPosition = mRightMotor1.getEncPosition();
 	}
 	
-	public void SetVelocity(double leftPIDSetpoint, double rightPIDSetpoint)
+	public double GetWidth()
+	{
+		return mDTWidth;
+	}
+	
+	/*public void SetVelocity(double leftPIDSetpoint, double rightPIDSetpoint)
 	{
 		ModeSwap(TalonControlMode.Speed);
 		mLeftMotor1.set(leftPIDSetpoint);
 		mRightMotor1.set(rightPIDSetpoint);
-	}
+	}*/
 	
 	protected void ModeSwap(CANTalon.TalonControlMode mode)
 	{
@@ -219,6 +228,9 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRI = element.GetAttributeF("RightI");
 		mRD = element.GetAttributeF("RightD");
 		mRF = element.GetAttributeF("RightF");
+		
+		mEncoderUnitsPerInch = element.GetAttributeD("EncoderUnitsPerInch");
+		mDTWidth = element.GetAttributeD("Width");
 		//mMTolerance = element.GetAttributeF("MovementTolerance");
 		//mInchesToEncoderUnits = element.GetAttributeF("InchesToEncoderUnits");
 		//mTurningRadius = element.GetAttributeF("TurningRadius");
@@ -259,6 +271,9 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		element.SetAttribute("RightI", mRI);
 		element.SetAttribute("RightD", mRD);
 		element.SetAttribute("RightF", mRF);
+		
+		element.SetAttribute("EncoderUnitsPerInch", mEncoderUnitsPerInch);
+		element.SetAttribute("Width", mDTWidth);
 		//element.SetAttribute("MovementTolerance", mMTolerance);
 		//element.SetAttribute("InchesToEncoderUnits", mInchesToEncoderUnits);
 		//element.SetAttribute("TurningRadius", mTurningRadius);
