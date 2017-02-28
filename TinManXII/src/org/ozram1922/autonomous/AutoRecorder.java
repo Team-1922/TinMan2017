@@ -6,8 +6,19 @@ import java.util.ArrayList;
 public class AutoRecorder {
 	
 	private ArrayList<Long> _timeTable = new ArrayList<Long>();
-	private ArrayList<Double> _valueTable = new ArrayList<Double>();
+	private ArrayList<ArrayList<Double>> _valueTable = new ArrayList<ArrayList<Double>>();
 	private long _nanoTimeOffset = 0;
+	private int _valueCount = 0;
+	
+	public AutoRecorder(int valueCount)
+	{
+		valueCount = 0;
+	}
+	
+	public AutoRecorder()
+	{
+		this(1);
+	}
 	
 	public void StartRecording()
 	{
@@ -16,12 +27,22 @@ public class AutoRecorder {
 	
 	public void Update(double newVal)
 	{
+		ArrayList<Double> val = new ArrayList<Double>(_valueCount);
+		for(int i = 0; i < val.size(); ++i)
+		{
+			val.add(newVal);
+		}
+		Update(val);
+	}
+	
+	public void Update(ArrayList<Double> newVal)
+	{
 		_timeTable.add(System.nanoTime() - _nanoTimeOffset);
 		_valueTable.add(newVal);
 	}
 	
 	//this helps to remove noise in the beginning and end of the data
-	public void TrimVelocityData(double threshold)
+	/*public void TrimVelocityData(double threshold)
 	{
 		//remove leading and trailing small values
 		
@@ -51,7 +72,7 @@ public class AutoRecorder {
 		for(;
 			(endIndex > startIndex + 1) || (Math.abs(_valueTable.get(endIndex) - _valueTable.get(endIndex - 1)) < deltaThreshold);
 			--endIndex);
-	}
+	}*/
 	
 	public String Serialize()
 	{
@@ -60,7 +81,12 @@ public class AutoRecorder {
 		for(int i = 0; i < _timeTable.size(); ++i) {
 			sw.write(_timeTable.get(i).toString());
 			sw.write(",");
-			sw.write(_valueTable.get(i).toString());
+			for(int j = 0; j < _valueCount; ++j)
+			{
+				if(j != 0)
+					sw.write(",");
+				sw.write(_valueTable.get(i).get(j).toString());
+			}
 			sw.write("\n");
 		}
 		sw.flush();
