@@ -15,7 +15,8 @@
 		RightP="2.0" 
 		RightI="0.0005" 
 		RightD="100.0" 
-		RightF="0.0" />
+		RightF="0.0" 
+		VelocityMap="/home/lvuser/VelocityMap.csv" />
 	<OI>
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />

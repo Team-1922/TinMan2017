@@ -1,5 +1,10 @@
 package org.usfirst.frc.team1922.robot.subsystems;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+
+import org.ozram1922.OzUtils;
+import org.ozram1922.autonomous.VelocityControl;
 import org.ozram1922.cfg.CfgDocument;
 import org.ozram1922.cfg.CfgElement;
 import org.ozram1922.cfg.CfgInterface;
@@ -32,6 +37,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	protected int mRightMotorId2 = 4;
 	
 	protected int mShifterId = 0;
+	
+	protected String mVelocityMapPath = "/home/lvuser/VelocityMap.csv";
 
 	
 	/*
@@ -71,6 +78,15 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 
 	private int cachedLeftPosition = 0;
 	private int cachedRightPosition = 0;
+	
+	//the map for converting DT velocity to voltages.  Note that this is not sided, because the code
+	//		that uses this info uses TankControl which accounts for siding variances
+	private VelocityControl _velocityControl = new VelocityControl();
+	
+	public double VoltageLookup(double velocity)
+	{
+		return _velocityControl.GetVoltage(velocity);
+	}
     
 	/*
 	 * 
@@ -159,6 +175,17 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		
 		ResetEncoderPositions();
 		//mLeftMotor1.setPID(mMP, mMI, mMD);
+		
+		
+		try {
+			_velocityControl.Deserialize(OzUtils.readFile(mVelocityMapPath));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 
@@ -173,6 +200,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 
 		mLeftSensitivity = element.GetAttributeF("LeftSensitivity");
 		mRightSensitivity = element.GetAttributeF("RightSensitivity");
+		
+		mVelocityMapPath = element.GetAttribute("VelocityMap");
 		
 		mLeftMotorId1 = element.GetAttributeI("LeftMotor1");
 		mLeftMotorId2 = element.GetAttributeI("LeftMotor2");
@@ -211,6 +240,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 
 		element.SetAttribute("LeftSensitivity", mLeftSensitivity);
 		element.SetAttribute("RightSensitivity", mRightSensitivity);
+		
+		element.SetAttribute("VelocityMap", mVelocityMapPath);
 		
 		element.SetAttribute("LeftMotor1", mLeftMotorId1);
 		element.SetAttribute("LeftMotor2", mLeftMotorId2);
