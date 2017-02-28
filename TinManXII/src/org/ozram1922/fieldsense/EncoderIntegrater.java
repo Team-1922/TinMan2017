@@ -1,5 +1,7 @@
 package org.ozram1922.fieldsense;
 
+import org.ozram1922.Vector2d;
+
 public class EncoderIntegrater {
 	
 	private double _wheelSpacing;
