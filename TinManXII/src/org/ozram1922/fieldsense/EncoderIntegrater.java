@@ -21,10 +21,16 @@ public class EncoderIntegrater {
 	
 	private boolean _isFirstTime = true;
 	
-	public EncoderIntegrater(double wheelSpacing, Vector2d initialPosition)
+	public EncoderIntegrater(double wheelSpacing, Vector2d initialPosition, double initialDirection)
 	{
 		_wheelSpacing = wheelSpacing;
 		_position.Set(initialPosition);
+		_direction = initialDirection;
+	}
+	
+	public EncoderIntegrater(double wheelSpacing, Vector2d initialPosition)
+	{
+		this(wheelSpacing, initialPosition, 0);
 	}
 	
 	public void Cycle(double L, double R)
