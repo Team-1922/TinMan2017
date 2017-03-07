@@ -117,7 +117,7 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	
 	public double GetRightVelocity()
 	{
-		return (double)mRightMotor1.getEncVelocity() / mEncoderUnitsPerInch;		
+		return -(double)mRightMotor1.getEncVelocity() / mEncoderUnitsPerInch;		
 	}
 	
 	public double GetLeftPosition()
@@ -127,7 +127,7 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	
 	public double GetRightPosition()
 	{
-		return (double)(mRightMotor1.getEncPosition() - cachedRightPosition) / mEncoderUnitsPerInch;
+		return -(double)(mRightMotor1.getEncPosition() - cachedRightPosition) / mEncoderUnitsPerInch;
 	}
 	
 	public void ResetEncoderPositions()
