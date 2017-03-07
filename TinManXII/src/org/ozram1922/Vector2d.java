@@ -10,10 +10,22 @@ public class Vector2d {
 		y = Y;
 	}
 	
+	public Vector2d(Vector2d other)
+	{
+		x = other.x;
+		y = other.y;
+	}
+	
 	public Vector2d()
 	{
 		x = 0;
 		y = 0;
+	}
+	
+	public void Set(Vector2d other)
+	{
+		x = other.x;
+		y = other.y;
 	}
 	
 	public Vector2d ScalarMultiply(double s)
