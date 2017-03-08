@@ -100,6 +100,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Center Auto", mAutoC);
 		chooser.addObject("Left Auto", mAutoL);
 		chooser.addObject("Right Auto", mAutoR);
+		SmartDashboard.putData("Auto Choices", chooser);
     }
 
 	//TODO: Make this Good
