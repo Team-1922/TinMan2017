@@ -204,8 +204,13 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
 
 		Vector2d position = mFieldState.Position();
+		if(Double.isNaN(position.x))
+			position.x = -9001;
+		if(Double.isNaN(position.y))
+			position.y = -9001;
     	SmartDashboard.putNumber("Position X", position.x);
 		SmartDashboard.putNumber("Position Y", position.y);
+			
 		SmartDashboard.putNumber("Direction", mFieldState.Direction());
 
     }

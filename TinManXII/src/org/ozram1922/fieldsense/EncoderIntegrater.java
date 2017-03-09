@@ -69,8 +69,16 @@ public class EncoderIntegrater {
 		}*/
 		
 		double deltaDirection = (bigChange - smallChange) / _wheelSpacing;
-		double deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);
-		
+		//if deltaDirection = 0, we get an indeterminite form (really big number * tiny number)
+		double deltaPositionMagnitude = 0;
+		if(deltaDirection == 0)//essentially: if(bigChange == smallChange) then we don't change direction and we our magnitude is equal to either side
+		{
+			deltaPositionMagnitude = bigChange;
+		}
+		else
+		{
+			deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);
+		}
 		
 		//update the previous position
 		_prevPosition.Set(_position);
