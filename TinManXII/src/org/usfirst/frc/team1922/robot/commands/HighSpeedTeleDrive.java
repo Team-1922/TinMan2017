@@ -30,6 +30,13 @@ public class HighSpeedTeleDrive extends Command {
     		left -= twist*0.15;
     	else
     		right += twist*0.15;// plus because twist is negative
+    	
+    	if(Robot.mDriverCamera.IsReversed())
+    	{
+    		double tmp = right;
+    		right = -left;
+    		left = -tmp;
+    	}
     	Robot.mDriveTrain.TankControl(left, right);
     }
 
