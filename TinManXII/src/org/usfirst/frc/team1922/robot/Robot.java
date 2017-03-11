@@ -13,6 +13,7 @@ import java.io.IOException;
 import org.ozram1922.cfg.CfgLoader;
 import org.ozram1922.fieldsense.EncoderIntegrater;
 import org.ozram1922.fieldsense.Vector2d;
+import org.usfirst.frc.team1922.robot.commands.TimedTankDrive;
 import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
@@ -59,6 +60,8 @@ public class Robot extends IterativeRobot {
 			"/home/lvuser/RightRecordingR.csv",
 			"/home/lvuser/GearRecordingR.csv");
 	
+	public static TimedTankDrive mAutoBase = new TimedTankDrive(0.75,0.75,4); 
+	
 	public static EncoderIntegrater mFieldState;
 
     Command autonomousCommand;
@@ -100,6 +103,8 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Center Auto", mAutoC);
 		chooser.addObject("Left Auto", mAutoL);
 		chooser.addObject("Right Auto", mAutoR);
+		chooser.addObject("BaseLine Auto", mAutoBase);
+		chooser.addObject("None", null);
 		SmartDashboard.putData("Auto Choices", chooser);
     }
 
