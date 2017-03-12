@@ -60,7 +60,7 @@ public class Robot extends IterativeRobot {
 			"/home/lvuser/RightRecordingR.csv",
 			"/home/lvuser/GearRecordingR.csv");
 	
-	public static TimedTankDrive mAutoBase = new TimedTankDrive(-0.75,-0.75,4); 
+	public static TimedTankDrive mAutoBase = new TimedTankDrive(0.75,0.75,4); 
 	
 	public static EncoderIntegrater mFieldState;
 
