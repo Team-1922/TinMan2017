@@ -1,10 +1,15 @@
 package org.ozram1922;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class OzMath {
 
+	public static final BigDecimal TWO = BigDecimal.valueOf(2);
+	public static final MathContext HighPMathContext = new MathContext(30, RoundingMode.HALF_UP);
+	
 	public static double LRP(double val1, double val2, double mix)
 	{
 		return val1*(1-mix) + val2*mix;
@@ -47,19 +52,25 @@ public class OzMath {
 	}
 	
 	public static BigDecimal SineHighP(double theta, double threshold, int maxN)
-	{
-		BigDecimal runningValue = new BigDecimal(0);
-		BigDecimal bigThreshold = new BigDecimal(threshold);
+	{	
+		BigDecimal bigTheta = new BigDecimal(theta, HighPMathContext);
+		BigDecimal runningValue = new BigDecimal(0.0, HighPMathContext);
+		BigDecimal bigThreshold = new BigDecimal(threshold, HighPMathContext);
 		
-		BigDecimal prevValue = BigDecimal.ZERO;
+		BigDecimal prevValue = runningValue;
 		for(int n = 0; n < maxN; ++n)
 		{
-			runningValue = runningValue.add((n % 2 == 0 ? BigDecimal.ONE : BigDecimal.ONE.negate()).pow(2*n+1).divide(Factorial(2*n+1)));
-			if(n != 0)
+			runningValue = runningValue.add(
+					(n % 2 == 0 ? BigDecimal.ONE : BigDecimal.ONE.negate()).multiply(bigTheta.pow(
+							2*n+1, HighPMathContext).divide(
+									Factorial(2*n+1), HighPMathContext
+									), HighPMathContext
+					), HighPMathContext);
+			/*if(n != 0)
 			{
-				if(runningValue.subtract(prevValue).compareTo(bigThreshold) == -1)
+				if(runningValue.subtract(prevValue, HighPMathContext).compareTo(bigThreshold) == -1)
 					break;
-			}
+			}*/
 			prevValue = runningValue;
 		}
 		return runningValue;
