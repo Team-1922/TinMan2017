@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class OzMath {
-	
-	public static final BigDecimal TWO = BigDecimal.valueOf(2);
 
 	public static double LRP(double val1, double val2, double mix)
 	{

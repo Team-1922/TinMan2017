@@ -6,9 +6,10 @@ import org.ozram1922.OzMath;
 import org.ozram1922.OzUtils;
 import org.ozram1922.Vector2d;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class EncoderIntegrater {
 	
-	private BigDecimal _wheelSpacingB;
 	private double _wheelSpacing;
 	private double _direction = 0;
 	private double _time;
@@ -25,7 +26,6 @@ public class EncoderIntegrater {
 	
 	public EncoderIntegrater(double wheelSpacing, Vector2d initialPosition, double initialDirection)
 	{
-		_wheelSpacingB = BigDecimal.valueOf(wheelSpacing);
 		_wheelSpacing = wheelSpacing;
 		_position.Set(initialPosition);
 		_direction = initialDirection;
@@ -71,7 +71,7 @@ public class EncoderIntegrater {
 			smallChange = dL;
 		}*/
 		
-		double deltaDirection = BigDecimal.valueOf(bigChange - smallChange).divide(_wheelSpacingB).doubleValue();
+		double deltaDirection = (bigChange - smallChange) / _wheelSpacing;
 		//if deltaDirection = 0, we get an indeterminite form (really big number * tiny number)
 		double deltaPositionMagnitude = 0;
 		if(deltaDirection == 0)//essentially: if(bigChange == smallChange) then we don't change direction and we our magnitude is equal to either side
@@ -83,7 +83,7 @@ public class EncoderIntegrater {
 			//deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);
 			//try using BigDecimals when multiplying huge numbers by tiny numbers and also get a more precise sine calculation (about 20 digits)
 			deltaPositionMagnitude = 2.0 * 
-					_wheelSpacingB.divide(OzMath.TWO)
+					BigDecimal.valueOf(_wheelSpacing).divide(BigDecimal.valueOf(2.0))
 					.add(BigDecimal.valueOf(smallChange).divide(BigDecimal.valueOf(deltaDirection)))
 					.multiply(OzMath.SineHighP(deltaDirection/2.0, 0.000000000000000000001, 8)).doubleValue();
 		}
