@@ -18,7 +18,7 @@
 		RightF="0.0" 
 		VelocityMap="/home/lvuser/VelocityMap.csv" 
 		EncoderUnitsPerInch="112.9411"
-		Width="23"/>
+		Width="25"/>
 	<OI>
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />

@@ -83,11 +83,9 @@ public class EncoderIntegrater {
 			//deltaPositionMagnitude = 2.0 * (_wheelSpacing / 2.0 + smallChange / deltaDirection) * Math.sin(deltaDirection / 2.0);
 			//try using BigDecimals when multiplying huge numbers by tiny numbers and also get a more precise sine calculation (about 20 digits)
 			deltaPositionMagnitude = 2.0 * 
-					BigDecimal.valueOf(Math.sin(deltaDirection/2.0))
-					.multiply(
-							_wheelSpacingB.divide(OzMath.TWO, OzMath.HighPMathContext)
-							.add(BigDecimal.valueOf(smallChange)
-									.divide(BigDecimal.valueOf(deltaDirection), OzMath.HighPMathContext), OzMath.HighPMathContext), OzMath.HighPMathContext).doubleValue();
+					_wheelSpacingB.divide(OzMath.TWO)
+					.add(BigDecimal.valueOf(smallChange).divide(BigDecimal.valueOf(deltaDirection)))
+					.multiply(OzMath.SineHighP(deltaDirection/2.0, 0.000000000000000000001, 8)).doubleValue();
 		}
 		
 		//update the previous position
