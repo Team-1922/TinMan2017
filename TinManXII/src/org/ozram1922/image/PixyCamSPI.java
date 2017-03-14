@@ -1,53 +1,49 @@
 package org.ozram1922.image;
 
-import edu.wpi.first.wpilibj.SerialPort.Port;
-
+import edu.wpi.first.wpilibj.SPI;
 import java.util.ArrayList;
-
-import edu.wpi.first.wpilibj.SerialPort;
 
 public class PixyCamSPI {
 	
 	//Constants
 	
 	public static final int ArraySize = 100;
-	public static final short StartWord = (short) 0xaa55;
-	public static final short StartWordCC = (short) 0xaa56;
-	public static final short StartWordX = 0x55aa;
-	public static final byte ServoSync = (byte) 0xff;
-	public static final byte CamBrightnessSync = (byte) 0xfe;
-	public static final byte LEDSync = (byte) 0xfd;
+	public static final int StartWord = 0xaa55;
+	public static final int StartWordCC = 0xaa56;
+	public static final int StartWordX = 0x55aa;
+	public static final int ServoSync = 0xff;
+	public static final int CamBrightnessSync = 0xfe;
+	public static final int LEDSync = 0xfd;
 	public static final int OutBufSize = 64;
 	
 	public static final byte SyncByte = 0x5a;
 	public static final byte SyncByteData = 0x5b;
 	
 	//subclasses
-	public class PixyCamBlock
+	public static PixyCamBlock BlockFromWords(short[] words)
 	{
-		public short Signature;
-		public short X;
-		public short Y;
-		public short Width;
-		public short Height;
-		public short Angle;
+		PixyCamBlock ret = new PixyCamBlock();
+		if(words.length < PixyCamBlock.WordCount - 1)
+			return null;
+		ret.Signature = words[0];
+		ret.X = words[1];
+		ret.Y = words[2];
+		ret.Width = words[3];
+		ret.Height = words[4];
+
+		if (words.length < PixyCamBlock.WordCount)
+			ret.Angle = words[5];
 		
-		public PixyCamBlock(short[] words)
-		{
-			if(words.length < 5)
-				return;//failure, but don't log
-			Signature = words[0];
-			X = words[1];
-			Y = words[2];
-			Width = words[3];
-			Height = words[4];
-			if(words.length < 6)
-				Angle = 0;
-			else
-				Angle = words[5];
-		}
-		
-		public static final int WordCount = 6;
+		return ret;
+	}
+	
+	private static int BytesToInt(byte[] data, int offset)
+	{
+		//note that the data will be in 16 bit numbers
+		int ret = data[offset];
+		ret <<= 8;
+		ret |= data[offset + 1];
+		return ret;
 	}
 	
 	public enum BlockType
@@ -56,12 +52,11 @@ public class PixyCamSPI {
 		kColorCode
 	}
 	
-	private Thread _worker;
 	private PixyCamSPI()
 	{
 		//_worker = new Thread(new Worker());
-		_pixy = new SerialPort(192000, _port);
-		_pixy.setReadBufferSize(2);//read words
+		_pixy = new SPI(_port);
+		//_pixy.setReadBufferSize(2);//read words
 	}
 	
 	public static void Init()
@@ -84,29 +79,29 @@ public class PixyCamSPI {
 		return null;
 	}
 	
-	public int SetBrightness(int brightness)
+	public int SetBrightness(byte brightness)
 	{
 		byte[] bytes = new byte[3];
 		bytes[0] = 0;
-		bytes[1] = CamBrightnessSync;
-		bytes[2] = (byte) brightness;
+		bytes[1] = (byte)CamBrightnessSync;
+		bytes[2] = brightness;
 		return _pixy.write(bytes, 3);
 	}
 	
-	public int SetLED(int r, int g, int b)
+	public int SetLED(byte r, byte g, byte b)
 	{
 		byte[] bytes = new byte[5];
 		bytes[0] = 0;
-		bytes[1] = LEDSync;
-		bytes[2] = (byte)r;
-		bytes[3] = (byte)g;
-		bytes[4] = (byte)b;
+		bytes[1] = (byte) LEDSync;
+		bytes[2] = r;
+		bytes[3] = g;
+		bytes[4] = b;
 		
 		return _pixy.write(bytes, 5);
 	}
 
-	private SerialPort _pixy;
-	Port _port = Port.kMXP;
+	private SPI _pixy;
+	SPI.Port _port = SPI.Port.kOnboardCS0;
 	BlockType _blockType;
 	
 	boolean _skipStart = true;
@@ -163,7 +158,7 @@ public class PixyCamSPI {
 			
 			//check checksum
 			if(checksum == sum)
-				ret.add(new PixyCamBlock(words));
+				ret.add(BlockFromWords(words));
 			else
 			{
 				//TODO: error string
@@ -203,7 +198,8 @@ public class PixyCamSPI {
 			}
 			else if(w == StartWordX)
 			{
-				_pixy.read(1);//out of sync
+				byte[] d = new byte[1];
+				_pixy.read(true, d, 1);//out of sync
 			}
 			lastw = w;
 		}
@@ -211,7 +207,8 @@ public class PixyCamSPI {
 	
 	private short GetWord()
 	{
-		byte[] word = _pixy.read(2);
+		byte[] word = new byte[2];
+		int result = _pixy.read(false, word, 2);
 		short ret = word[0];
 		ret <<= 8;
 		ret |= word[1];
