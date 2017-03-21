@@ -18,6 +18,7 @@ import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 import org.usfirst.frc.team1922.robot.subsystems.GearFlap;
+import org.usfirst.frc.team1922.robot.subsystems.PixyCamProcessing;
 import org.usfirst.frc.team1922.robot.subsystems.RopeClimber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -40,6 +41,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain mDriveTrain = new DriveTrain();
 	public static GearFlap mGearFlap = new GearFlap();
 	public static RopeClimber mRopeClimber = new RopeClimber();
+	public static PixyCamProcessing mPixyCam = new PixyCamProcessing();
 	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
 	CameraServer server;
 
@@ -84,6 +86,7 @@ public class Robot extends IterativeRobot {
 		mCfgLoader.RegisterCfgClass(mDriveTrain);
 		mCfgLoader.RegisterCfgClass(mGearFlap);
 		mCfgLoader.RegisterCfgClass(mRopeClimber);
+		mCfgLoader.RegisterCfgClass(mPixyCam);
 		mCfgLoader.RegisterCfgClass(oi);
 		
 		//load the xml file here
