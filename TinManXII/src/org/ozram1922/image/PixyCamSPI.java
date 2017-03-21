@@ -116,9 +116,9 @@ public class PixyCamSPI {
 	 * 
 	 */
 	
-	public ArrayList<PixyCamBlock> GetFrameBlocks()
+	public PixyCamFrame GetFrame()
 	{
-		return _workerTask.GetBlocks();
+		return _workerTask.GetFrame();
 	}
 	
 	public int SetBrightness(byte brightness)
@@ -186,20 +186,22 @@ public class PixyCamSPI {
 		 * 
 		 */
 		private ArrayList<PixyCamBlock> _blocks = new ArrayList<PixyCamBlock>();
+		private int _frameId = 0;
 		
 		/*
 		 * 
 		 * Data Copier
 		 * 
 		 */
-		private ArrayList<PixyCamBlock> CopyOfBlocks()
+		private PixyCamFrame CopyOfFrame()
 		{
-			ArrayList<PixyCamBlock> copy = new ArrayList<PixyCamBlock>();
-			synchronized(_blocks)
+			PixyCamFrame copy;
+			synchronized(this)
 			{
+				copy = new PixyCamFrame(_frameId);
 				for(PixyCamBlock item : _blocks)
 				{
-					copy.add(item.clone());
+					copy.List.add(item.clone());
 				}
 			}
 			return copy;
@@ -211,9 +213,19 @@ public class PixyCamSPI {
 		 * 
 		 */
 		
-		public ArrayList<PixyCamBlock> GetBlocks()
+		public PixyCamFrame GetFrame(PixyCamFrame oldFrame)
 		{
-			return CopyOfBlocks();
+			synchronized(this)
+			{
+				if(oldFrame.IsDifferent(_frameId))
+					return oldFrame;
+			}
+			return CopyOfFrame();
+		}
+		
+		public PixyCamFrame GetFrame()
+		{
+			return CopyOfFrame();
 		}
 		
 		/*
@@ -224,8 +236,9 @@ public class PixyCamSPI {
 		@Override
 		public void run() {
 			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
-			synchronized(_blocks)
+			synchronized(this)
 			{
+				_frameId ++;
 				_blocks = blocks;
 			}
 		}
