@@ -21,6 +21,12 @@ public class PixyCamSPI {
 	public static final int CamBrightnessSync = 0xfe;
 	public static final int LEDSync = 0xfd;
 	
+	//TODO: add methods for relative frames positions that work well with PID controllers
+	public static final int FrameWidth = 0;
+	public static final int FrameHeight = 0;
+	public static final int FrameWCenter = 0;
+	public static final int FrameHCenter = 0;
+	
 	public enum BlockType
 	{
 		kNormal,
