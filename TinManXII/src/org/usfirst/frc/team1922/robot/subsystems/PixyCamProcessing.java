@@ -8,6 +8,7 @@ import org.ozram1922.cfg.CfgInterface;
 import org.ozram1922.image.PixyCamBlock;
 import org.ozram1922.image.PixyCamFrame;
 import org.ozram1922.image.PixyCamSPI;
+import org.usfirst.frc.team1922.robot.commands.RunPixyCam;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,9 +20,10 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * Data Members
 	 * 
 	 */
-	private int _windowXCenter;
-	private double _proportional;
-	private int _threshold;
+	private int _windowXCenter = 160;
+	private double _proportional = 0.0;
+	private int _threshold = 5;
+	private int _periodMS = 100;
 	
 	
 	/*
@@ -139,9 +141,9 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		}
 	}
 	
-	public void Start(double period)
+	public void Start()
 	{
-		_pixyCam.Start(period);
+		_pixyCam.Start(_periodMS);
 	}
 	
 	public void Stop()
@@ -210,6 +212,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		_windowXCenter = element.GetAttributeI("CameraCenter");
 		_proportional = element.GetAttributeI("ProportionalControl");
 		_threshold = element.GetAttributeI("Threshold");
+		_periodMS = element.GetAttributeI("UpdatePeriod");
 		return true;
 	}
 
@@ -219,6 +222,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		blank.SetAttribute("CameraCenter", _windowXCenter);
 		blank.SetAttribute("ProportionalControl", _proportional);
 		blank.SetAttribute("Threshold", _threshold);
+		blank.SetAttribute("UpdatePeriod", _periodMS);
 		return blank;
 	}
 
