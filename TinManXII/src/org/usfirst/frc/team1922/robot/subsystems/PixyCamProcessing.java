@@ -20,6 +20,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * Data Members
 	 * 
 	 */
+	private int _minWidth = 10;
+	private int _minHeight = 20;
 	private int _windowXCenter = 160;
 	private double _proportional = 0.0;
 	private int _threshold = 5;
@@ -132,6 +134,14 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 				}
 			}
 			
+			//enforce a minimum width and Height (so off-angle or far-away detections don't count.  This is especially important for tele-op drive assist)
+			if(bigBlock1.Width < _minWidth || bigBlock2.Width < _minWidth || bigBlock1.Height < _minHeight || bigBlock2.Height < _minHeight)
+			{
+				//TODO: Test everything else before adding this
+				//_seesTarget = false;
+				//return;
+			}
+			
 			//get the midpoint (center) of the two X & Y Positions
 			_targetXPosition = (bigBlock1.X + bigBlock2.X) / 2;
 			_targetYPosition = (bigBlock1.Y + bigBlock2.Y) / 2;
@@ -222,6 +232,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		_proportional = element.GetAttributeI("ProportionalControl");
 		_threshold = element.GetAttributeI("Threshold");
 		_periodMS = element.GetAttributeI("UpdatePeriod");
+		_minWidth = element.GetAttributeI("MinWidth");
+		_minHeight = element.GetAttributeI("MinHeight");
 		return true;
 	}
 
@@ -232,6 +244,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		blank.SetAttribute("ProportionalControl", _proportional);
 		blank.SetAttribute("Threshold", _threshold);
 		blank.SetAttribute("UpdatePeriod", _periodMS);
+		blank.SetAttribute("MinWidth", _minWidth);
+		blank.SetAttribute("MinHeight", _minHeight);
 		return blank;
 	}
 
