@@ -23,7 +23,17 @@ public class PlayDTVoltageRecording extends LeftRightPlayback {
     // Called repeatedly when this Command is scheduled to run
     protected void execute(double left, double right) {
 		double pdpVoltage = Robot.mPDP.getVoltage();
-    	Robot.mDriveTrain.TankControl(left / pdpVoltage, right / pdpVoltage);
+		
+
+		double leftValue = left / pdpVoltage;
+		double rightValue = right / pdpVoltage;
+		
+		//apply the camera processing logic
+		double rotationBias = Robot.mPixyCam.GetDTTwist();		
+		leftValue += rotationBias / 2.0;
+		rightValue -= rotationBias / 2.0;
+		
+    	Robot.mDriveTrain.TankControl(leftValue, rightValue);
     	
     }
 
