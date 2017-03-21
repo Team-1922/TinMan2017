@@ -162,6 +162,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		UpdateFrame();	
 		if(!TargetInView())
 			return 0;
+		if(IsOnTarget())
+			return 0;
 		return _targetXPosition * _proportional;
 	}	
 	
@@ -176,6 +178,14 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		if(!TargetInView())
 			return Integer.MAX_VALUE;
 		return _targetXPosition;
+	}
+	
+	public boolean IsOnTarget()
+	{
+		UpdateFrame();
+		if(!TargetInView())
+			return true;
+		return Math.abs(_targetXPosition) < _threshold;
 	}
 	
 	/*
@@ -196,8 +206,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		setDefaultCommand(new RunPixyCam());
 	}
 	
 	
