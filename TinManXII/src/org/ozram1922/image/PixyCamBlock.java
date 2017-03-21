@@ -11,4 +11,15 @@ public class PixyCamBlock
 	
 	public static final int WordCount = 6;
 	
+	public synchronized PixyCamBlock clone()
+	{
+		PixyCamBlock ret = new PixyCamBlock();
+		ret.Signature = Signature;
+		ret.X = X;
+		ret.Y = Y;
+		ret.Width = Width;
+		ret.Height = Height;
+		ret.Angle = Angle;
+		return ret;
+	}
 }
