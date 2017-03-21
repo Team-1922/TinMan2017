@@ -24,8 +24,8 @@ public class PixyCamSPI {
 	//TODO: add methods for relative frames positions that work well with PID controllers
 	public static final int FrameWidth = 0;
 	public static final int FrameHeight = 0;
-	public static final int FrameWCenter = 0;
-	public static final int FrameHCenter = 0;
+	public static final int FrameXCenter = 0;
+	public static final int FrameYCenter = 0;
 	
 	public enum BlockType
 	{
@@ -54,7 +54,7 @@ public class PixyCamSPI {
 	 * 
 	 */
 	
-	private PixyCamSPI(SPI.Port port)
+	public PixyCamSPI(SPI.Port port)
 	{
 		_spiWrapper = new PixySPIWrapper(port);
 	}
@@ -65,7 +65,7 @@ public class PixyCamSPI {
 	 * 
 	 */
 	
-	private static PixyCamSPI _instance = null;
+	/*private static PixyCamSPI _instance = null;
 	public static PixyCamSPI getInstance()
 	{
 		if(_instance == null)
@@ -78,7 +78,7 @@ public class PixyCamSPI {
 		if(_instance != null)
 			return;
 		_instance = new PixyCamSPI(SPI.Port.kOnboardCS0);
-	}
+	}*/
 	
 	/*
 	 * 
@@ -121,6 +121,11 @@ public class PixyCamSPI {
 	 * Public Methods
 	 * 
 	 */
+	
+	public PixyCamFrame GetFrame(PixyCamFrame oldFrame)
+	{
+		return _workerTask.GetFrame(oldFrame);
+	}
 	
 	public PixyCamFrame GetFrame()
 	{

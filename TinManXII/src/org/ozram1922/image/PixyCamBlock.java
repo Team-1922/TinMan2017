@@ -22,4 +22,9 @@ public class PixyCamBlock
 		ret.Angle = Angle;
 		return ret;
 	}
+	
+	public synchronized int GetAABBArea()
+	{
+		return Width*Height;
+	}
 }
