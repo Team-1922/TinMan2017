@@ -25,5 +25,10 @@ public class PixyCamFrame
 		return _frameId == frameId;
 	}
 	
+	public int GetFrameID()
+	{
+		return _frameId;
+	}
+	
 	public ArrayList<PixyCamBlock> List;
 }

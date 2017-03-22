@@ -44,5 +44,5 @@
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0.075" />
 	<GearFlap ActuatorId="1" />
 	<RopeClimber MotorID="5" />
-	<ImageProcessing CameraCenter="160" ProportionalControl="0.02" Threshold="5" UpdatePeriod="100" MinWidth="5" MinHeight="10" />
+	<ImageProcessing CameraCenter="160" ProportionalControl="0.02" Threshold="5" UpdatePeriod="100" MinWidth="5" MinHeight="10" Debug="1" />
 </root>

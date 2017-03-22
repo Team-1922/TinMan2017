@@ -1,8 +1,12 @@
 package org.ozram1922.image;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
 import java.util.ArrayList;
 import java.util.TimerTask;
+
+import org.usfirst.frc.team1922.robot.commands.auto.ClearNetTables;
 
 public class PixyCamSPI {
 
@@ -159,12 +163,12 @@ public class PixyCamSPI {
 	 * 
 	 */
 	
-	public void Start(double period)
+	public void Start(double period, boolean debug)
 	{
 		if(_worker == null && period > 0)
 		{
 			_worker = new java.util.Timer();
-			_workerTask = new Worker();
+			_workerTask = new Worker(debug);
 			_worker.schedule(_workerTask, 0L, (long) (period * 1000));
 		}
 	}
@@ -198,6 +202,7 @@ public class PixyCamSPI {
 		 */
 		private ArrayList<PixyCamBlock> _blocks = new ArrayList<PixyCamBlock>();
 		private int _frameId = 0;
+		private boolean _debug = false;
 		
 		/*
 		 * 
@@ -216,6 +221,17 @@ public class PixyCamSPI {
 				}
 			}
 			return copy;
+		}
+		
+		/*
+		 * 
+		 * Constructor
+		 * 
+		 */
+		
+		public Worker(boolean debug)
+		{
+			_debug = debug;
 		}
 		
 		/*
@@ -251,6 +267,35 @@ public class PixyCamSPI {
 			{
 				_frameId ++;
 				_blocks = blocks;
+			}
+			if(_debug)
+			{
+				OutputToNetTable(GetFrame());
+			}
+		}
+		
+		/*
+		 * 
+		 * Output Frame to Network Tables
+		 * 
+		 */
+		NetworkTable _netTable = NetworkTable.getTable("PixyCam");
+		public void OutputToNetTable(PixyCamFrame activeFrame)
+		{
+			ClearNetTables.RecursiveTableDelete(_netTable);
+			
+			_netTable.putNumber("Frame ID", activeFrame.GetFrameID());
+			for(int i = 0; i < activeFrame.List.size(); ++i)
+			{
+				PixyCamBlock block = activeFrame.List.get(i);
+				NetworkTable subTable = (NetworkTable) _netTable.getSubTable(Integer.toString(i));
+
+				subTable.putNumber("Signature", block.Signature);
+				subTable.putNumber("X", block.X);
+				subTable.putNumber("Y", block.Y);
+				subTable.putNumber("Width", block.Width);
+				subTable.putNumber("Height", block.Height);
+				subTable.putNumber("Angle", block.Angle);
 			}
 		}
 

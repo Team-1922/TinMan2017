@@ -9,9 +9,11 @@ import org.ozram1922.image.PixyCamBlock;
 import org.ozram1922.image.PixyCamFrame;
 import org.ozram1922.image.PixyCamSPI;
 import org.usfirst.frc.team1922.robot.commands.RunPixyCam;
+import org.usfirst.frc.team1922.robot.commands.auto.ClearNetTables;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class PixyCamProcessing extends Subsystem implements CfgInterface {
 
@@ -26,6 +28,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	private double _proportional = 0.0;
 	private int _threshold = 5;
 	private int _periodMS = 100;
+	private boolean _debug = false;
 	
 	
 	/*
@@ -153,7 +156,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	
 	public void Start()
 	{
-		_pixyCam.Start(_periodMS);
+		_pixyCam.Start(_periodMS, _debug);
 	}
 	
 	public void Stop()
@@ -210,6 +213,18 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	
 	/*
 	 * 
+	 * Try not to call this too frequently in performance-sensitive situations
+	 * 
+	 */
+	public PixyCamFrame GetActiveFrame()
+	{
+		UpdateFrame();
+		return _pixyCam.GetFrame();
+	}
+
+	
+	/*
+	 * 
 	 * Subsystem Methods
 	 * 
 	 */
@@ -234,6 +249,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		_periodMS = element.GetAttributeI("UpdatePeriod");
 		_minWidth = element.GetAttributeI("MinWidth");
 		_minHeight = element.GetAttributeI("MinHeight");
+		_debug = element.GetAttributeI("Debug") > 0;
 		return true;
 	}
 
@@ -246,6 +262,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		blank.SetAttribute("UpdatePeriod", _periodMS);
 		blank.SetAttribute("MinWidth", _minWidth);
 		blank.SetAttribute("MinHeight", _minHeight);
+		blank.SetAttribute("Debug", _debug ? 1 : 0);
 		return blank;
 	}
 
