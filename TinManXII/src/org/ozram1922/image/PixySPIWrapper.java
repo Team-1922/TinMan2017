@@ -25,7 +25,7 @@ public class PixySPIWrapper
 	{
 		_port = port;
 		_pixy = new SPI(port);
-		_pixy.read(true, ret, 1);
+		//_pixy.read(true, ret, 1);
 		//_netTable = NetworkTable.getTable("TestSPIBytes");
 	}
 	
@@ -41,8 +41,13 @@ public class PixySPIWrapper
 	CircularQueue _queue = new CircularQueue();
 
 	//DON"T TOUCH THESE
-	byte[] ret = new byte[16];
-	int retIndex = 16;
+	byte[] ret = new byte[OutBufSize];
+	int retIndex = OutBufSize;
+	
+	public byte[] ViewBuffer()
+	{
+		return ret;
+	}
 	
 	/*
 	 * 
@@ -52,27 +57,25 @@ public class PixySPIWrapper
 	NetworkTable _netTable;
 	public synchronized byte GetByte()
 	{
-		return 0;
-		/*
-		if(retIndex > 15)
+		if(retIndex > OutBufSize-1)
 		{
 			retIndex = 0;
-			byte[] sendBytes = _queue.Pop(8);
-			byte[] sendBytesAll = new byte[16];
+			byte[] sendBytes = _queue.Pop(OutBufSize/2);
+			byte[] sendBytesAll = new byte[OutBufSize];
 			int i = 0;
 			for(;i < sendBytes.length*2; i += 2)
 			{
 				sendBytesAll[i] = SyncByteData;
 				sendBytesAll[i+1] = sendBytes[i/2];
 			}
-			for(int j = i; j < 16; j += 2)
+			for(int j = i; j < OutBufSize; j += 2)
 			{
 				sendBytesAll[j] = SyncByte;
 				sendBytesAll[j + 1] = (byte)0;
 			}
-			_pixy.transaction(sendBytesAll, ret, 16);
+			_pixy.transaction(sendBytesAll, ret, OutBufSize);
 		}
-		return ret[retIndex++];*/
+		return ret[retIndex++];
 	}
 	
 	byte[] send2 = new byte[2];

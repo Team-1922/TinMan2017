@@ -11,7 +11,7 @@ public class PixyCamBlock
 	
 	public static final int WordCount = 6;
 	
-	public synchronized PixyCamBlock clone()
+	public PixyCamBlock clone()
 	{
 		PixyCamBlock ret = new PixyCamBlock();
 		ret.Signature = Signature;
@@ -23,7 +23,7 @@ public class PixyCamBlock
 		return ret;
 	}
 	
-	public synchronized int GetAABBArea()
+	public int GetAABBArea()
 	{
 		return Width*Height;
 	}

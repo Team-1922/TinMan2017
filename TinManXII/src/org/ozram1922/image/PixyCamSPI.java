@@ -263,25 +263,32 @@ public class PixyCamSPI {
 		int number = 0;
 		@Override
 		public void run() {
+
+			ClearNetTables.RecursiveTableDelete(_netTable);
 			//number++;
 			//_netTable.putNumber("Test Number", number);
-			//ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
-			ClearNetTables.RecursiveTableDelete(_netTable);
+			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
+			//ClearNetTables.RecursiveTableDelete(_netTable);
 			synchronized(this)
 			{
 				_frameId ++;
-				//_blocks = blocks;
+				_blocks = blocks;
 				_netTable.putNumber("Test Number", _frameId);
-				//_netTable.putNumber("Byte", _spiWrapper.GetByte());
+				//_netTable.putNumber("Word", _spiWrapper.GetWord());
 				/*byte[] bytes = _spiWrapper.Get2Bytes();
 				for(int i = 0; i < bytes.length; ++i)
 				{
 					_netTable.putNumber("Byte" + i, bytes[i]);
 				}*/
-				}
+			}
+			byte[] bufferBytes = _spiWrapper.ViewBuffer();
+			for(int i = 0; i < bufferBytes.length; ++i)
+			{
+				_netTable.putNumber("Byte " + i, bufferBytes[i]);
+			}
 			if(_debug)
 			{
-				//OutputToNetTable(GetFrame());
+				OutputToNetTable(GetFrame());
 			}
 		}
 		
@@ -293,20 +300,19 @@ public class PixyCamSPI {
 		NetworkTable _netTable = NetworkTable.getTable("PixyCam");
 		public void OutputToNetTable(PixyCamFrame activeFrame)
 		{
-			ClearNetTables.RecursiveTableDelete(_netTable);
 			
 			_netTable.putNumber("Frame ID", activeFrame.GetFrameID());
 			for(int i = 0; i < activeFrame.List.size(); ++i)
 			{
 				PixyCamBlock block = activeFrame.List.get(i);
-				NetworkTable subTable = (NetworkTable) _netTable.getSubTable(Integer.toString(i));
+				//NetworkTable subTable = (NetworkTable) _netTable.getSubTable(Integer.toString(i));
 
-				subTable.putNumber("Signature", block.Signature);
-				subTable.putNumber("X", block.X);
-				subTable.putNumber("Y", block.Y);
-				subTable.putNumber("Width", block.Width);
-				subTable.putNumber("Height", block.Height);
-				subTable.putNumber("Angle", block.Angle);
+				_netTable.putNumber("Block" + i + "Signature", block.Signature);
+				_netTable.putNumber("Block" + i + "X", block.X);
+				_netTable.putNumber("Block" + i + "Y", block.Y);
+				_netTable.putNumber("Block" + i + "Width", block.Width);
+				_netTable.putNumber("Block" + i + "Height", block.Height);
+				_netTable.putNumber("Block" + i + "Angle", block.Angle);
 			}
 		}
 
@@ -317,7 +323,7 @@ public class PixyCamSPI {
 		 */
 
 		BlockType _blockType;	
-		boolean _skipStart = true;
+		boolean _skipStart = false;
 		
 		/*
 		 * 
@@ -330,7 +336,7 @@ public class PixyCamSPI {
 			if(!_skipStart)
 			{
 				if(GetStart() == 0)
-					return null;
+					return ret;
 			}
 			else
 				_skipStart = false;
@@ -410,6 +416,7 @@ public class PixyCamSPI {
 			{
 				w = _spiWrapper.GetWord();
 				_netTable.putNumber("Start", w);
+				_netTable.putNumber("LastStart", lastw);
 				if(w == 0 && lastw == 0)
 					return 0; // no start code
 				else if(w == StartWord && lastw == StartWord)
