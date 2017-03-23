@@ -1,6 +1,8 @@
 package org.ozram1922.image;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class PixySPIWrapper
 {
@@ -22,7 +24,9 @@ public class PixySPIWrapper
 	public PixySPIWrapper(SPI.Port port)
 	{
 		_port = port;
-		_pixy = new SPI(_port);
+		_pixy = new SPI(port);
+		_pixy.read(true, ret, 1);
+		//_netTable = NetworkTable.getTable("TestSPIBytes");
 	}
 	
 	/*
@@ -33,70 +37,72 @@ public class PixySPIWrapper
 	private SPI _pixy;
 	SPI.Port _port = SPI.Port.kOnboardCS0;
 	
-	/// variables for a circular queue
-	private byte[] _outBuf = new byte[OutBufSize];
-	private int _outLen = 0;
-	private int _outWriteIndex = 0;
-	private int _outReadIndex = 0;
 
+	CircularQueue _queue = new CircularQueue();
 
 	//DON"T TOUCH THESE
-	byte[] ret = new byte[1];
-	byte[] send = new byte[1];
+	byte[] ret = new byte[16];
+	int retIndex = 16;
 	
 	/*
 	 * 
 	 * Public Methods
 	 * 
 	 */
-	public synchronized byte GetByte(byte out)
+	NetworkTable _netTable;
+	public synchronized byte GetByte()
 	{
-		send[0] = out;
-		_pixy.transaction(send, ret, 1);
-		return ret[0];
+		return 0;
+		/*
+		if(retIndex > 15)
+		{
+			retIndex = 0;
+			byte[] sendBytes = _queue.Pop(8);
+			byte[] sendBytesAll = new byte[16];
+			int i = 0;
+			for(;i < sendBytes.length*2; i += 2)
+			{
+				sendBytesAll[i] = SyncByteData;
+				sendBytesAll[i+1] = sendBytes[i/2];
+			}
+			for(int j = i; j < 16; j += 2)
+			{
+				sendBytesAll[j] = SyncByte;
+				sendBytesAll[j + 1] = (byte)0;
+			}
+			_pixy.transaction(sendBytesAll, ret, 16);
+		}
+		return ret[retIndex++];*/
+	}
+	
+	byte[] send2 = new byte[2];
+	public synchronized byte[] Get2Bytes()
+	{
+		byte[] ret = new byte[2];
+		/*_pixy.read(true, ret, count);
+		return ret;*/
+		_pixy.transaction(send2, ret, 2);
+		return ret;
 	}
 	
 	public short GetWord()
 	{
 		// ordering is big endian because Pixy is sending 16 bits through SPI 
 		short w;
-		byte c, cout = 0;
+		byte c;
+
+		w = GetByte();
 		
-		if (_outLen > 0)
-		{
-		    w = GetByte(SyncByteData);
-		    //only this needs to be locked
-		    synchronized(this)
-		    {
-			    cout = _outBuf[_outReadIndex++];
-			    _outLen--;
-			    if (_outReadIndex==OutBufSize)
-			      _outReadIndex = 0; 
-		    }
-		}
-		else
-		    w = GetByte(SyncByte); // send out sync byte
+		c = GetByte(); // send out data byte
+		
 		w <<= 8;
-		c = GetByte(cout); // send out data byte
 		w |= c;
 		
 		return w;
 	}
 	public synchronized int Send(byte[] data, int len)
 	{
-		  int i;
-
-		  // check to see if we have enough space in our circular queue
-		  if (_outLen+len>OutBufSize)
-		      return -1;
-
-		  _outLen += len;
-		  for (i=0; i<len; i++)
-		  {
-		      _outBuf[_outWriteIndex++] = data[i];
-		      if (_outWriteIndex==OutBufSize)
-		    	  _outWriteIndex = 0;
-		  }
-		  return len;
+		_queue.Push(data);
+		return len;
 	}
 }

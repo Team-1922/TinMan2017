@@ -44,13 +44,13 @@ public class PixyCamSPI {
 	 */
 	
 	//the instance to convert SPI data calls to cooperate with the PixyCam
-	PixySPIWrapper _spiWrapper;
+	PixySPIWrapper _spiWrapper = null;
 	
 	//the worker thread for getting updates
-	java.util.Timer _worker;
+	java.util.Timer _worker = null;
 	
 	//the worker task
-	Worker _workerTask;
+	Worker _workerTask = null;
 	
 	/*
 	 * 
@@ -163,13 +163,13 @@ public class PixyCamSPI {
 	 * 
 	 */
 	
-	public void Start(double period, boolean debug)
+	public void Start(int periodMS, boolean debug)
 	{
-		if(_worker == null && period > 0)
+		if(_worker == null && periodMS > 0)
 		{
 			_worker = new java.util.Timer();
 			_workerTask = new Worker(debug);
-			_worker.schedule(_workerTask, 0L, (long) (period * 1000));
+			_worker.schedule(_workerTask, 0L, periodMS);
 		}
 	}
 	
@@ -260,17 +260,28 @@ public class PixyCamSPI {
 		 * Worker Method
 		 * 
 		 */
+		int number = 0;
 		@Override
 		public void run() {
-			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
+			//number++;
+			//_netTable.putNumber("Test Number", number);
+			//ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
+			ClearNetTables.RecursiveTableDelete(_netTable);
 			synchronized(this)
 			{
 				_frameId ++;
-				_blocks = blocks;
-			}
+				//_blocks = blocks;
+				_netTable.putNumber("Test Number", _frameId);
+				//_netTable.putNumber("Byte", _spiWrapper.GetByte());
+				/*byte[] bytes = _spiWrapper.Get2Bytes();
+				for(int i = 0; i < bytes.length; ++i)
+				{
+					_netTable.putNumber("Byte" + i, bytes[i]);
+				}*/
+				}
 			if(_debug)
 			{
-				OutputToNetTable(GetFrame());
+				//OutputToNetTable(GetFrame());
 			}
 		}
 		
@@ -318,7 +329,7 @@ public class PixyCamSPI {
 			ArrayList<PixyCamBlock> ret = new ArrayList<PixyCamBlock>();
 			if(!_skipStart)
 			{
-				if(GetStart()== 0)
+				if(GetStart() == 0)
 					return null;
 			}
 			else
@@ -398,6 +409,7 @@ public class PixyCamSPI {
 			while(true)
 			{
 				w = _spiWrapper.GetWord();
+				_netTable.putNumber("Start", w);
 				if(w == 0 && lastw == 0)
 					return 0; // no start code
 				else if(w == StartWord && lastw == StartWord)
@@ -412,7 +424,7 @@ public class PixyCamSPI {
 				}
 				else if(w == StartWordX)
 				{
-					_spiWrapper.GetByte((byte)0); // we're out of sync
+					_spiWrapper.GetByte(); // we're out of sync
 				}
 				lastw = w;
 			}

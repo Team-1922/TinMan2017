@@ -13,6 +13,7 @@ import java.io.IOException;
 import org.ozram1922.cfg.CfgLoader;
 import org.ozram1922.fieldsense.EncoderIntegrater;
 import org.ozram1922.fieldsense.Vector2d;
+import org.usfirst.frc.team1922.robot.commands.RunPixyCam;
 import org.usfirst.frc.team1922.robot.commands.TimedTankDrive;
 import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
@@ -65,6 +66,8 @@ public class Robot extends IterativeRobot {
 	public static TimedTankDrive mAutoBase = new TimedTankDrive(0.75,0.75,4); 
 	
 	public static EncoderIntegrater mFieldState;
+	
+	public static RunPixyCam _pixyCommand = new RunPixyCam();
 
     Command autonomousCommand;
     
@@ -98,6 +101,9 @@ public class Robot extends IterativeRobot {
 		
 		CameraServer.getInstance().startAutomaticCapture(0);
 		CameraServer.getInstance().startAutomaticCapture(1);
+		
+		//comment this out 
+		mPixyCam.Start();
 		
 		//for non-field use initialization
 		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
