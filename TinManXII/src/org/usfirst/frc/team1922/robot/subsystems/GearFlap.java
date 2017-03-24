@@ -4,6 +4,7 @@ import org.ozram1922.cfg.CfgDocument;
 import org.ozram1922.cfg.CfgElement;
 import org.ozram1922.cfg.CfgInterface;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -17,7 +18,10 @@ public class GearFlap extends Subsystem implements CfgInterface {
 	
 	public int solenoidId = 1;
 	
+	public int detectionSensor = 0;
+	
 	Solenoid flapActuator;
+	DigitalInput pegSensor;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -34,6 +38,11 @@ public class GearFlap extends Subsystem implements CfgInterface {
     	return flapActuator.get();
     }
     
+    public boolean IsPegDetected()
+    {
+    	return pegSensor.get();
+    }
+    
     /*
      * Override Methods
      * @see org.ozram1922.cfg.CfgInterface#Deserialize(org.ozram1922.cfg.CfgElement)
@@ -42,13 +51,14 @@ public class GearFlap extends Subsystem implements CfgInterface {
     private void Reconstruct()
     {
     	flapActuator = new Solenoid(solenoidId);
+    	pegSensor = new DigitalInput(detectionSensor);
     }
     
 	@Override
 	public boolean Deserialize(CfgElement element) {
 
 		solenoidId = element.GetAttributeI("ActuatorId");
-		
+		detectionSensor = element.GetAttributeI("PegSensor");
 		Reconstruct();
 		return true;
 	}
@@ -56,6 +66,7 @@ public class GearFlap extends Subsystem implements CfgInterface {
 	@Override
 	public CfgElement Serialize(CfgElement blank, CfgDocument doc) {
 		blank.SetAttribute("ActuatorId", solenoidId);
+		blank.SetAttribute("PegSensor", detectionSensor);
 		return blank;
 	}
 
@@ -63,7 +74,10 @@ public class GearFlap extends Subsystem implements CfgInterface {
 	public void MakeCfgClassesNull() {
 		if(flapActuator != null)
 			flapActuator.free();
+		if(pegSensor != null)
+			pegSensor.free();
 		
+		pegSensor = null;
 		flapActuator = null;
 	}
 
