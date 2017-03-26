@@ -25,11 +25,12 @@ public class PlayDTVoltageRecording extends LeftRightPlaybackAsync {
     // Called repeatedly when this Command is scheduled to run
     protected void execute(double left, double right) {
 		double pdpVoltage = Robot.mPDP.getVoltage();
-    	Robot.mDriveTrain.TankControl(left / pdpVoltage, right / pdpVoltage);    	
+    	Robot.mDriveTrain.TankControl(left / pdpVoltage, right / pdpVoltage);
+		//Robot.mDriveTrain.TankControl(.5,.5);
     }
 
     // Called once after isFinished returns true
-    protected void end(boolean ignore) {
+    protected void end(boolean initiate) {
     	Robot.mDriveTrain.TankControl(0, 0);
     }
 }

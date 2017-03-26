@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 import org.ozram1922.autonomous.AutoPlayback;
 
@@ -18,14 +19,32 @@ public abstract class LeftRightPlaybackAsync extends Command {
 		@Override
 		public void run() {
 			double left, right;
-			synchronized(_leftPlayback)
+			left = 0.5;
+			right = 0.5;
+
+			try
 			{
+				_lock.acquire();
 				left = _leftPlayback.GetSetpoint();
 				right = _rightPlayback.GetSetpoint();
+				
+				if(Double.isNaN(left))
+					left = 0.5;
+				if(Double.isNaN(right))
+					right = 0.5;
+			}
+			catch(Exception e){
+				
+			}
+			finally
+			{
+				_lock.release();
 			}
 			execute(left, right);
 		}		
 	}
+	
+	Semaphore _lock = new Semaphore(1, true);
 	
 	AutoPlayback _leftPlayback = new AutoPlayback();
 	AutoPlayback _rightPlayback = new AutoPlayback();
@@ -68,9 +87,18 @@ public abstract class LeftRightPlaybackAsync extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	boolean result = false;
-    	synchronized(_leftPlayback)
+    	try
     	{
+    		_lock.acquire();
     		result = _leftPlayback.IsFinished();
+    	}
+    	catch(Exception e)
+    	{
+    		
+    	}
+    	finally
+    	{
+    		_lock.release();
     	}
         return result;
     }

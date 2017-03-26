@@ -239,7 +239,7 @@ public class Robot extends IterativeRobot {
         
         //simulate delay issues
         try {
-        	int ms = SmartDashboard.getInt("DelayMS");
+        	int ms = (int)SmartDashboard.getNumber("DelayMS", 0);
         	if(ms != 0)
         		Thread.sleep(ms);
 		} catch (TableKeyNotDefinedException e) {
