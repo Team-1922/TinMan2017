@@ -18,7 +18,7 @@ public class GearFlap extends Subsystem implements CfgInterface {
 	
 	public int solenoidId = 1;
 	
-	public int detectionSensor = 0;
+	public int pegSensorId = 0;
 	
 	Solenoid flapActuator;
 	DigitalInput pegSensor;
@@ -43,6 +43,11 @@ public class GearFlap extends Subsystem implements CfgInterface {
     	return pegSensor.get();
     }
     
+    public int GetChannel()
+    {
+    	return pegSensor.getChannel();
+    }
+    
     /*
      * Override Methods
      * @see org.ozram1922.cfg.CfgInterface#Deserialize(org.ozram1922.cfg.CfgElement)
@@ -51,14 +56,14 @@ public class GearFlap extends Subsystem implements CfgInterface {
     private void Reconstruct()
     {
     	flapActuator = new Solenoid(solenoidId);
-    	pegSensor = new DigitalInput(detectionSensor);
+    	pegSensor = new DigitalInput(pegSensorId);
     }
     
 	@Override
 	public boolean Deserialize(CfgElement element) {
 
 		solenoidId = element.GetAttributeI("ActuatorId");
-		detectionSensor = element.GetAttributeI("PegSensor");
+		pegSensorId = element.GetAttributeI("PegSensorId");
 		Reconstruct();
 		return true;
 	}
@@ -66,7 +71,7 @@ public class GearFlap extends Subsystem implements CfgInterface {
 	@Override
 	public CfgElement Serialize(CfgElement blank, CfgDocument doc) {
 		blank.SetAttribute("ActuatorId", solenoidId);
-		blank.SetAttribute("PegSensor", detectionSensor);
+		blank.SetAttribute("PegSensorId", pegSensorId);
 		return blank;
 	}
 

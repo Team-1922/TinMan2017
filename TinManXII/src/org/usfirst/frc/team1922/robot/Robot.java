@@ -123,11 +123,11 @@ public class Robot extends IterativeRobot {
     protected void CycleIntegrater()
     {		
 		//cycle the field position integrater
-        try
-        {
-        	mFieldState.Cycle(mDriveTrain.GetLeftPosition() / 90.0, mDriveTrain.GetRightPosition() / 90.0);
-        }
-        catch(Exception e){}
+        //try
+        //{
+        //	mFieldState.Cycle(mDriveTrain.GetLeftPosition() / 90.0, mDriveTrain.GetRightPosition() / 90.0);
+        //}
+        //catch(Exception e){}
     }
 	
 	/**
@@ -175,7 +175,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         
         //cycle the field positioning
-        CycleIntegrater();
+        //CycleIntegrater();
     }
 
     public void teleopInit() {
@@ -197,7 +197,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
 		
 		//cycle the field position integrater
-        CycleIntegrater();
+        //CycleIntegrater();
         
         //TESTING
         UpdateSmartDashboardItems();
@@ -215,6 +215,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Position X", position.x);
 		SmartDashboard.putNumber("Position Y", position.y);
 		SmartDashboard.putNumber("Direction", mFieldState.Direction());
+		
+		SmartDashboard.putBoolean("Gear Hook Detected", mGearFlap.IsPegDetected());
+		SmartDashboard.putNumber("Gear Hook Detection Port", mGearFlap.GetChannel());
 
     }
     
