@@ -44,7 +44,7 @@ public abstract class LeftRightPlaybackAsync extends Command {
 		}		
 	}
 	
-	Semaphore _lock = new Semaphore(1, true);
+	Semaphore _lock = new Semaphore(1);
 	
 	AutoPlayback _leftPlayback = new AutoPlayback();
 	AutoPlayback _rightPlayback = new AutoPlayback();

@@ -24,8 +24,10 @@ public class AutoPlayback {
 	{
 		try
 		{
-			for(int i = guess; i < _timeTable.size(); i++)
+			for(int i = guess - 5; i < _timeTable.size(); i++)
 			{
+				if(i < 0)
+					continue;
 				if(_timeTable.get(i) > time)
 				{
 					if(i == 0)
