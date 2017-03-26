@@ -22,6 +22,7 @@ import org.usfirst.frc.team1922.robot.subsystems.RopeClimber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -106,6 +107,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("BaseLine Auto", mAutoBase);
 		chooser.addObject("None", null);
 		SmartDashboard.putData("Auto Choices", chooser);
+		
+		SmartDashboard.putNumber("DelayMS", 0);
     }
 
 	//TODO: Make this Good
@@ -201,6 +204,20 @@ public class Robot extends IterativeRobot {
         
         //TESTING
         UpdateSmartDashboardItems();
+        
+        
+        //simulate delay issues
+        try {
+        	int ms = SmartDashboard.getInt("DelayMS");
+        	if(ms != 0)
+        		Thread.sleep(ms);
+		} catch (TableKeyNotDefinedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     public void UpdateSmartDashboardItems()
