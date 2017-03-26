@@ -66,7 +66,7 @@ public abstract class LeftRightPlayback2Async extends Command {
     	_rightPlayback2.StartPlayback();
     	initializeInternal();
     	_timer = new Timer();
-    	_timer.schedule(new PlaybackTask(), _periodMS);
+    	_timer.schedule(new PlaybackTask(), 0, _periodMS);
     }
     
     protected abstract void initializeInternal();

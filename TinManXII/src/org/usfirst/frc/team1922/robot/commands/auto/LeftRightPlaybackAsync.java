@@ -75,7 +75,7 @@ public abstract class LeftRightPlaybackAsync extends Command {
     	_leftPlayback.StartPlayback();
     	_rightPlayback.StartPlayback();
     	_timer = new Timer();
-    	_timer.schedule(new PlaybackTask(), _periodMS);
+    	_timer.schedule(new PlaybackTask(), 0, _periodMS);
     }
 
     // Called repeatedly when this Command is scheduled to run
