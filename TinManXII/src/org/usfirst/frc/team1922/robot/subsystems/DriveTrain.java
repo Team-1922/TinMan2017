@@ -32,6 +32,9 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	protected int mRightMotorId2 = 4;
 	
 	protected int mShifterId = 0;
+	
+	protected double mLeftVoltageToFreeVelocity = 0;
+	protected double mRightVoltageToFreeVelocity = 0;
 
 	
 	/*
@@ -123,6 +126,26 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotor1.set(rightPIDSetpoint);
 	}
 	
+	public double VoltageToVelocityL(double voltage)
+	{
+		return voltage * mLeftVoltageToFreeVelocity;
+	}
+	
+	public double VoltageToVelocityR(double voltage)
+	{
+		return voltage * mRightVoltageToFreeVelocity;		
+	}
+	
+	public double VelocityToVoltageL(double velocity)
+	{
+		return velocity / mLeftVoltageToFreeVelocity;		
+	}
+	
+	public double VelocityToVoltageR(double velocity)
+	{
+		return velocity / mRightVoltageToFreeVelocity;		
+	}
+	
 	protected void ModeSwap(CANTalon.TalonControlMode mode)
 	{
 		mLeftMotor1.changeControlMode(mode);		
@@ -179,6 +202,9 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotorId1 = element.GetAttributeI("RightMotor1");
 		mRightMotorId2 = element.GetAttributeI("RightMotor2");
 		
+		mLeftVoltageToFreeVelocity = element.GetAttributeD("VoltageToVelocityL");
+		mRightVoltageToFreeVelocity = element.GetAttributeD("VoltageToVelocityR");
+		
 		mShifterId = element.GetAttributeI("Shifter");
 		
 		mLP = element.GetAttributeF("LeftP");
@@ -218,6 +244,9 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		element.SetAttribute("RightMotor2", mRightMotorId2);
 		
 		element.SetAttribute("Shifter", mShifterId);
+		
+		element.SetAttribute("VoltageToVelocityL", mLeftVoltageToFreeVelocity);
+		element.SetAttribute("VoltageToVelocityR", mRightVoltageToFreeVelocity);
 		
 		element.SetAttribute("LeftP", mLP);
 		element.SetAttribute("LeftI", mLI);
