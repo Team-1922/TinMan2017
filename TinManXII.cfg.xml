@@ -16,8 +16,8 @@
 		RightI="0.0005" 
 		RightD="100.0" 
 		RightF="0.0" 
-		VoltageToVelocityL="0.0"
-		VoltageToVelocityR="0.0" />
+		LeftCatchup="0.00443"
+		RightCatchup="0.00443" /> 		<!-- apx 0.5V / Inch of discrepency -->
 	<OI>
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />

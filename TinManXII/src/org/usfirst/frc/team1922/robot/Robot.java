@@ -109,6 +109,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto Choices", chooser);
 		
 		SmartDashboard.putNumber("DelayMS", 0);
+		SmartDashboard.putNumber("Left Catchup", mDriveTrain.m_dLToVoltage);
+		SmartDashboard.putNumber("Right Catchup", mDriveTrain.m_dRToVoltage);
     }
 
 	//TODO: Make this Good
@@ -236,8 +238,11 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Gear Hook Detected", mGearFlap.IsPegDetected());
 		SmartDashboard.putNumber("Gear Hook Detection Port", mGearFlap.GetChannel());
 
-		SmartDashboard.putNumber("(L) Encoder Units per Second Per Volt", mDriveTrain.GetLeftVelocity() / mPDP.getVoltage());
-		SmartDashboard.putNumber("(R) Encoder Units per Second Per Volt", mDriveTrain.GetRightVelocity() / mPDP.getVoltage());
+		//SmartDashboard.putNumber("(L) Encoder Units per Second Per Volt", mDriveTrain.GetLeftVelocity() / mPDP.getVoltage());
+		//SmartDashboard.putNumber("(R) Encoder Units per Second Per Volt", mDriveTrain.GetRightVelocity() / mPDP.getVoltage());
+		
+		mDriveTrain.m_dLToVoltage = SmartDashboard.getNumber("Left Catchup", mDriveTrain.m_dLToVoltage);
+		mDriveTrain.m_dRToVoltage = SmartDashboard.getNumber("Right Catchup", mDriveTrain.m_dRToVoltage);
     }
     
     /**

@@ -33,8 +33,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 	
 	protected int mShifterId = 0;
 	
-	protected double mLeftVoltageToFreeVelocity = 0;
-	protected double mRightVoltageToFreeVelocity = 0;
+	public double m_dLToVoltage = 0;
+	public double m_dRToVoltage = 0;
 
 	
 	/*
@@ -126,24 +126,14 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotor1.set(rightPIDSetpoint);
 	}
 	
-	public double VoltageToVelocityL(double voltage)
+	public double dLToVoltage(double dL)
 	{
-		return voltage * mLeftVoltageToFreeVelocity;
+		return dL * m_dLToVoltage;		
 	}
 	
-	public double VoltageToVelocityR(double voltage)
+	public double dRToVoltage(double dR)
 	{
-		return voltage * mRightVoltageToFreeVelocity;		
-	}
-	
-	public double VelocityToVoltageL(double velocity)
-	{
-		return velocity / mLeftVoltageToFreeVelocity;		
-	}
-	
-	public double VelocityToVoltageR(double velocity)
-	{
-		return velocity / mRightVoltageToFreeVelocity;		
+		return dR * m_dRToVoltage;		
 	}
 	
 	protected void ModeSwap(CANTalon.TalonControlMode mode)
@@ -202,8 +192,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		mRightMotorId1 = element.GetAttributeI("RightMotor1");
 		mRightMotorId2 = element.GetAttributeI("RightMotor2");
 		
-		mLeftVoltageToFreeVelocity = element.GetAttributeD("VoltageToVelocityL");
-		mRightVoltageToFreeVelocity = element.GetAttributeD("VoltageToVelocityR");
+		m_dLToVoltage = element.GetAttributeD("LeftCatchup");
+		m_dRToVoltage = element.GetAttributeD("RightCatchup");
 		
 		mShifterId = element.GetAttributeI("Shifter");
 		
@@ -245,8 +235,8 @@ public class DriveTrain extends Subsystem implements CfgInterface {
 		
 		element.SetAttribute("Shifter", mShifterId);
 		
-		element.SetAttribute("VoltageToVelocityL", mLeftVoltageToFreeVelocity);
-		element.SetAttribute("VoltageToVelocityR", mRightVoltageToFreeVelocity);
+		element.SetAttribute("LeftCatchup", m_dLToVoltage);
+		element.SetAttribute("RightCatchup", m_dRToVoltage);
 		
 		element.SetAttribute("LeftP", mLP);
 		element.SetAttribute("LeftI", mLI);
