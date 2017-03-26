@@ -24,6 +24,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 
+
+
+/*
+ * 
+ * 
+ * Testing Plan
+ * -Plug in encoder cables
+ * -Change Catchup signs to match with position and voltage signs
+ * -Try existing paths with old playback system and test different delay amounts	
+ * -Try existing paths with new playback system and test different delay amounts
+ * -Record new path 
+ * -Restart robot code
+ * -Play new path back using position-corrected system
+ * -Adjust Catchup values as required
+ * -Try new path with position-corrected system and test different delay amounts 
+ * 
+ * 
+ * 
+ * -Left Forward = negative voltage, positive encoder
+ * -Right Forward = negative voltage, negative encoder (fixed!)
+ * 
+ * 
+ */
+
+
+
+
+
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
