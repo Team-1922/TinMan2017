@@ -15,6 +15,12 @@ public class RecordEncoderPosition extends LeftRightRecorder {
 		super(subDir);
 		// TODO Auto-generated constructor stub
 	}
+	
+	@Override
+	protected void initializeInternal()
+	{
+		Robot.mDriveTrain.ResetEncoderPositions();
+	}
 
 	@Override
 	protected double GetLeft() {

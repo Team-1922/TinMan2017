@@ -46,7 +46,10 @@ public abstract class LeftRightPlayback2 extends Command {
     	_rightPlayback1.StartPlayback();
     	_leftPlayback2.StartPlayback();
     	_rightPlayback2.StartPlayback();
+    	initializeInternal();
     }
+    
+    protected abstract void initializeInternal();
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {

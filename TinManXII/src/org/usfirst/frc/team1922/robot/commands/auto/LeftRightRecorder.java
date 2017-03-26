@@ -35,6 +35,8 @@ public abstract class LeftRightRecorder extends Command {
     	new File(basePath).mkdirs();
     	new File(basePath + _subDir).mkdirs();
     }
+    
+    protected void initializeInternal(){};
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
