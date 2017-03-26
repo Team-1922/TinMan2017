@@ -19,9 +19,11 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     public PlayMostRecentAutoRecording() {
     	int leftEntryNumber = -1;
     	int rightEntryNumber = -1;
+    	int leftPosEntryNumber = -1;
+    	int rightPosEntryNumber = -1;
     	int gearEntryNumber = -1;
 
-    	//get the left file name
+    	//get the left voltage file name
     	File f;
     	do
     	{
@@ -30,11 +32,27 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	}
     	while(f.exists() && !f.isDirectory());
     	
-    	//get the right file name
+    	//get the right voltage file name
     	do
     	{
     		rightEntryNumber++;
     		f = new File(GetFileName(rightEntryNumber, "R", "DTVoltRec"));
+    	}
+    	while(f.exists() && !f.isDirectory());
+
+    	//get the left position file name
+    	do
+    	{
+    		leftPosEntryNumber++;
+    		f = new File(GetFileName(leftEntryNumber, "L", "PosRec"));
+    	}
+    	while(f.exists() && !f.isDirectory());
+    	
+    	//get the right position file name
+    	do
+    	{
+    		rightPosEntryNumber++;
+    		f = new File(GetFileName(rightEntryNumber, "R", "PosRec"));
     	}
     	while(f.exists() && !f.isDirectory());
 
@@ -50,14 +68,28 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	
     	leftEntryNumber--;
     	rightEntryNumber--;
+    	leftPosEntryNumber--;
+    	rightPosEntryNumber--;
     	gearEntryNumber--;
 
     	SmartDashboard.putNumber("Most Recent Gear", gearEntryNumber);
     	SmartDashboard.putNumber("Most Recent Left", leftEntryNumber);
     	SmartDashboard.putNumber("Most Recent Right", rightEntryNumber);
-    	addSequential(new PlayAutoRecording(
-    			GetFileName(leftEntryNumber, "L", "DTVoltRec"), 
-    			GetFileName(rightEntryNumber, "R", "DTVoltRec"), 
-    			GetFileName(gearEntryNumber, "", "GFRec")));
+    	SmartDashboard.putNumber("Most Recient Left Pos", leftPosEntryNumber);
+    	SmartDashboard.putNumber("Most Recient Right Pos", rightPosEntryNumber);
+    	//addSequential(new PlayAutoRecording();
+
+    	addParallel(new PlaybackGearFlap(GetFileName(gearEntryNumber, "", "GFRec")));
+		addSequential(
+				new PlayDTVoltageRecording(
+						GetFileName(leftEntryNumber, "L", "DTVoltRec"), 
+						GetFileName(rightEntryNumber, "R", "DTVoltRec"))); 
+		
+		//addSequential(
+		//		new PlayDTVoltagePositionRecordingAsync(
+		//				GetFileName(leftEntryNumber, "L", "DTVoltRec"), 
+		//				GetFileName(rightEntryNumber, "R", "DTVoltRec"), 
+		//				GetFileName(leftPosEntryNumber, "L", "PosRec"), 
+		//				GetFileName(rightPosEntryNumber, "R", "PosRec")));
     }
 }
