@@ -7,7 +7,7 @@ public class PlayDTVoltagePositionRecordingAsync extends LeftRightPlayback2Async
 	public PlayDTVoltagePositionRecordingAsync(String leftVoltagePath, String rightVoltagePath, 
 			String leftVelocityPath, String rightVelocityPath) {
 		super(leftVoltagePath, rightVoltagePath, leftVelocityPath, rightVelocityPath, 15);
-		
+		requires(Robot.mDriveTrain);
 	}
 	
 	protected void initializeInternal()

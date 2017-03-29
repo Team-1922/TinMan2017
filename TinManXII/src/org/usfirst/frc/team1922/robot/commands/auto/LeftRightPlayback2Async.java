@@ -24,7 +24,7 @@ public abstract class LeftRightPlayback2Async extends Command {
 				right1 = _rightPlayback1.GetSetpoint();
 				
 				left2 = _leftPlayback2.GetSetpoint();
-				right2 = _leftPlayback2.GetSetpoint();
+				right2 = _rightPlayback2.GetSetpoint();
 			}
 			execute(left1, right1, left2, right2);
 		}		

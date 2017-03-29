@@ -41,10 +41,10 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	while(f.exists() && !f.isDirectory());
 
     	//get the left position file name
-    	/*do
+    	do
     	{
     		leftPosEntryNumber++;
-    		f = new File(GetFileName(leftEntryNumber, "L", "PosRec"));
+    		f = new File(GetFileName(leftPosEntryNumber, "L", "PosRec"));
     	}
     	while(f.exists() && !f.isDirectory());
     	
@@ -52,9 +52,9 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	do
     	{
     		rightPosEntryNumber++;
-    		f = new File(GetFileName(rightEntryNumber, "R", "PosRec"));
+    		f = new File(GetFileName(rightPosEntryNumber, "R", "PosRec"));
     	}
-    	while(f.exists() && !f.isDirectory());*/
+    	while(f.exists() && !f.isDirectory());
 
     	
     	//get the gear file name
