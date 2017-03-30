@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import org.ozram1922.cfg.CfgDocument;
 import org.ozram1922.cfg.CfgElement;
 import org.ozram1922.cfg.CfgInterface;
+import org.ozram1922.image.PixyCam;
 import org.ozram1922.image.PixyCamBlock;
 import org.ozram1922.image.PixyCamFrame;
-import org.ozram1922.image.PixyCamSPI;
+import org.ozram1922.image.PixyI2CWrapper;
 import org.usfirst.frc.team1922.robot.commands.RunPixyCam;
 import org.usfirst.frc.team1922.robot.commands.auto.ClearNetTables;
 
@@ -37,7 +38,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * 
 	 */
 	
-	private PixyCamSPI _pixyCam;
+	private PixyCam _pixyCam;
 	private PixyCamFrame _frame;
 	private int _targetXPosition;
 	private int _targetYPosition;
@@ -52,7 +53,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	
 	public PixyCamProcessing()
 	{
-		_pixyCam = new PixyCamSPI(SPI.Port.kOnboardCS0);
+		_pixyCam = new PixyCam(new PixyI2CWrapper());
 	}
 	
 	/*

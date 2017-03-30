@@ -8,7 +8,7 @@ import java.util.TimerTask;
 
 import org.usfirst.frc.team1922.robot.commands.auto.ClearNetTables;
 
-public class PixyCamSPI {
+public class PixyCam {
 
 
 	/*
@@ -44,7 +44,7 @@ public class PixyCamSPI {
 	 */
 	
 	//the instance to convert SPI data calls to cooperate with the PixyCam
-	PixySPIWrapper _spiWrapper = null;
+	PixyCamWrapper _wrapper = null;
 	
 	//the worker thread for getting updates
 	java.util.Timer _worker = null;
@@ -58,9 +58,10 @@ public class PixyCamSPI {
 	 * 
 	 */
 	
-	public PixyCamSPI(SPI.Port port)
+	public PixyCam(PixyCamWrapper wrapper)
 	{
-		_spiWrapper = new PixySPIWrapper(port);
+		_wrapper = wrapper;
+		
 	}
 	
 	/*
@@ -136,16 +137,16 @@ public class PixyCamSPI {
 		return _workerTask.GetFrame();
 	}
 	
-	public int SetBrightness(byte brightness)
+	public void SetBrightness(byte brightness)
 	{
 		byte[] bytes = new byte[3];
 		bytes[0] = 0;
 		bytes[1] = (byte)CamBrightnessSync;
 		bytes[2] = brightness;
-		return _spiWrapper.Send(bytes, 3);
+		_wrapper.Send(bytes);
 	}
 	
-	public int SetLED(byte r, byte g, byte b)
+	public void SetLED(byte r, byte g, byte b)
 	{
 		byte[] bytes = new byte[5];
 		bytes[0] = 0;
@@ -154,7 +155,7 @@ public class PixyCamSPI {
 		bytes[3] = g;
 		bytes[4] = b;
 		
-		return _spiWrapper.Send(bytes, 5);
+		_wrapper.Send(bytes);
 	}
 	
 	/*
@@ -267,21 +268,21 @@ public class PixyCamSPI {
 			ClearNetTables.RecursiveTableDelete(_netTable);
 			//number++;
 			//_netTable.putNumber("Test Number", number);
-			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
+			//ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
 			//ClearNetTables.RecursiveTableDelete(_netTable);
 			synchronized(this)
 			{
 				_frameId ++;
-				_blocks = blocks;
+				//_blocks = blocks;
 				_netTable.putNumber("Test Number", _frameId);
-				//_netTable.putNumber("Word", _spiWrapper.GetWord());
+				_netTable.putNumber("Word", _wrapper.GetWord());
 				/*byte[] bytes = _spiWrapper.Get2Bytes();
 				for(int i = 0; i < bytes.length; ++i)
 				{
 					_netTable.putNumber("Byte" + i, bytes[i]);
 				}*/
 			}
-			byte[] bufferBytes = _spiWrapper.ViewBuffer();
+			/*byte[] bufferBytes = _wrapper.ViewBuffer();
 			for(int i = 0; i < bufferBytes.length; ++i)
 			{
 				_netTable.putNumber("Byte " + i, bufferBytes[i]);
@@ -289,7 +290,7 @@ public class PixyCamSPI {
 			if(_debug)
 			{
 				OutputToNetTable(GetFrame());
-			}
+			}*/
 		}
 		
 		/*
@@ -347,7 +348,7 @@ public class PixyCamSPI {
 			sum = 0;
 			for(int i = 0; i < maxBlocks; ++i)
 			{
-				checksum = _spiWrapper.GetWord();
+				checksum = _wrapper.GetWord();
 				if(checksum == StartWord) //we've reached the beginning of the next frame
 				{
 					_skipStart = true;
@@ -371,7 +372,7 @@ public class PixyCamSPI {
 						words[PixyCamBlock.WordCount - 1] = 0;
 						break;
 					}
-					w = _spiWrapper.GetWord();
+					w = _wrapper.GetWord();
 					sum += w;
 					words[j] = w;
 				}
@@ -390,7 +391,7 @@ public class PixyCamSPI {
 					//TODO: error string
 				}
 				
-				w = _spiWrapper.GetWord();
+				w = _wrapper.GetWord();
 				if(w==StartWord)
 					_blockType = BlockType.kNormal;
 				else if(w == StartWordCC)
@@ -414,7 +415,7 @@ public class PixyCamSPI {
 			
 			while(true)
 			{
-				w = _spiWrapper.GetWord();
+				w = _wrapper.GetWord();
 				_netTable.putNumber("Start", w);
 				_netTable.putNumber("LastStart", lastw);
 				if(w == 0 && lastw == 0)
@@ -431,7 +432,7 @@ public class PixyCamSPI {
 				}
 				else if(w == StartWordX)
 				{
-					_spiWrapper.GetByte(); // we're out of sync
+					_wrapper.GetByte(); // we're out of sync
 				}
 				lastw = w;
 			}

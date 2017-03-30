@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
-public class PixySPIWrapper
+public class PixySPIWrapper implements PixyCamWrapper
 {
 	/*
 	 * 
@@ -103,9 +103,8 @@ public class PixySPIWrapper
 		
 		return w;
 	}
-	public synchronized int Send(byte[] data, int len)
+	public synchronized void Send(byte[] data)
 	{
 		_queue.Push(data);
-		return len;
 	}
 }
