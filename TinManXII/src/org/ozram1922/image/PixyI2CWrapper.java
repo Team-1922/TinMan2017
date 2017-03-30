@@ -12,7 +12,7 @@ public class PixyI2CWrapper implements PixyCamWrapper
 	 * Constants
 	 * 
 	 */
-	public static final int OutBufSize = 64;	
+	public static final int OutBufSize = 32;	
 	//public static final byte SyncByte = 0x5a;
 	//public static final byte SyncByteData = 0x5b;
 	
@@ -92,18 +92,14 @@ public class PixyI2CWrapper implements PixyCamWrapper
 	
 	public short GetWord()
 	{
-		// ordering is big endian because Pixy is sending 16 bits through SPI 
-		short w;
-		byte c;
-
+		// ordering is little endian because Pixy is sending 16 bits through I2C
+		int w; 
+		int c;
+		c = GetByte();
 		w = GetByte();
-		
-		c = GetByte(); // send out data byte
-		
 		w <<= 8;
-		w |= c;
-		
-		return w;
+		w += c; //well this works, but I don't like it :(
+		return (short)w;
 	}
 	public synchronized void Send(byte[] data)
 	{

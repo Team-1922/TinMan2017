@@ -91,17 +91,17 @@ public class PixySPIWrapper implements PixyCamWrapper
 	public short GetWord()
 	{
 		// ordering is big endian because Pixy is sending 16 bits through SPI 
-		short w;
-		byte c;
+		int w;
+		int c;
 
 		w = GetByte();
 		
 		c = GetByte(); // send out data byte
 		
 		w <<= 8;
-		w |= c;
+		w += c;
 		
-		return w;
+		return (short)w;
 	}
 	public synchronized void Send(byte[] data)
 	{

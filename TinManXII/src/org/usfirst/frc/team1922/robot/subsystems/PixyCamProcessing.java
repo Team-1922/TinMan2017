@@ -162,7 +162,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	
 	public void Stop()
 	{
-		//_pixyCam.Stop();
+		_pixyCam.Stop();
 	}
 	
 	/*

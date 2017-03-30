@@ -17,13 +17,13 @@ public class PixyCam {
 	 * 
 	 */
 	
-	public static final int ArraySize = 100;
-	public static final int StartWord = 0xaa55;
-	public static final int StartWordCC = 0xaa56;
-	public static final int StartWordX = 0x55aa;
-	public static final int ServoSync = 0xff;
-	public static final int CamBrightnessSync = 0xfe;
-	public static final int LEDSync = 0xfd;
+	//public static final int ArraySize = 100;
+	public static final short StartWord = (short)0xaa55;
+	public static final short StartWordCC = (short)0xaa56;
+	public static final short StartWordX = (short)0x55aa;
+	public static final byte ServoSync = (byte)0xff;
+	public static final byte CamBrightnessSync = (byte)0xfe;
+	public static final byte LEDSync = (byte)0xfd;
 	
 	//TODO: add methods for relative frames positions that work well with PID controllers
 	public static final int FrameWidth = 0;
@@ -110,15 +110,7 @@ public class PixyCam {
 	
 	public static int UnsignedWordToSignedInt(short word)
 	{
-		if(word < 0)
-		{
-			//flip sign and add MSB of short
-			return -word + 0x8000;
-		}
-		else
-		{
-			return word;
-		}
+		return word & 0xffff;
 	}
 	
 	/*
@@ -233,6 +225,7 @@ public class PixyCam {
 		public Worker(boolean debug)
 		{
 			_debug = debug;
+			ClearNetTables.RecursiveTableDelete(_netTable);
 		}
 		
 		/*
@@ -263,34 +256,41 @@ public class PixyCam {
 		 */
 		int number = 0;
 		@Override
-		public void run() {
-
-			ClearNetTables.RecursiveTableDelete(_netTable);
+		public void run() {			
 			//number++;
 			//_netTable.putNumber("Test Number", number);
-			//ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
+			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
+			if(blocks == null)
+				return;
 			//ClearNetTables.RecursiveTableDelete(_netTable);
 			synchronized(this)
 			{
 				_frameId ++;
-				//_blocks = blocks;
-				_netTable.putNumber("Test Number", _frameId);
-				_netTable.putNumber("Word", _wrapper.GetWord());
+				_blocks = blocks;
+				//_netTable.putNumber("Test Number", _frameId);
+				//_netTable.putNumber("Word", _wrapper.GetWord());
 				/*byte[] bytes = _spiWrapper.Get2Bytes();
 				for(int i = 0; i < bytes.length; ++i)
 				{
 					_netTable.putNumber("Byte" + i, bytes[i]);
 				}*/
 			}
-			/*byte[] bufferBytes = _wrapper.ViewBuffer();
-			for(int i = 0; i < bufferBytes.length; ++i)
-			{
-				_netTable.putNumber("Byte " + i, bufferBytes[i]);
-			}
+			//for(int i = 0; i < 32; ++i)
+			//{
+			//	_netTable.putNumber("Word " + i, _wrapper.GetWord());
+			//}
+			//byte[] bufferBytes = _wrapper.ViewBuffer();
+			//for(int i = 0; i < bufferBytes.length; ++i)
+			//{
+			//	_netTable.putNumber("Byte " + i, bufferBytes[i]);
+			//}
+			_debug = true;
 			if(_debug)
 			{
-				OutputToNetTable(GetFrame());
-			}*/
+				PixyCamFrame frame = new PixyCamFrame(_frameId);
+				frame.List = _blocks;
+				OutputToNetTable(frame);
+			}
 		}
 		
 		/*
@@ -337,17 +337,18 @@ public class PixyCam {
 			if(!_skipStart)
 			{
 				if(GetStart() == 0)
-					return ret;
+					return null;
 			}
 			else
 				_skipStart = false;
 			
+			
 
 			short w, checksum, sum;
 			
-			sum = 0;
 			for(int i = 0; i < maxBlocks; ++i)
 			{
+				sum = 0;
 				checksum = _wrapper.GetWord();
 				if(checksum == StartWord) //we've reached the beginning of the next frame
 				{
@@ -364,6 +365,10 @@ public class PixyCam {
 				else if(checksum == 0)
 					return ret;
 				
+				_netTable.putNumber("Checksum", checksum);
+				
+				_netTable.putString("Block Type", _blockType.toString());
+				
 				short[] words = new short[PixyCamBlock.WordCount];
 				for(int j = 0; j < PixyCamBlock.WordCount; ++j)
 				{
@@ -377,6 +382,7 @@ public class PixyCam {
 					words[j] = w;
 				}
 				
+				_netTable.putNumber("Sum", sum);
 				//check checksum
 				if(checksum == sum)
 				{
@@ -416,17 +422,20 @@ public class PixyCam {
 			while(true)
 			{
 				w = _wrapper.GetWord();
-				_netTable.putNumber("Start", w);
-				_netTable.putNumber("LastStart", lastw);
-				if(w == 0 && lastw == 0)
+				if((w == 0) && (lastw == 0))
+				{
+					_netTable.putString("Block Type", "None");
 					return 0; // no start code
+				}
 				else if(w == StartWord && lastw == StartWord)
 				{
+					_netTable.putString("Block Type", "Normal");
 					_blockType = BlockType.kNormal;
 					return 1; // code found
 				}
 				else if(w == StartWordCC && lastw == StartWord)
 				{
+					_netTable.putString("Block Type", "Color Code");
 					_blockType = BlockType.kColorCode; // color code block
 					return 1;
 				}
