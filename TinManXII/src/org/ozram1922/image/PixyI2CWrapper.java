@@ -98,7 +98,7 @@ public class PixyI2CWrapper implements PixyCamWrapper
 		c = GetByte();
 		w = GetByte();
 		w <<= 8;
-		w += c; //well this works, but I don't like it :(
+		w |= (c & 0xFF); //well this works, but I don't like it :(
 		return (short)w;
 	}
 	public synchronized void Send(byte[] data)

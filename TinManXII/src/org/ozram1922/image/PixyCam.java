@@ -104,6 +104,8 @@ public class PixyCam {
 
 		if (words.length == PixyCamBlock.WordCount)
 			ret.Angle = UnsignedWordToSignedInt(words[5]);
+		else
+			ret.Angle = 0;
 		
 		return ret;
 	}
@@ -372,7 +374,7 @@ public class PixyCam {
 				short[] words = new short[PixyCamBlock.WordCount];
 				for(int j = 0; j < PixyCamBlock.WordCount; ++j)
 				{
-					if(_blockType == BlockType.kNormal && i >= (PixyCamBlock.WordCount - 1))//no angle for normal mode
+					if(_blockType == BlockType.kNormal && j >= (PixyCamBlock.WordCount - 1))//no angle for normal mode
 					{
 						words[PixyCamBlock.WordCount - 1] = 0;
 						break;
@@ -384,6 +386,7 @@ public class PixyCam {
 				
 				_netTable.putNumber("Sum", sum);
 				//check checksum
+				
 				if(checksum == sum)
 				{
 					PixyCamBlock b = BlockFromWords(words);
