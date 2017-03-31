@@ -5,6 +5,11 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+/**
+ * The wrapper for accessing the PixyCam over the I2C Interface
+ * @author Kevin Mackenzie
+ *
+ */
 public class PixyI2CWrapper implements PixyCamWrapper
 {
 	
