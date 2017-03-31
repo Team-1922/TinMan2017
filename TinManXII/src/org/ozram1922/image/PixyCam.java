@@ -336,6 +336,10 @@ public class PixyCam {
 		private ArrayList<PixyCamBlock> ReadBlocks(int maxBlocks)
 		{
 			ArrayList<PixyCamBlock> ret = new ArrayList<PixyCamBlock>();
+			
+			//start by refreshing the buffer of the wrapper
+			_wrapper.RefreshBuffer();
+			
 			if(!_skipStart)
 			{
 				if(GetStart() == 0)
