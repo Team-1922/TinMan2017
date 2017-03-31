@@ -7,27 +7,23 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class PixyI2CWrapper implements PixyCamWrapper
 {
-	/*
-	 * 
-	 * Constants
-	 * 
-	 */
-	public static final int OutBufSize = 32;	
-	//public static final byte SyncByte = 0x5a;
-	//public static final byte SyncByteData = 0x5b;
-	
 	
 	/*
 	 * 
 	 * Constructor
 	 * 
 	 */
-	public PixyI2CWrapper()
+	public PixyI2CWrapper(int bufferSize)
 	{
 		_port = I2C.Port.kOnboard;
 		_pixy = new I2C(_port, 0x54);
-		//_pixy.read(true, ret, 1);
-		//_netTable = NetworkTable.getTable("TestSPIBytes");
+		BufferSize = bufferSize;
+		_ret = new byte[BufferSize];
+	}
+	
+	public PixyI2CWrapper()
+	{
+		this(64);
 	}
 	
 	/*
@@ -37,17 +33,18 @@ public class PixyI2CWrapper implements PixyCamWrapper
 	 */
 	private I2C _pixy;
 	I2C.Port _port = I2C.Port.kOnboard;
+	public final int BufferSize;
 	
 
 	//CircularQueue _queue = new CircularQueue();
 
 	//DON"T TOUCH THESE
-	byte[] ret = new byte[OutBufSize];
-	int retIndex = OutBufSize;
+	byte[] _ret;
+	int _retIndex;
 	
 	public byte[] ViewBuffer()
 	{
-		return ret;
+		return _ret;
 	}
 	
 	/*
@@ -55,29 +52,21 @@ public class PixyI2CWrapper implements PixyCamWrapper
 	 * Public Methods
 	 * 
 	 */
+	
+	public synchronized void RefreshBuffer()
+	{
+		_retIndex = 0;
+		_pixy.readOnly(_ret, BufferSize);
+	}
+	
 	NetworkTable _netTable;
 	public synchronized byte GetByte()
 	{
-		if(retIndex > OutBufSize-1)
+		if(_retIndex > BufferSize-1)
 		{
-			retIndex = 0;
-			//byte[] sendBytes = _queue.Pop(OutBufSize/2);
-			//byte[] sendBytesAll = new byte[OutBufSize];
-			//int i = 0;
-			//for(;i < sendBytes.length*2; i += 2)
-			//{
-			//	sendBytesAll[i] = SyncByteData;
-			//	sendBytesAll[i+1] = sendBytes[i/2];
-			//}
-			//for(int j = i; j < OutBufSize; j += 2)
-			//{
-			//	sendBytesAll[j] = SyncByte;
-			//	sendBytesAll[j + 1] = (byte)0;
-			//}
-			//_pixy.transaction(sendBytesAll, ret, OutBufSize);
-	    	_pixy.readOnly(ret, OutBufSize);
+			return 0;//we don't want to get more info, because that should be for the next frame
 		}
-		return ret[retIndex++];
+		return _ret[_retIndex++];
 	}
 	
 	//byte[] send2 = new byte[2];

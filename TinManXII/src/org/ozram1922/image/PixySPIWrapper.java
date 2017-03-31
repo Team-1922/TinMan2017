@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+@Deprecated
 public class PixySPIWrapper implements PixyCamWrapper
 {
 	/*
@@ -106,5 +107,11 @@ public class PixySPIWrapper implements PixyCamWrapper
 	public synchronized void Send(byte[] data)
 	{
 		_queue.Push(data);
+	}
+
+	@Override
+	public void RefreshBuffer() {
+		// TODO Auto-generated method stub
+		
 	}
 }
