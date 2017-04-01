@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class PlayJoystickRecording extends LeftRightPlayback {
 
-    public PlayJoystickRecording(String filePath) {
-    	super(filePath);
+    public PlayJoystickRecording(String filePath, int periodMS) {
+    	super(filePath, periodMS);
     	requires(Robot.mDriveTrain);
     }
 

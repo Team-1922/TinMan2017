@@ -7,15 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class RecordGearFlap extends Recorder {
+public class RecordGearFlap extends RecorderAsync {
 
-	public RecordGearFlap(String subDir) {
-		super(subDir);
+	public RecordGearFlap(String subDir, int periodMS) {
+		super(subDir, periodMS);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	protected double GetValue() {
+	protected double Get() {
 		return Robot.mGearFlap.GetFlapState() ? 1.0 : 0.0;
 	}
 

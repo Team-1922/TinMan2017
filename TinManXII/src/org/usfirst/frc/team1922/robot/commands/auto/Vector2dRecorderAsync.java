@@ -45,11 +45,6 @@ public abstract class Vector2dRecorderAsync extends Command {
     	_subDir = subDir;
     	_periodMS = periodMS;
     }
-    
-    public Vector2dRecorderAsync(String subDir)
-    {
-    	this(subDir, 15);
-    }
 
     // Called just before this Command runs the first time
     protected void initialize() {

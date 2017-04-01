@@ -16,7 +16,7 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     {
     	return "/home/lvuser/TinManRecordings/" + subDir + "/" + number + ".csv";
     }
-    public PlayMostRecentAutoRecording() {
+    public PlayMostRecentAutoRecording(int periodMS) {
     	int leftEntryNumber = -1;
     	int rightEntryNumber = -1;
     	int gearEntryNumber = -1;
@@ -50,6 +50,6 @@ public class PlayMostRecentAutoRecording extends CommandGroup {
     	SmartDashboard.putNumber("Most Recent Right", rightEntryNumber);
     	addSequential(new PlayAutoRecording(
     			GetFileName(leftEntryNumber, "DTVoltRec"), 
-    			GetFileName(gearEntryNumber, "GFRec")));
+    			GetFileName(gearEntryNumber, "GFRec"), periodMS));
     }
 }

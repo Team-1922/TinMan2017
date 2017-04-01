@@ -2,11 +2,11 @@ package org.usfirst.frc.team1922.robot.commands.auto;
 
 import org.ozram1922.Vector2d;
 
-public abstract class LeftRightRecorder extends Vector2dRecorder {
+public abstract class LeftRightRecorder extends Vector2dRecorderAsync {
 
-	public LeftRightRecorder(String subDir)
+	public LeftRightRecorder(String subDir, int periodMS)
 	{
-		super(subDir);
+		super(subDir, periodMS);
 	}
 
 	@Override

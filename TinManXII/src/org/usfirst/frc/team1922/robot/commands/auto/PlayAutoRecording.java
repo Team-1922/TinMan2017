@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class PlayAutoRecording extends CommandGroup {
 
-    public PlayAutoRecording(String filePath, String gearFilePath) {
-    	addParallel(new PlaybackGearFlap(gearFilePath));
-    	addSequential(new PlayDTVoltageRecording(filePath));
+    public PlayAutoRecording(String filePath, String gearFilePath, int periodMS) {
+    	addParallel(new PlaybackGearFlap(gearFilePath, periodMS));
+    	addSequential(new PlayDTVoltageRecording(filePath, periodMS));
     }
 }

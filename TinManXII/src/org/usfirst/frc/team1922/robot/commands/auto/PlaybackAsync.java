@@ -54,11 +54,6 @@ public abstract class PlaybackAsync extends Command {
     	
     	_periodMS = periodMS;
     }
-    
-    public PlaybackAsync(String filePath)
-    {
-    	this(filePath, 15);
-    }
 
     // Called just before this Command runs the first time
     protected void initialize() {

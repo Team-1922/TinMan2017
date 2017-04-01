@@ -40,11 +40,6 @@ public abstract class RecorderAsync extends Command {
     	_subDir = subDir;
     	_periodMS = periodMS;
     }
-    
-    public RecorderAsync(String subDir)
-    {
-    	this(subDir, 15);
-    }
 
     // Called just before this Command runs the first time
     protected void initialize() {

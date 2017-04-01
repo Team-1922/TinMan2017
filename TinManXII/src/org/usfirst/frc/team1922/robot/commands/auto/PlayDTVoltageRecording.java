@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class PlayDTVoltageRecording extends LeftRightPlayback {
 
-    public PlayDTVoltageRecording(String filePath) {
-    	super(filePath);
+    public PlayDTVoltageRecording(String filePath, int periodMS) {
+    	super(filePath, periodMS);
     	requires(Robot.mDriveTrain);
     }
 

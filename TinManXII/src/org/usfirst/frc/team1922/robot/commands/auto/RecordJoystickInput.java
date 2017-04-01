@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class RecordJoystickInput extends LeftRightRecorder {
 
-	public RecordJoystickInput(String subDir) {
-		super(subDir);
+	public RecordJoystickInput(String subDir, int periodMS) {
+		super(subDir, periodMS);
 		// TODO Auto-generated constructor stub
 	}
 

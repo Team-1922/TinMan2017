@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class RecordAllData extends CommandGroup {
 
-    public RecordAllData(String joySubDir, String posSubDir, String velSubDir, String dtVoltageSubDir, String gearFlapSubDir) {
-    	addParallel(new RecordJoystickInput(joySubDir));
-    	addParallel(new RecordEncoderPosition(posSubDir));
-		addParallel(new RecordDTVoltage(dtVoltageSubDir));
-		addParallel(new RecordGearFlap(gearFlapSubDir));
-    	addSequential(new RecordEncoderVelocity(velSubDir));
+    public RecordAllData(int periodMS, String joySubDir, String posSubDir, String velSubDir, String dtVoltageSubDir, String gearFlapSubDir) {
+    	addParallel(new RecordJoystickInput(joySubDir, periodMS));
+    	addParallel(new RecordEncoderPosition(posSubDir, periodMS));
+		addParallel(new RecordDTVoltage(dtVoltageSubDir, periodMS));
+		addParallel(new RecordGearFlap(gearFlapSubDir, periodMS));
+    	addSequential(new RecordEncoderVelocity(velSubDir, periodMS));
     }
 }

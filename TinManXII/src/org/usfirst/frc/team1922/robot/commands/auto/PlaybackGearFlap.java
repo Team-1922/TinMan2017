@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class PlaybackGearFlap extends Playback {
+public class PlaybackGearFlap extends PlaybackAsync {
 
-	public PlaybackGearFlap(String filePath) {
-		super(filePath);
+	public PlaybackGearFlap(String filePath, int periodMS) {
+		super(filePath, periodMS);
 		requires(Robot.mGearFlap);
 		// TODO Auto-generated constructor stub
 	}

@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  */
 public class RecordDTVoltage extends LeftRightRecorder {
 
-	public RecordDTVoltage(String tableName) {
-		super(tableName);
+	public RecordDTVoltage(String tableName, int periodMS) {
+		super(tableName, periodMS);
 		// TODO Auto-generated constructor stub
 	}
 

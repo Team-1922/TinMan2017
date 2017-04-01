@@ -7,13 +7,13 @@ import org.usfirst.frc.team1922.robot.Robot;
 /**
  * 
  */
-public class RecallPath extends Vector2dPlayback {
+public class RecallPath extends Vector2dPlaybackAsync {
 
 	double dThetaDtMax = Math.PI;
 	double accMax = 12; //inches/second^2 -> What should this be?
 	
-    public RecallPath(String filePath) {
-    	super(filePath);
+    public RecallPath(String filePath, int periodMS) {
+    	super(filePath, periodMS);
     	requires(Robot.mDriveTrain);
     }
 
