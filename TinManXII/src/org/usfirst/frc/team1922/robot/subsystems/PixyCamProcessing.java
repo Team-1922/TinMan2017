@@ -16,6 +16,12 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
+/**
+ * The game-specific processing class for the data coming from the Pixy-Cam
+ * 
+ * @author Kevin Mackenzie
+ *
+ */
 public class PixyCamProcessing extends Subsystem implements CfgInterface {
 
 	/*
@@ -23,25 +29,59 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * Data Members
 	 * 
 	 */
+	/**
+	 * The minimum width for a detected block
+	 */
 	private int _minWidth = 10;
+	/**
+	 * The minimum height for a detected block
+	 */
 	private int _minHeight = 20;
+	/**
+	 * The x center of the window (in pixels)
+	 */
 	private int _windowXCenter = 160;
+	/**
+	 * The proportional constant (Volts/pixel)
+	 */
 	private double _proportional = 0.0;
+	/**
+	 * The threshold of acceptable difference from center (+/-)
+	 */
 	private int _threshold = 5;
+	/**
+	 * The update period length in milliseconds
+	 */
 	private int _periodMS = 100;
+	/**
+	 * Whether to output debug information to the network tables
+	 */
 	private boolean _debug = false;
 	
 	
 	/*
-	 * 
-	 * GET NAME FOR THESE
-	 * 
+	 * Runtime Variables
 	 */
 	
+	/**
+	 * The Medium-level PixyCam interface
+	 */
 	private PixyCam _pixyCam;
+	/**
+	 * The active frame from the PixyCam
+	 */
 	private PixyCamFrame _frame;
+	/**
+	 * The x position of the target on screen
+	 */
 	private int _targetXPosition;
+	/**
+	 * The y position of the target on screen
+	 */
 	private int _targetYPosition;
+	/**
+	 * Whether the PixyCam sees the target
+	 */
 	private boolean _seesTarget;
 	
 	
@@ -50,7 +90,9 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * Constructors
 	 * 
 	 */
-	
+	/**
+	 * Creates an instance of the {@link PixyCamProcessing} class
+	 */
 	public PixyCamProcessing()
 	{
 		_pixyCam = new PixyCam(new PixyI2CWrapper());
@@ -61,7 +103,9 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * Control Methods
 	 * 
 	 */
-	
+	/**
+	 * Gets the next frame and updates the target position information
+	 */
 	public void UpdateFrame()
 	{
 		PixyCamFrame nextFrame = _pixyCam.GetFrame(_frame);
@@ -155,21 +199,27 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		}
 	}
 	
+	/**
+	 * Start the PixyCam processing loop
+	 */
 	public void Start()
 	{
 		_pixyCam.Start(100, true);
 	}
 	
+	/**
+	 * Stop the PixyCam processing loop
+	 */
 	public void Stop()
 	{
 		_pixyCam.Stop();
 	}
+
+
 	
-	/*
-	 * 
-	 * Returns the Percent V-Bus twist factor (+ = CW; - = CCW);
-	 * 	Typically, this value should be divided by two and half be added/subtracted to each side
-	 * 
+	/**
+	 * Typically the result should be divided by two and added/subtracted to each side
+	 * @return the Percent V-Bus twist factor (positive = Clockwise; negative = Counter-Clockwise)
 	 */
 	public double GetDTTwist()
 	{
@@ -181,10 +231,9 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		return _targetXPosition * _proportional;
 	}	
 	
-	/*
+	/**
 	 * 
-	 * The number of pixels away from the assigned center the target is
-	 * 
+	 * @return The number of pixels away from the assigned center the target is
 	 */
 	public int GetPixelsOffCenter()
 	{
@@ -194,6 +243,10 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		return _targetXPosition;
 	}
 	
+	/**
+	 * 
+	 * @return Whether the target is within the threshold
+	 */
 	public boolean IsOnTarget()
 	{
 		UpdateFrame();
@@ -201,21 +254,20 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 			return true;
 		return Math.abs(_targetXPosition) < _threshold;
 	}
-	
-	/*
+
+	/**
 	 * 
-	 * Whether the camera has established a target
-	 * 
+	 * @return Whether the camera has established a target
 	 */
 	public boolean TargetInView()
 	{
 		return _seesTarget;
 	}
 	
-	/*
-	 * 
+	/**
 	 * Try not to call this too frequently in performance-sensitive situations
 	 * 
+	 * @return a copy of the active frame
 	 */
 	public PixyCamFrame GetActiveFrame()
 	{

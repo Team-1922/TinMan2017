@@ -1,5 +1,11 @@
 package org.ozram1922.image;
 
+/**
+ * A single block of data as outlined on the PixyCam website
+ *  
+ * @author Kevin Mackenzie
+ *
+ */
 public class PixyCamBlock
 {
 	public int Signature;
@@ -11,6 +17,9 @@ public class PixyCamBlock
 	
 	public static final int WordCount = 6;
 	
+	/**
+	 * Gets a copy of this data
+	 */
 	public PixyCamBlock clone()
 	{
 		PixyCamBlock ret = new PixyCamBlock();
@@ -23,6 +32,10 @@ public class PixyCamBlock
 		return ret;
 	}
 	
+	/**
+	 * 
+	 * @return the width*height area
+	 */
 	public int GetAABBArea()
 	{
 		return Width*Height;

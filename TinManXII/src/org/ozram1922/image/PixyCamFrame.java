@@ -2,6 +2,11 @@ package org.ozram1922.image;
 
 import java.util.ArrayList;
 
+/**
+ * All of the blocks for an update cycle on the PixyCam
+ * @author Kevin Mackenzie
+ *
+ */
 public class PixyCamFrame
 {
 	public PixyCamFrame(int frameId, ArrayList<PixyCamBlock> list)
