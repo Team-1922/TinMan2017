@@ -3,6 +3,8 @@ package org.usfirst.frc.team1922.robot.commands.auto;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.ozram1922.Vector2d;
 import org.ozram1922.autonomous.AutoRecorder;
@@ -15,17 +17,38 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
 /**
  *
  */
-public abstract class Vector2dRecorder extends Command {
+public abstract class Vector2dRecorderAsync extends Command {
 
+	int _periodMS = 15;
+	Timer _worker = new Timer();
+	private class WorkerTask extends TimerTask
+	{
+		@Override
+		public void run() {
+			Vector2d val = Get();
+			synchronized(_autoRecorder)
+			{
+		    	_autoRecorder.Update(val);
+			}
+		}		
+	}
+	
+	
 	VectorAutoRecorder _autoRecorder = new VectorAutoRecorder();
 	String _subDir;
 	static String basePath = "/home/lvuser/TinManRecordings/";
 
-    public Vector2dRecorder(String subDir) {
+    public Vector2dRecorderAsync(String subDir, int periodMS) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	//_entry = (NetworkTable) NetworkTable.getTable("T1922").getSubTable(tableName);
     	_subDir = subDir;
+    	_periodMS = periodMS;
+    }
+    
+    public Vector2dRecorderAsync(String subDir)
+    {
+    	this(subDir, 15);
     }
 
     // Called just before this Command runs the first time
@@ -34,11 +57,12 @@ public abstract class Vector2dRecorder extends Command {
 
     	new File(basePath).mkdirs();
     	new File(basePath + _subDir).mkdirs();
+    	
+    	_worker.schedule(new WorkerTask(), 0, _periodMS);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	_autoRecorder.Update(Get());
     }
     
     protected abstract Vector2d Get();
@@ -56,6 +80,8 @@ public abstract class Vector2dRecorder extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	_worker.cancel();
+    	
     	int leftEntryNumber = -1;
     	int rightEntryNumber = -1;
     	//while(_entry.containsKey(leftEntryNumber + "L")) leftEntryNumber++;

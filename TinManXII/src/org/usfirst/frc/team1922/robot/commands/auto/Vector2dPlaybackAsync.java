@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.ozram1922.OzUtils;
 import org.ozram1922.Vector2d;
@@ -16,12 +18,29 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public abstract class Vector2dPlayback extends Command {
+public abstract class Vector2dPlaybackAsync extends Command {
 
+
+	int _periodMS = 15;
+	Timer _worker = new Timer();
+	private class WorkerTask extends TimerTask
+	{
+		@Override
+		public void run() {
+			Vector2d setpoint;
+			synchronized(_autoPlayback)
+			{
+		    	setpoint = _autoPlayback.GetVectorSetpoint();
+			}
+			execute(setpoint);
+		}		
+	}
+	
+	
 	VectorAutoPlayback _autoPlayback = new VectorAutoPlayback();
 
 	
-    public Vector2dPlayback(String filePath) {
+    public Vector2dPlaybackAsync(String filePath, int periodMS) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	try {
@@ -30,27 +49,43 @@ public abstract class Vector2dPlayback extends Command {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	_periodMS = periodMS;
+    }
+    
+    public Vector2dPlaybackAsync(String filePath)
+    {
+    	this(filePath, 15);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	_autoPlayback.StartPlayback();
+    	_worker.schedule(new WorkerTask(), 0, _periodMS);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	execute(_autoPlayback.GetVectorSetpoint());
     }
     
     protected abstract void execute(Vector2d value);
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return _autoPlayback.IsFinished();
+    	boolean ret;
+    	
+    	synchronized(_autoPlayback)
+    	{
+        	ret = _autoPlayback.IsFinished();
+    	}
+    	return ret;
     }
 
     // Called once after isFinished returns true
-    protected abstract void end();
+    protected void end()
+    {
+    	_worker.cancel();
+    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
