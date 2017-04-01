@@ -39,7 +39,9 @@ public class RecallPath extends Vector2dPlaybackAsync {
     }
 
     // Called once after isFinished returns true
+    @Override
     protected void end() {
+    	super.end();
     	Robot.mDriveTrain.TankControl(0, 0);
     }
 }
