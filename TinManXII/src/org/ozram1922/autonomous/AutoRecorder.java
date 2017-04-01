@@ -12,7 +12,7 @@ public class AutoRecorder {
 	
 	public AutoRecorder(int valueCount)
 	{
-		valueCount = 0;
+		_valueCount = valueCount;
 	}
 	
 	public AutoRecorder()
@@ -23,6 +23,8 @@ public class AutoRecorder {
 	public void StartRecording()
 	{
 		_nanoTimeOffset = System.nanoTime();
+		_timeTable.clear();
+		_valueTable.clear();
 	}
 	
 	public void Update(double newVal)
