@@ -34,7 +34,8 @@ public class PixyCam {
 	/**
 	 * The 16 bits that indicate the start of a block offset by 1 byte
 	 */
-	public static final short StartWordX = (short)0x55aa;
+	public static final short StartWordBigEndianX = (short)0x55; //this is NOT for all endians
+	public static final short StartWordLittleEndianX = (short)0x5500;
 	/**
 	 * The 8 bits that indicate the start of a servo request (send)
 	 */
@@ -560,9 +561,10 @@ public class PixyCam {
 					_blockType = BlockType.kColorCode; // color code block
 					return 1;
 				}
-				else if(w == StartWordX)
+				else if(w == StartWordBigEndianX || w == StartWordLittleEndianX)
 				{
 					_wrapper.GetByte(); // we're out of sync
+					w = StartWord;
 				}
 				lastw = w;
 			}
