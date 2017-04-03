@@ -23,6 +23,8 @@ public class PixyCamFrame
 	private int _frameId = 0;
 	public boolean IsDifferent(PixyCamFrame other)
 	{
+		if(null == other)
+			return true;
 		return _frameId == other._frameId;
 	}
 	public boolean IsDifferent(int frameId)

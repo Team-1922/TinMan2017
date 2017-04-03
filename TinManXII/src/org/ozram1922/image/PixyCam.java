@@ -336,10 +336,13 @@ public class PixyCam {
 		 */
 		public PixyCamFrame GetFrame(PixyCamFrame oldFrame)
 		{
-			synchronized(this)
+			if(null != oldFrame)
 			{
-				if(oldFrame.IsDifferent(_frameId))
-					return oldFrame;
+				synchronized(this)
+				{
+					if(oldFrame.IsDifferent(_frameId))
+						return oldFrame;
+				}
 			}
 			return CopyOfFrame();
 		}
