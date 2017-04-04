@@ -1,5 +1,7 @@
 package org.ozram1922.image;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 /**
  * A single block of data as outlined on the PixyCam website
  *  
@@ -39,5 +41,36 @@ public class PixyCamBlock
 	public int GetAABBArea()
 	{
 		return Width*Height;
+	}
+	
+	private boolean ContainsPoint(int x, int y)
+	{
+		return (x > X && x < X + Width) && 
+				(y > Y && Y < Y + Height);
+	}
+	
+	public boolean ContainsOther(PixyCamBlock other)
+	{
+		return ContainsPoint(other.X, other.Y) ||
+				ContainsPoint(other.X, other.Y + Height) ||
+				ContainsPoint(other.X + Width, other.Y) ||
+				ContainsPoint(other.X + Width, other.Y + Height);
+	}
+	
+	public void ExpandToFit(PixyCamBlock other)
+	{
+		int thisBottom = Y + Height;
+		int thisRight = X + Width;
+		int otherBottom = other.Y + other.Height;
+		int otherRight = other.X + other.Width;
+		
+		int right = Math.max(thisRight, otherRight);
+		int bottom = Math.max(thisBottom, otherBottom);
+		
+		X = Math.min(X, other.X);
+		Y = Math.min(Y, other.Y);
+		
+		Width = X - right;
+		Height = Y - bottom;		
 	}
 }
