@@ -51,14 +51,18 @@ public class PixyCamBlock
 	
 	public boolean ContainsOther(PixyCamBlock other)
 	{
+		if(other == null)
+			return false;
 		return ContainsPoint(other.X, other.Y) ||
-				ContainsPoint(other.X, other.Y + Height) ||
-				ContainsPoint(other.X + Width, other.Y) ||
-				ContainsPoint(other.X + Width, other.Y + Height);
+				ContainsPoint(other.X, other.Y + other.Height) ||
+				ContainsPoint(other.X + other.Width, other.Y) ||
+				ContainsPoint(other.X + other.Width, other.Y + other.Height);
 	}
 	
 	public void ExpandToFit(PixyCamBlock other)
 	{
+		if(other == null)
+			return;
 		int thisBottom = Y + Height;
 		int thisRight = X + Width;
 		int otherBottom = other.Y + other.Height;
