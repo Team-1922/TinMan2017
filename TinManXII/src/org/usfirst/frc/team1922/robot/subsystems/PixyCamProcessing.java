@@ -113,6 +113,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	public void UpdateFrame()
 	{
 		PixyCamFrame nextFrame = _pixyCam.GetFrame(_frame);
+		if(nextFrame == null)
+			return;
 		if(nextFrame.IsDifferent(_frame))
 		{
 			_frame = nextFrame;
@@ -182,7 +184,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 			
 			if(blocks.size() == 1)
 			{
-				PixyCamBlock block = blocks.get(1);
+				PixyCamBlock block = blocks.get(0);
 				_targetXPosition = block.X + block.Width/2;
 				_targetYPosition = block.Y;
 				_seesTarget = true;

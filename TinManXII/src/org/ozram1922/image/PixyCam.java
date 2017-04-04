@@ -340,7 +340,7 @@ public class PixyCam {
 			{
 				synchronized(this)
 				{
-					if(oldFrame.IsDifferent(_frameId))
+					if(!oldFrame.IsDifferent(_frameId))
 						return oldFrame;
 				}
 			}
@@ -367,14 +367,15 @@ public class PixyCam {
 			//number++;
 			//_netTable.putNumber("Test Number", number);
 			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
-			if(blocks == null)
-				return;
+			//if(blocks == null)
+			//	return;
 			//ClearNetTables.RecursiveTableDelete(_netTable);
 			synchronized(this)
 			{
 				_frameId ++;
 				_blocks = blocks;
-				//_netTable.putNumber("Test Number", _frameId);
+				_netTable.putNumber("Frame ID", _frameId);
+				//_netTable.putNumber("Block Count", _blocks.size());
 				//_netTable.putNumber("Word", _wrapper.GetWord());
 				/*byte[] bytes = _spiWrapper.Get2Bytes();
 				for(int i = 0; i < bytes.length; ++i)
@@ -391,13 +392,14 @@ public class PixyCam {
 			//{
 			//	_netTable.putNumber("Byte " + i, bufferBytes[i]);
 			//}
-			_debug = true;
-			if(_debug)
-			{
-				PixyCamFrame frame = new PixyCamFrame(_frameId);
-				frame.List = _blocks;
-				OutputToNetTable(frame);
-			}
+			
+			//_debug = true;
+			//if(_debug)
+			//{
+			//	PixyCamFrame frame = new PixyCamFrame(_frameId);
+			//	frame.List = _blocks;
+			//	OutputToNetTable(frame);
+			//}
 		}
 		
 		/*
