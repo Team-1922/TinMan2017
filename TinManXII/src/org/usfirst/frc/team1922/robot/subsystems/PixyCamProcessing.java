@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1922.robot.subsystems;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.ozram1922.cfg.CfgDocument;
 import org.ozram1922.cfg.CfgElement;
@@ -70,19 +72,21 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	/**
 	 * The active frame from the PixyCam
 	 */
-	private PixyCamFrame _frame;
+	private PixyCamFrame _frame = null;
 	/**
 	 * The x position of the target on screen
 	 */
-	private int _targetXPosition;
+	private int _targetXPosition = 0;
 	/**
 	 * The y position of the target on screen
 	 */
-	private int _targetYPosition;
+	private int _targetYPosition = 0;
 	/**
 	 * Whether the PixyCam sees the target
 	 */
-	private boolean _seesTarget;
+	private boolean _seesTarget = false;
+	
+	private int _condensedBlockCount = 0;
 	
 	
 	/*
@@ -124,6 +128,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 					continue;
 				}
 				
+				boolean wasCombined = false;
+				
 				//combine vertically
 				for(int j = 0; j < blocks.size(); j++)
 				{
@@ -133,78 +139,127 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 						PixyCamBlock storedBlock = blocks.get(j);
 						PixyCamBlock newBlock = _frame.List.get(i);
 						
+						storedBlock.ExpandToFit(newBlock);
+						
 						// expand the rect vertically to include the full size of both
-						int storedTop = storedBlock.Y + storedBlock.Height;
-						int newTop = newBlock.Y + newBlock.Height;
-						storedBlock.Y = Math.min(storedBlock.Y, newBlock.Y);
-						storedBlock.Height = Math.max(storedTop, newTop) - storedBlock.Y;
+						//int storedBottom = storedBlock.Y + storedBlock.Height;
+						//int newBottom = newBlock.Y + newBlock.Height;
+						//storedBlock.Y = Math.min(storedBlock.Y, newBlock.Y);
+						//storedBlock.Height = Math.max(storedBottom, newBottom) - storedBlock.Y;
 						
 						//TODO: this might not be the best strategy for X values
 						//average the X positions in case angle is off
-						storedBlock.X = (storedBlock.X + newBlock.X) / 2;						
+						//storedBlock.X = (storedBlock.X + newBlock.X) / 2;
+						
+						wasCombined = true;
+						break;
 					}
-					
+					else if(blocks.get(j).ContainsOther(_frame.List.get(i)))
+					{
+						blocks.get(j).ExpandToFit(_frame.List.get(i));
+						wasCombined = true;
+						break;
+					}
+				}
+
+				if(!wasCombined)
+				{
 					//if not within 5 pixels, then add and break;
 					blocks.add(_frame.List.get(i));
-					break;
 				}
 			}
+			
+			_condensedBlockCount = blocks.size();
 			
 			//how many blocks do we have?
-			if(blocks.size() < 2)
+			if(blocks.size() < 1)
 			{
 				_seesTarget = false;
+				_targetXPosition = 0;
+				_targetYPosition = 0;
 				return;
 			}
-				
 			
-			PixyCamBlock bigBlock1, bigBlock2;
-			bigBlock1 = blocks.get(0);
-			bigBlock2 = blocks.get(1);
-
-			//now that we have combined the blocks into adjacent block clusters, then get the two biggest ones
-			for(int i = 2; i < blocks.size(); ++i)
+			if(blocks.size() == 1)
 			{
-				//always be sure we are overwriting the smaller block
-				PixyCamBlock target;
-				if(bigBlock1.GetAABBArea() > bigBlock2.GetAABBArea())
+				PixyCamBlock block = blocks.get(1);
+				_targetXPosition = block.X + block.Width/2;
+				_targetYPosition = block.Y;
+				_seesTarget = true;
+			}
+			else
+			{
+			
+				
+				PixyCamBlock bigBlock1, bigBlock2;
+				bigBlock1 = blocks.get(0);
+				bigBlock2 = blocks.get(1);
+	
+				//now that we have combined the blocks into adjacent block clusters, then get the two biggest ones
+				for(int i = 2; i < blocks.size(); ++i)
 				{
-					target = bigBlock2;
-				}
-				else
-				{
-					target = bigBlock1;
+					//always be sure we are overwriting the smaller block
+					PixyCamBlock target;
+					if(bigBlock1.GetAABBArea() > bigBlock2.GetAABBArea())
+					{
+						target = bigBlock2;
+					}
+					else
+					{
+						target = bigBlock1;
+					}
+					
+					if(blocks.get(i).GetAABBArea() > target.GetAABBArea())
+					{
+						target = blocks.get(i);
+					}
 				}
 				
-				if(blocks.get(i).GetAABBArea() > target.GetAABBArea())
+				//enforce a minimum width and Height (so off-angle or far-away detections don't count.  This is especially important for tele-op drive assist)
+				if(bigBlock1.Width < _minWidth || bigBlock2.Width < _minWidth || bigBlock1.Height < _minHeight || bigBlock2.Height < _minHeight)
 				{
-					target = blocks.get(i);
+					//TODO: Test everything else before adding this
+					//_seesTarget = false;
+					//return;
 				}
+				
+				//get the midpoint (center) of the two X & Y Positions
+				_targetXPosition = (bigBlock1.X + bigBlock2.X) / 2;
+				_targetYPosition = (bigBlock1.Y + bigBlock2.Y) / 2;
 			}
-			
-			//enforce a minimum width and Height (so off-angle or far-away detections don't count.  This is especially important for tele-op drive assist)
-			if(bigBlock1.Width < _minWidth || bigBlock2.Width < _minWidth || bigBlock1.Height < _minHeight || bigBlock2.Height < _minHeight)
-			{
-				//TODO: Test everything else before adding this
-				//_seesTarget = false;
-				//return;
-			}
-			
-			//get the midpoint (center) of the two X & Y Positions
-			_targetXPosition = (bigBlock1.X + bigBlock2.X) / 2;
-			_targetYPosition = (bigBlock1.Y + bigBlock2.Y) / 2;
 			
 			//now shift the X to be relative to the center of the screen
 			_targetXPosition -= _windowXCenter;
 		}
 	}
 	
+	
+	class OutputWorker extends TimerTask
+	{
+
+		NetworkTable _netTableDT = NetworkTable.getTable("PixyProcessing");
+		int i = 0;
+		@Override
+		public void run() {
+			UpdateFrame();
+			_netTableDT.putNumber("Block Count", _condensedBlockCount);
+			_netTableDT.putNumber("DT Twist", (double)_targetXPosition * _proportional);
+			_netTableDT.putNumber("Center", _targetXPosition);
+			i++;
+			_netTableDT.putNumber("I", i);
+		}
+		
+	}
+	
+	Timer _outputWorker = new Timer();
+	
 	/**
 	 * Start the PixyCam processing loop
 	 */
 	public void Start()
 	{
-		_pixyCam.Start(100, true);
+		_pixyCam.Start(_periodMS, true);
+		_outputWorker.schedule(new OutputWorker(), 0, _periodMS);
 	}
 	
 	/**
@@ -213,6 +268,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	public void Stop()
 	{
 		_pixyCam.Stop();
+		_outputWorker.cancel();
 	}
 
 
@@ -297,7 +353,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	public boolean Deserialize(CfgElement element) {
 
 		_windowXCenter = element.GetAttributeI("CameraCenter");
-		_proportional = element.GetAttributeI("ProportionalControl");
+		_proportional = element.GetAttributeD("ProportionalControl");
 		_threshold = element.GetAttributeI("Threshold");
 		_periodMS = element.GetAttributeI("UpdatePeriod");
 		_minWidth = element.GetAttributeI("MinWidth");
