@@ -18,10 +18,13 @@ public class PlayDTVoltageRecording extends LeftRightPlayback {
     public PlayDTVoltageRecording(String leftFilePath, String rightFilePath) {
     	super(leftFilePath, rightFilePath);
     	requires(Robot.mDriveTrain);
+    	requires(Robot.mPixyCam);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute(double left, double right) {
+    	Robot.mPixyCam.UpdateFrame();
+    	
 		double pdpVoltage = Robot.mPDP.getVoltage();
 		
 
