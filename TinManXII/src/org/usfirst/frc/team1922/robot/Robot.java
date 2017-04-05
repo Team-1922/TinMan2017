@@ -180,7 +180,6 @@ public class Robot extends IterativeRobot {
 
     	SmartDashboard.putNumber("Left Encoder Position", mDriveTrain.GetLeftPosition());
     	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
-
     }
     
     /**

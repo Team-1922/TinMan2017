@@ -18,6 +18,10 @@ public class PlaybackGearFlap extends Playback {
 
 	@Override
 	protected void execute(double val) {
+
+		if(!Robot.mGearFlap.IsPegDetected())
+			if(Robot.mGearFlap.GetFlapState() == false && val >= 0.9)
+				return;
 		Robot.mGearFlap.SetFlapState(val >= 0.9 ? true : false);
 		SmartDashboard.putNumber("Flap State", val);
 	}
