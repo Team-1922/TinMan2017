@@ -18,7 +18,6 @@ public class PlayDTVoltageRecording extends LeftRightPlayback {
     public PlayDTVoltageRecording(String leftFilePath, String rightFilePath) {
     	super(leftFilePath, rightFilePath);
     	requires(Robot.mDriveTrain);
-    	requires(Robot.mPixyCam);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,9 +31,9 @@ public class PlayDTVoltageRecording extends LeftRightPlayback {
 		double rightValue = right / pdpVoltage;
 		
 		//apply the camera processing logic
-		double rotationBias = Robot.mPixyCam.GetDTTwist();		
-		leftValue += rotationBias / 2.0;
-		rightValue -= rotationBias / 2.0;
+		//double rotationBias = Robot.mPixyCam.GetDTTwist();		
+		//leftValue += rotationBias / 2.0;
+		//rightValue -= rotationBias / 2.0;
 		
     	Robot.mDriveTrain.TankControl(leftValue, rightValue);
     	

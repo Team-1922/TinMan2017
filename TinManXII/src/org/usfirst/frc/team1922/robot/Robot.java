@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.ozram1922.cfg.CfgLoader;
 import org.usfirst.frc.team1922.robot.commands.TimedTankDrive;
+import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.commands.auto.SidedPeg;
 import org.usfirst.frc.team1922.robot.commands.auto.StraightPeg;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
@@ -42,10 +43,10 @@ public class Robot extends IterativeRobot {
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
-	//public static PlayAutoRecording mAutoC = new PlayAutoRecording(
-	//		"/home/lvuser/LeftRecordingC.csv",
-	//		"/home/lvuser/RightRecordingC.csv",
-	//		"/home/lvuser/GearRecordingC.csv");
+	public static PlayAutoRecording mOldAutoC = new PlayAutoRecording(
+			"/home/lvuser/LeftRecordingC.csv",
+			"/home/lvuser/RightRecordingC.csv",
+			"/home/lvuser/GearRecordingC.csv");
 	
 	//public static PlayAutoRecording mAutoL = new PlayAutoRecording(
 	//		"/home/lvuser/LeftRecordingL.csv",
@@ -100,6 +101,7 @@ public class Robot extends IterativeRobot {
 		mPixyCam.Start();
 
 		chooser.addDefault("Center Auto", mAutoC);
+		chooser.addDefault("Old Center Auto", mOldAutoC);
 		chooser.addObject("Left Auto", mAutoL);
 		chooser.addObject("Right Auto", mAutoR);
 		chooser.addObject("BaseLine Auto", mAutoBase);
