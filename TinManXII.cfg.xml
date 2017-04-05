@@ -33,16 +33,16 @@
 		gearFilePath="/home/lvuser/GearRecording.csv" />		
 		
 		<!-- Experimental Path -->
-		<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayMostRecentAutoRecording" />
+		<!--<Command TriggerType="WhenPressed" Joystick="LeftStick" Button="12" Name="auto.PlayMostRecentAutoRecording" />-->
 		
 		<!-- Operator Commanes -->
 		<Command TriggerType="WhileHeld" Joystick="OpStick" Button="1" Name="ClimbRope" />
-		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="5" Name="SetServoCamForwards" />
-		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="3" Name="SetServoCamBackwards" />
+		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="5" Name="SetServoCamForwards" />
+		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="3" Name="SetServoCamBackwards" />
 		
 	</OI>
 	<DriverCamera ServoId="9" FullPos="1" FullNeg="0.075" />
 	<GearFlap ActuatorId="1" />
 	<RopeClimber MotorID="5" />
-	<ImageProcessing CameraCenter="160" ProportionalControl="0.02" Threshold="5" UpdatePeriod="100" MinWidth="5" MinHeight="10" Debug="1" />
+	<ImageProcessing CameraCenter="160" ProportionalControl="0.01" Threshold="5" UpdatePeriod="100" MinWidth="5" MinHeight="10" Debug="1" />
 </root>

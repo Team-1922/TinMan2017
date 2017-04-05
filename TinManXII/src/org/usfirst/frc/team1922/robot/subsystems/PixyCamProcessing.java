@@ -130,11 +130,20 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 					continue;
 				}
 				
+
+				//make sure it isn't a reflection of the ring light off the plastic
+				//int x = _frame.List.get(i).X;
+				//int y = _frame.List.get(i).Y;
+				//if(x < 50 || x > 300)
+			//		continue; // ignore this one
+				//if(y < 30)
+				//	continue;
+				
 				boolean wasCombined = false;
 				
 				//combine vertically
 				for(int j = 0; j < blocks.size(); j++)
-				{
+				{					
 					//if the two blocks are within 5 pixels, then add to them.  its probably a duplicate (or cut in half by the hook)
 					if(Math.abs(blocks.get(j).X - _frame.List.get(i).X) < 5)
 					{
@@ -243,7 +252,15 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		int i = 0;
 		@Override
 		public void run() {
-			UpdateFrame();
+			try
+			{
+				// this is throwing exceptions...
+				UpdateFrame();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 			_netTableDT.putNumber("Block Count", _condensedBlockCount);
 			_netTableDT.putNumber("DT Twist", (double)_targetXPosition * _proportional);
 			_netTableDT.putNumber("Center", _targetXPosition);
@@ -286,7 +303,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 			return 0;
 		if(IsOnTarget())
 			return 0;
-		return _targetXPosition * _proportional;
+		return -_targetXPosition * _proportional;
 	}	
 	
 	/**
@@ -342,7 +359,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new RunPixyCam());
+		//setDefaultCommand(new RunPixyCam());
 	}
 	
 	

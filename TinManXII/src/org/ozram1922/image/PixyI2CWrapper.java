@@ -28,7 +28,7 @@ public class PixyI2CWrapper implements PixyCamWrapper
 	
 	public PixyI2CWrapper()
 	{
-		this(64);
+		this(100);
 	}
 	
 	/*

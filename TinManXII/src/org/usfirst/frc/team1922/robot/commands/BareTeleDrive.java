@@ -33,9 +33,9 @@ public class BareTeleDrive extends Command {
     	{
     		//TODO: don't account for rotation just yet!!
     		//only account for pixy cam if NOT reversed
-    		//double rotationalBias = Robot.mPixyCam.GetDTTwist();
-    		//leftVal += rotationalBias / 2;
-    		//rightVal += rotationalBias / 2;
+    		double rotationalBias = Robot.mPixyCam.GetDTTwist();
+    		leftVal += rotationalBias / 2;
+    		rightVal -= rotationalBias / 2;
     	}
     	Robot.mDriveTrain.TankControl(leftVal, rightVal);
     }

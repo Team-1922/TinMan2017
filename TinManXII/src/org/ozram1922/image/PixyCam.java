@@ -298,6 +298,8 @@ public class PixyCam {
 			PixyCamFrame copy;
 			synchronized(this)
 			{
+				if(_blocks == null)
+					return null;
 				copy = new PixyCamFrame(_frameId);
 				for(PixyCamBlock item : _blocks)
 				{
@@ -367,8 +369,8 @@ public class PixyCam {
 			//number++;
 			//_netTable.putNumber("Test Number", number);
 			ArrayList<PixyCamBlock> blocks = ReadBlocks(10);
-			//if(blocks == null)
-			//	return;
+			if(blocks == null)
+				return;
 			//ClearNetTables.RecursiveTableDelete(_netTable);
 			synchronized(this)
 			{
@@ -387,11 +389,11 @@ public class PixyCam {
 			//{
 			//	_netTable.putNumber("Word " + i, _wrapper.GetWord());
 			//}
-			//byte[] bufferBytes = _wrapper.ViewBuffer();
-			//for(int i = 0; i < bufferBytes.length; ++i)
-			//{
-			//	_netTable.putNumber("Byte " + i, bufferBytes[i]);
-			//}
+			byte[] bufferBytes = _wrapper.ViewBuffer();
+			for(int i = 0; i < bufferBytes.length; ++i)
+			{
+				_netTable.putNumber("Byte " + i, bufferBytes[i]);
+			}
 			
 			//_debug = true;
 			//if(_debug)
