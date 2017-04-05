@@ -24,7 +24,7 @@
 		<!-- Driver Commands -->
 		<Command TriggerType="WhileHeld" Joystick="LeftStick" Button="1" Name="HighSpeedTeleDrive" />
 		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="1" Name="HoldGearFlapOpen" />
-		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="4" Name="UseVisionTracking" />
+		<Command TriggerType="WhileHeld" Joystick="RightStick" Button="2" Name="UseVisionTracking" />
 		
 		<!-- For Debugging Only -->
 		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="7" Name="auto.SidedPeg" side="0"/>
@@ -33,8 +33,8 @@
 		
 		<!-- Operator Commanes -->
 		<Command TriggerType="WhileHeld" Joystick="OpStick" Button="1" Name="ClimbRope" />
-		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="5" Name="SetServoCamForwards" />
-		<Command TriggerType="WhenPressed" Joystick="RightStick" Button="3" Name="SetServoCamBackwards" />		
+		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="5" Name="SetServoCamForwards" />
+		<Command TriggerType="WhenPressed" Joystick="OpStick" Button="3" Name="SetServoCamBackwards" />		
 		
 		
 	</OI>
