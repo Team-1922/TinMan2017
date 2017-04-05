@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1922.robot.commands.auto;
 
+import org.usfirst.frc.team1922.robot.commands.CloseGearFlap;
+import org.usfirst.frc.team1922.robot.commands.OpenGearFlap;
 import org.usfirst.frc.team1922.robot.commands.TimedTankDrive;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -8,33 +10,54 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  */
 public class SidedPeg extends CommandGroup {
-
-    public SidedPeg() {
+	
+	//side = 0: left;
+	//side = 1: right;
+    public SidedPeg(int side) {
     	
+    	//drive forward
     	addSequential(new TimedTankDrive(0.75, 0.75, 2));
-    	addSequential(new TimedTankDrive(0.5, -0.5, 0.5));
+    	
+    	//turn to see peg
+    	if(side == 0)
+    	{
+    		addSequential(new TimedTankDrive(0.5, -0.5, 0.5));
+    	}
+    	else
+    	{
+    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.5));
+    	}
+    	
+    	//Enable vision tracking
     	addSequential(new SetVisionTrackingState(true));
+    	
+    	//drive forwards towards the peg
     	addSequential(new TimedTankDrive(0.4, 0.4, 3));
+    	
+    	//during the previous 3 seconds, hopefully the bot has had a chance to correct
     	addSequential(new SetVisionTrackingState(false));
+    	
+    	//continue driving into the peg
     	addSequential(new TimedTankDrive(0.4, 0.4, 2));
+    	
+    	//drop off the gear ...
+    	addParallel(new OpenGearFlap());
+    	//... while driving backwards
     	addSequential(new TimedTankDrive(-0.75, -0.75, 1));
-    	addSequential(new TimedTankDrive(-0.5, 0.75, 0.4));
+    	
+    	//close the gear flap ...
+    	addParallel(new CloseGearFlap());
+    	//... while turning
+    	if(side == 0)
+    	{
+    		addSequential(new TimedTankDrive(-0.75, 0.75, 0.4));
+    	}
+    	else
+    	{
+    		addSequential(new TimedTankDrive(0.75, -0.75, 0.4));
+    	}
+    	
+    	//cross the baseline
     	addSequential(new TimedTankDrive(0.75, 0.75, 1.5));
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
     }
 }
