@@ -389,11 +389,11 @@ public class PixyCam {
 			//{
 			//	_netTable.putNumber("Word " + i, _wrapper.GetWord());
 			//}
-			byte[] bufferBytes = _wrapper.ViewBuffer();
-			for(int i = 0; i < bufferBytes.length; ++i)
-			{
-				_netTable.putNumber("Byte " + i, bufferBytes[i]);
-			}
+			//byte[] bufferBytes = _wrapper.ViewBuffer();
+			//for(int i = 0; i < bufferBytes.length; ++i)
+			//{
+			//	_netTable.putNumber("Byte " + i, bufferBytes[i]);
+			//}
 			
 			//_debug = true;
 			//if(_debug)

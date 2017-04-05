@@ -110,8 +110,8 @@ public class Robot extends IterativeRobot {
 		//startGRIP();
 
 		chooser.addDefault("Center Auto", mAutoC);
-		chooser.addObject("Left Auto", mAutoL);
-		chooser.addObject("Right Auto", mAutoR);
+		//chooser.addObject("Left Auto", mAutoL);
+		//chooser.addObject("Right Auto", mAutoR);
 		chooser.addObject("BaseLine Auto", mAutoBase);
 		chooser.addObject("None", null);
 		SmartDashboard.putData("Auto Choices", chooser);

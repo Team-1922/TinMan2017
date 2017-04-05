@@ -60,6 +60,8 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 */
 	private boolean _debug = false;
 	
+	private boolean _enabled = false;
+	
 	
 	/*
 	 * Runtime Variables
@@ -298,12 +300,14 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 */
 	public double GetDTTwist()
 	{
+		if(!_enabled)
+			return 0;
 		UpdateFrame();	
-		if(!TargetInView())
-			return 0;
-		if(IsOnTarget())
-			return 0;
-		return -_targetXPosition * _proportional;
+		//if(!TargetInView())
+		//	return 0;
+		//if(IsOnTarget())
+		//	return 0;
+		return -(double)_targetXPosition * _proportional;
 	}	
 	
 	/**
@@ -328,6 +332,11 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		if(!TargetInView())
 			return true;
 		return Math.abs(_targetXPosition) < _threshold;
+	}
+	
+	public void SetTrackingState(boolean state)
+	{
+		_enabled = state;
 	}
 
 	/**
