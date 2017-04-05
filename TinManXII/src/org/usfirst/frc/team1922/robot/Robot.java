@@ -16,6 +16,8 @@ import org.ozram1922.fieldsense.Vector2d;
 import org.usfirst.frc.team1922.robot.commands.RunPixyCam;
 import org.usfirst.frc.team1922.robot.commands.TimedTankDrive;
 import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
+import org.usfirst.frc.team1922.robot.commands.auto.SidedPeg;
+import org.usfirst.frc.team1922.robot.commands.auto.StraightPeg;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1922.robot.subsystems.DriverCamera;
 import org.usfirst.frc.team1922.robot.subsystems.GearFlap;
@@ -48,20 +50,24 @@ public class Robot extends IterativeRobot {
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
-	public static PlayAutoRecording mAutoC = new PlayAutoRecording(
-			"/home/lvuser/LeftRecordingC.csv",
-			"/home/lvuser/RightRecordingC.csv",
-			"/home/lvuser/GearRecordingC.csv");
+	//public static PlayAutoRecording mAutoC = new PlayAutoRecording(
+	//		"/home/lvuser/LeftRecordingC.csv",
+	//		"/home/lvuser/RightRecordingC.csv",
+	//		"/home/lvuser/GearRecordingC.csv");
 	
-	public static PlayAutoRecording mAutoL = new PlayAutoRecording(
-			"/home/lvuser/LeftRecordingL.csv",
-			"/home/lvuser/RightRecordingL.csv",
-			"/home/lvuser/GearRecordingL.csv");
+	//public static PlayAutoRecording mAutoL = new PlayAutoRecording(
+	//		"/home/lvuser/LeftRecordingL.csv",
+	//		"/home/lvuser/RightRecordingL.csv",
+	//		"/home/lvuser/GearRecordingL.csv");
 	
-	public static PlayAutoRecording mAutoR = new PlayAutoRecording(
-			"/home/lvuser/LeftRecordingR.csv",
-			"/home/lvuser/RightRecordingR.csv",
-			"/home/lvuser/GearRecordingR.csv");
+	//public static PlayAutoRecording mAutoR = new PlayAutoRecording(
+	//		"/home/lvuser/LeftRecordingR.csv",
+	//		"/home/lvuser/RightRecordingR.csv",
+	//		"/home/lvuser/GearRecordingR.csv");
+	
+	public static SidedPeg mAutoL = new SidedPeg(0);
+	public static SidedPeg mAutoR = new SidedPeg(1);
+	public static StraightPeg mAutoC = new StraightPeg();
 	
 	public static TimedTankDrive mAutoBase = new TimedTankDrive(0.75,0.75,4); 
 	
@@ -110,8 +116,8 @@ public class Robot extends IterativeRobot {
 		//startGRIP();
 
 		chooser.addDefault("Center Auto", mAutoC);
-		//chooser.addObject("Left Auto", mAutoL);
-		//chooser.addObject("Right Auto", mAutoR);
+		chooser.addObject("Left Auto", mAutoL);
+		chooser.addObject("Right Auto", mAutoR);
 		chooser.addObject("BaseLine Auto", mAutoBase);
 		chooser.addObject("None", null);
 		SmartDashboard.putData("Auto Choices", chooser);
