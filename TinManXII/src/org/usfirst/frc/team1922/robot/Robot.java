@@ -8,14 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import java.io.IOException;
-
 import org.ozram1922.cfg.CfgLoader;
-import org.ozram1922.fieldsense.EncoderIntegrater;
-import org.ozram1922.fieldsense.Vector2d;
-import org.usfirst.frc.team1922.robot.commands.RunPixyCam;
 import org.usfirst.frc.team1922.robot.commands.TimedTankDrive;
-import org.usfirst.frc.team1922.robot.commands.auto.PlayAutoRecording;
 import org.usfirst.frc.team1922.robot.commands.auto.SidedPeg;
 import org.usfirst.frc.team1922.robot.commands.auto.StraightPeg;
 import org.usfirst.frc.team1922.robot.subsystems.DriveTrain;
@@ -39,14 +33,12 @@ public class Robot extends IterativeRobot {
 	public static OI oi = new OI();
 	public static CfgLoader mCfgLoader = new CfgLoader();
 	public static String mCfgFileName = "/home/lvuser/TinManXII.cfg.xml";
-	public static String mCsvRangeAngleName = "/home/lvuser/RangeAngleTable.csv";
 	public static DriverCamera mDriverCamera = new DriverCamera();
 	public static DriveTrain mDriveTrain = new DriveTrain();
 	public static GearFlap mGearFlap = new GearFlap();
 	public static RopeClimber mRopeClimber = new RopeClimber();
 	public static PixyCamProcessing mPixyCam = new PixyCamProcessing();
 	public static PowerDistributionPanel mPDP = new PowerDistributionPanel();
-	CameraServer server;
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -70,10 +62,6 @@ public class Robot extends IterativeRobot {
 	public static StraightPeg mAutoC = new StraightPeg();
 	
 	public static TimedTankDrive mAutoBase = new TimedTankDrive(0.75,0.75,4); 
-	
-	public static EncoderIntegrater mFieldState;
-	
-	public static RunPixyCam _pixyCommand = new RunPixyCam();
 
     Command autonomousCommand;
     
@@ -110,10 +98,6 @@ public class Robot extends IterativeRobot {
 		
 		//comment this out 
 		mPixyCam.Start();
-		
-		//for non-field use initialization
-		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
-		//startGRIP();
 
 		chooser.addDefault("Center Auto", mAutoC);
 		chooser.addObject("Left Auto", mAutoL);
@@ -121,28 +105,6 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("BaseLine Auto", mAutoBase);
 		chooser.addObject("None", null);
 		SmartDashboard.putData("Auto Choices", chooser);
-    }
-
-	//TODO: Make this Good
-    @Deprecated
-    protected void startGRIP()
-    {
-        /* Run GRIP in a new process */
-        try {
-            new ProcessBuilder("/home/lvuser/grip").inheritIO().start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    protected void CycleIntegrater()
-    {		
-		//cycle the field position integrater
-        try
-        {
-        	mFieldState.Cycle(mDriveTrain.GetLeftPosition() / 90.0, mDriveTrain.GetRightPosition() / 90.0);
-        }
-        catch(Exception e){}
     }
 	
 	/**
@@ -175,9 +137,6 @@ public class Robot extends IterativeRobot {
 		
 		//tare the value during auto mode
 		mDriveTrain.ResetEncoderPositions();
-		
-		//TODO: get this from the dashboard choser
-		mFieldState = new EncoderIntegrater(20.5, new Vector2d(0,0));
     }
 
     /**
@@ -188,9 +147,6 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
-        
-        //cycle the field positioning
-        CycleIntegrater();
     }
 
     public void teleopInit() {
@@ -210,12 +166,9 @@ public class Robot extends IterativeRobot {
     		return;
     	
         Scheduler.getInstance().run();
-		
-		//cycle the field position integrater
-        CycleIntegrater();
         
         //TESTING
-        UpdateSmartDashboardItems();
+        //UpdateSmartDashboardItems();
     }
     
     public void UpdateSmartDashboardItems()
@@ -225,11 +178,6 @@ public class Robot extends IterativeRobot {
 
     	SmartDashboard.putNumber("Left Encoder Position", mDriveTrain.GetLeftPosition());
     	SmartDashboard.putNumber("Right Encoder Position", mDriveTrain.GetRightPosition());
-
-		Vector2d position = mFieldState.Position();
-    	SmartDashboard.putNumber("Position X", position.x);
-		SmartDashboard.putNumber("Position Y", position.y);
-		SmartDashboard.putNumber("Direction", mFieldState.Direction());
 
     }
     
