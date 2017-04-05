@@ -7,41 +7,30 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TimedTankDrive extends Command {
+public class UseVisionTracking extends Command {
 
-	private double _left = 0;
-	private double _right = 0;
-    public TimedTankDrive(double left, double right, double time) {
+    public UseVisionTracking() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	_left = -left;
-    	_right = -right;
-    	requires(Robot.mDriveTrain);
-    	setTimeout(time);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.mDriveTrain.TankControl(_left, _right);
+    	Robot.mPixyCam.SetTrackingState(true);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double twist2 = Robot.mPixyCam.GetDTTwist() / 2;
-    	double left = _left + twist2;
-    	double right = _right - twist2;
-    	
-    	Robot.mDriveTrain.TankControl(left, right);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.mDriveTrain.TankControl(0,0);
+    	Robot.mPixyCam.SetTrackingState(false);
     }
 
     // Called when another command which requires one or more of the same
