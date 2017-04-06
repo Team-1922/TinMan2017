@@ -16,7 +16,7 @@ public class SidedPeg extends CommandGroup {
     public SidedPeg(int side) {
     	
     	//drive forward
-    	addSequential(new TimedTankDrive(0.75, 0.75, 2));
+    	addSequential(new TimedTankDrive(0.75, 0.75, 2.5));
     	
     	//turn to see peg
     	if(side == 0)
