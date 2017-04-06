@@ -1,8 +1,8 @@
 <Pixy_parameters>
  <data key="fwver" value="0" type="INT16"/>
  <data key="fwtype" value="general" type="STRING"/>
- <data key="signature1" value="gQDEgSAAAAD/5///Lev//5bp//8n////AQAAAJT///+vsWIAAAAAAA==" type="INT8_ARRAY"/>
- <data key="Signature 1 range" value="9" type="FLOAT32"/>
+ <data key="signature1" value="gQC8gSAAAABP6P//aev//9zp//+h/P//wf3//zL9//+ao1wAAAAAAA==" type="INT8_ARRAY"/>
+ <data key="Signature 1 range" value="6.072" type="FLOAT32"/>
  <data key="Signature label 1" value="" type="STRING"/>
  <data key="signature2" value="gQA8gSAAAADn1P//s9n//0zX//8tAwAAywQAAPwDAACDeh8AAAAAAA==" type="INT8_ARRAY"/>
  <data key="Signature 2 range" value="0" type="FLOAT32"/>
@@ -36,7 +36,7 @@
  <data key="Camera Brightness" value="32" type="INT8"/>
  <data key="Auto Exposure Correction" value="0" type="INT8"/>
  <data key="AEC Value" value="52741" type="INT32"/>
- <data key="Auto White Balance" value="1" type="INT8"/>
+ <data key="Auto White Balance" value="0" type="INT8"/>
  <data key="Auto White Balance on power-up" value="1" type="INT8"/>
  <data key="AWB Value" value="0" type="INT32"/>
  <data key="S0 lower limit" value="-200" type="INT16"/>
