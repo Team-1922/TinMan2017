@@ -28,6 +28,9 @@ public class SidedPeg extends CommandGroup {
     		addSequential(new TimedTankDrive(-0.5, 0.5, 0.5));
     	}
     	
+    	//go forward a little
+    	addSequential(new TimedTankDrive(0.5, 0.5, 1));
+    	
     	//Enable vision tracking
     	addSequential(new SetVisionTrackingState(true));
     	
@@ -41,12 +44,12 @@ public class SidedPeg extends CommandGroup {
     	addSequential(new TimedTankDrive(0.4, 0.4, 2));
     	
     	//drop off the gear ...
-    	addParallel(new OpenGearFlap());
+    	//addParallel(new OpenGearFlap());
     	//... while driving backwards
     	addSequential(new TimedTankDrive(-0.75, -0.75, 1));
     	
     	//close the gear flap ...
-    	addParallel(new CloseGearFlap());
+    	//addParallel(new CloseGearFlap());
     	//... while turning
     	if(side == 0)
     	{

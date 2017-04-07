@@ -134,12 +134,19 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 				
 
 				//make sure it isn't a reflection of the ring light off the plastic
-				//int x = _frame.List.get(i).X;
-				//int y = _frame.List.get(i).Y;
+				int x = _frame.List.get(i).X;
+				int y = _frame.List.get(i).Y;
+				int right = x + _frame.List.get(i).Width;
+				int bottom = y + _frame.List.get(i).Height;
 				//if(x < 50 || x > 300)
 			//		continue; // ignore this one
 				//if(y < 30)
 				//	continue;
+				
+				if(x < 40 || right > 300)
+					continue;
+				if(y < 30 || bottom > 180)
+					continue;
 				
 				boolean wasCombined = false;
 				
@@ -198,6 +205,13 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 				PixyCamBlock block = blocks.get(0);
 				_targetXPosition = block.X + block.Width/2;
 				_targetYPosition = block.Y;
+				
+				if(block.Width < _minWidth || block.Height < _minHeight)
+				{
+					_seesTarget = false;
+					_targetXPosition = 0;
+					_targetYPosition = 0;
+				}
 				_seesTarget = true;
 			}
 			else
@@ -232,8 +246,10 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 				if(bigBlock1.Width < _minWidth || bigBlock2.Width < _minWidth || bigBlock1.Height < _minHeight || bigBlock2.Height < _minHeight)
 				{
 					//TODO: Test everything else before adding this
-					//_seesTarget = false;
-					//return;
+					_seesTarget = false;
+					_targetXPosition = 0;
+					_targetYPosition = 0;
+					return;
 				}
 				
 				//get the midpoint (center) of the two X & Y Positions
