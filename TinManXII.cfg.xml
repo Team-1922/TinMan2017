@@ -7,7 +7,7 @@
 		RightMotor2="4" 
 		Shifter="0"
 		LeftSensitivity="1.0" 
-		RightSensitivity=".9" 
+		RightSensitivity=".95" 
 		LeftP="2.0" 
 		LeftI="0.0005" 
 		LeftD="100.0" 
