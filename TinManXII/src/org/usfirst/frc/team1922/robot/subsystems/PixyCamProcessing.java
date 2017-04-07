@@ -128,14 +128,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 			
 			ArrayList<PixyCamBlock> blocks = new ArrayList<PixyCamBlock>();
 			for(int i = 0; i < _frame.List.size(); ++i)
-			{
-				if(i == 0)
-				{
-					//always add the first block
-					blocks.add(_frame.List.get(i));
-					continue;
-				}
-				
+			{			
 
 				//make sure it isn't a reflection of the ring light off the plastic
 				int x = _frame.List.get(i).X;
@@ -151,6 +144,14 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 					continue;
 				if(y < _minY || bottom > _maxY)
 					continue;
+				
+
+				if(blocks.size() == 0)
+				{
+					//always add the first block
+					blocks.add(_frame.List.get(i));
+					continue;
+				}
 				
 				boolean wasCombined = false;
 				
