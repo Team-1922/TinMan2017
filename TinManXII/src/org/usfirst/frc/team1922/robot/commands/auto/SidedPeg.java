@@ -21,11 +21,11 @@ public class SidedPeg extends CommandGroup {
     	//turn to see peg
     	if(side == 0)
     	{
-    		addSequential(new TimedTankDrive(0.5, -0.5, 0.65));
+    		addSequential(new TimedTankDrive(0.5, -0.5, 0.5));
     	}
     	else
     	{
-    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.65));
+    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.5));
     	}
     	
     	//Enable vision tracking
