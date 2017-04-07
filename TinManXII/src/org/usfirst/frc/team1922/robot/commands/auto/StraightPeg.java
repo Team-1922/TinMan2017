@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class StraightPeg extends CommandGroup {
 	
-    public StraightPeg() {
+    public StraightPeg(boolean gear) {
     	
     	//drive forward
     	addSequential(new TimedTankDrive(0.75, 0.75, 1));
@@ -29,11 +29,22 @@ public class StraightPeg extends CommandGroup {
     	addSequential(new TimedTankDrive(0.4, 0.4, 2));
     	
     	//drop off the gear ...
-    	//addParallel(new OpenGearFlap());
+    	if(gear)
+    	{
+    		addParallel(new OpenGearFlap());
+    	}
     	//... while driving backwards
     	addSequential(new TimedTankDrive(-0.75, -0.75, 1));
     	
     	//close the gear flap
-    	//addSequential(new CloseGearFlap());
+    	if(gear)
+    	{
+    		addSequential(new CloseGearFlap());
+    	}
+    }
+    
+    public StraightPeg()
+    {
+    	this(false);
     }
 }

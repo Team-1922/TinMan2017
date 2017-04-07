@@ -62,6 +62,10 @@ public class Robot extends IterativeRobot {
 	public static SidedPeg mAutoR = new SidedPeg(1);
 	public static StraightPeg mAutoC = new StraightPeg();
 	
+	public static SidedPeg mAutoLG = new SidedPeg(0, true);
+	public static SidedPeg mAutoRG = new SidedPeg(1, true);
+	public static StraightPeg mAutoCG = new StraightPeg(true);
+	
 	public static TimedTankDrive mAutoBase = new TimedTankDrive(0.75,0.75,4); 
 
     Command autonomousCommand;
@@ -101,11 +105,14 @@ public class Robot extends IterativeRobot {
 		mPixyCam.Start();
 
 		chooser.addDefault("Center Auto", mAutoC);
-		chooser.addDefault("Old Center Auto", mOldAutoC);
+		//chooser.addDefault("Old Center Auto", mOldAutoC);
 		chooser.addObject("Left Auto", mAutoL);
 		chooser.addObject("Right Auto", mAutoR);
 		chooser.addObject("BaseLine Auto", mAutoBase);
 		chooser.addObject("None", null);
+		chooser.addObject("Left Auto With Gear", mAutoLG);
+		chooser.addObject("Right Auto With Gear", mAutoRG);
+		chooser.addObject("Center Auto With Gear", mAutoCG);
 		SmartDashboard.putData("Auto Choices", chooser);
     }
 	

@@ -13,7 +13,7 @@ public class SidedPeg extends CommandGroup {
 	
 	//side = 0: left;
 	//side = 1: right;
-    public SidedPeg(int side) {
+    public SidedPeg(int side, boolean gear) {
     	
     	//drive forward
     	addSequential(new TimedTankDrive(0.75, 0.75, 2.25));
@@ -44,12 +44,18 @@ public class SidedPeg extends CommandGroup {
     	addSequential(new TimedTankDrive(0.4, 0.4, 2));
     	
     	//drop off the gear ...
-    	//addParallel(new OpenGearFlap());
+    	if(gear)
+    	{
+    		addParallel(new OpenGearFlap());
+    	}
     	//... while driving backwards
     	addSequential(new TimedTankDrive(-0.75, -0.75, 1));
     	
     	//close the gear flap ...
-    	//addParallel(new CloseGearFlap());
+    	if(gear)
+    	{
+        	addParallel(new CloseGearFlap());	
+    	}
     	//... while turning
     	if(side == 0)
     	{
@@ -62,5 +68,10 @@ public class SidedPeg extends CommandGroup {
     	
     	//cross the baseline
     	addSequential(new TimedTankDrive(0.75, 0.75, 1.5));
+    }
+    
+    public SidedPeg(int side)
+    {
+    	this(side, false);
     }
 }
