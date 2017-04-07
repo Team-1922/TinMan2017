@@ -16,6 +16,8 @@
 		RightI="0.0005" 
 		RightD="100.0" 
 		RightF="0.0" />
+		<!-- LeftSensitivity="1.0"
+			RightSensitivity="0.87"-->
 	<OI>
 		<Joystick Name="OpStick" Id="0" />
 		<Joystick Name="LeftStick" Id="1" />
