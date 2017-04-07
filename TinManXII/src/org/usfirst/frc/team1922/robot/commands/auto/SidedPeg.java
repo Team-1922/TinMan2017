@@ -16,16 +16,16 @@ public class SidedPeg extends CommandGroup {
     public SidedPeg(int side) {
     	
     	//drive forward
-    	addSequential(new TimedTankDrive(0.75, 0.75, 2.5));
+    	addSequential(new TimedTankDrive(0.75, 0.75, 2.25));
     	
     	//turn to see peg
     	if(side == 0)
     	{
-    		addSequential(new TimedTankDrive(0.5, -0.5, 0.5));
+    		addSequential(new TimedTankDrive(0.5, -0.5, 0.65));
     	}
     	else
     	{
-    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.5));
+    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.65));
     	}
     	
     	//Enable vision tracking
