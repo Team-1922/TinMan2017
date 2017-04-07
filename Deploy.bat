@@ -1,3 +1,2 @@
-pushd TinManXI
-ant deploy
-pause
+pushd TinManXII
+Deploy.bat

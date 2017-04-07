@@ -1,2 +1,2 @@
-pushd TinManXI
-ant upload-cfg
+pushd TinManXII
+ReUploadCfg.bat
