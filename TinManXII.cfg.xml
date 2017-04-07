@@ -44,7 +44,7 @@
 	<GearFlap ActuatorId="1" PegSensorId="0"/>
 	<RopeClimber MotorID="5" />
 	<ImageProcessing CameraCenter="160" ProportionalControl="0.01" Threshold="5" UpdatePeriod="100" 
-		MinWidth="5" MinHeight="10" 
-		MinX="100" MinY="50" MaxX="200" MaxY="150" 
+		MinWidth="1" MinHeight="7" 
+		MinX="40" MinY="10" MaxX="280" MaxY="150" 
 		Debug="1" />
 </root>
