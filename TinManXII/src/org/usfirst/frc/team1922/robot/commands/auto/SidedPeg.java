@@ -16,32 +16,32 @@ public class SidedPeg extends CommandGroup {
     public SidedPeg(int side, boolean gear) {
     	
     	//drive forward
-    	addSequential(new TimedTankDrive(0.75, 0.75, 2.25));
+    	addSequential(new TimedTankDrive(0.75, 0.75, 2));
     	
     	//turn to see peg
     	if(side == 0)
     	{
-    		addSequential(new TimedTankDrive(0.5, -0.5, 0.5));
+    		addSequential(new TimedTankDrive(0.5, -0.5, 0.55));
     	}
     	else
     	{
-    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.5));
+    		addSequential(new TimedTankDrive(-0.5, 0.5, 0.55));
     	}
     	
     	//go forward a little
-    	addSequential(new TimedTankDrive(0.5, 0.5, 1));
+    	//addSequential(new TimedTankDrive(0.5, 0.5, 1));
     	
     	//Enable vision tracking
     	addSequential(new SetVisionTrackingState(true));
     	
     	//drive forwards towards the peg
-    	addSequential(new TimedTankDrive(0.4, 0.4, 3));
+    	addSequential(new TimedTankDrive(0.4, 0.4, 1.5));
     	
     	//during the previous 3 seconds, hopefully the bot has had a chance to correct
     	addSequential(new SetVisionTrackingState(false));
     	
     	//continue driving into the peg
-    	addSequential(new TimedTankDrive(0.4, 0.4, 2));
+    	addSequential(new TimedTankDrive(0.4, 0.4, 3));
     	
     	//drop off the gear ...
     	if(gear)
