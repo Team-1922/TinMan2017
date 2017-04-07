@@ -39,6 +39,10 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 	 * The minimum height for a detected block
 	 */
 	private int _minHeight = 20;
+	private int _minX = 80;
+	private int _minY = 50;
+	private int _maxX = 240;
+	private int _maxY = 150;
 	/**
 	 * The x center of the window (in pixels)
 	 */
@@ -143,9 +147,9 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 				//if(y < 30)
 				//	continue;
 				
-				if(x < 40 || right > 300)
+				if(x < _minX || right > _maxX)
 					continue;
-				if(y < 30 || bottom > 180)
+				if(y < _minY || bottom > _maxY)
 					continue;
 				
 				boolean wasCombined = false;
@@ -402,6 +406,12 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		_periodMS = element.GetAttributeI("UpdatePeriod");
 		_minWidth = element.GetAttributeI("MinWidth");
 		_minHeight = element.GetAttributeI("MinHeight");
+		
+		_minX = element.GetAttributeI("MinX");
+		_minY = element.GetAttributeI("MinY");
+		_maxX = element.GetAttributeI("MaxX");
+		_maxY = element.GetAttributeI("MaxY");
+		
 		_debug = element.GetAttributeI("Debug") > 0;
 		return true;
 	}
@@ -415,6 +425,12 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 		blank.SetAttribute("UpdatePeriod", _periodMS);
 		blank.SetAttribute("MinWidth", _minWidth);
 		blank.SetAttribute("MinHeight", _minHeight);
+		
+		blank.SetAttribute("MinX", _minX);
+		blank.SetAttribute("MinY", _minY);
+		blank.SetAttribute("MaxX", _maxX);
+		blank.SetAttribute("MaxY", _maxY);
+		
 		blank.SetAttribute("Debug", _debug ? 1 : 0);
 		return blank;
 	}
