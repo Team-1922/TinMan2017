@@ -147,7 +147,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 				for(int j = 0; j < blocks.size(); j++)
 				{					
 					//if the two blocks are within 5 pixels, then add to them.  its probably a duplicate (or cut in half by the hook)
-					if(Math.abs(blocks.get(j).X - _frame.List.get(i).X) < 5)
+					/*if((Math.abs(blocks.get(j).X - _frame.List.get(i).X) < 5) && Math.abs(blocks.get(j).Y - _frame.List.get(i).Y) < 10)
 					{
 						PixyCamBlock storedBlock = blocks.get(j);
 						PixyCamBlock newBlock = _frame.List.get(i);
@@ -167,7 +167,7 @@ public class PixyCamProcessing extends Subsystem implements CfgInterface {
 						wasCombined = true;
 						break;
 					}
-					else if(blocks.get(j).ContainsOther(_frame.List.get(i)))
+					else */if(blocks.get(j).ContainsOther(_frame.List.get(i)))
 					{
 						blocks.get(j).ExpandToFit(_frame.List.get(i));
 						wasCombined = true;
